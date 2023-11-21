@@ -1,0 +1,54 @@
+header 
+{
+    color: black;
+    line-height: 2rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--sectionBackground);
+}
+
+nav 
+{
+    border: 1px solid black;
+    height: 3rem;
+    background-color: white;
+}
+
+#searchSection 
+{
+    padding: 1rem;
+    background-color: var(--sectionBackground);
+}
+
+#searchPanel 
+{
+    padding: 1rem;
+}
+
+#searchPanel input[type=text] 
+{
+    padding: .5rem;
+    border-radius: 1rem;
+    border-color: black;
+    border-spacing: 0;
+    width: 90%;
+}
+
+#searchPanel button 
+{
+    padding: .5rem;
+    width: 9%;
+    border-radius: 1rem;
+}
+
+#dataSection 
+{
+    margin-top: 1rem;
+    background-color: var(--sectionBackground);
+    padding-block: 1rem;
+}
+
+#data 
+{
+    border: 1px solid red;
+}

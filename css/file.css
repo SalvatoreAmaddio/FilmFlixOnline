@@ -1,0 +1,22 @@
+:root
+{
+    --sectionBackground : #EFE1CE;
+}
+
+* 
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-rendering: optimizeLegibility;
+}
+
+h1 
+{
+    letter-spacing: 2px;
+}
+
+#wrapper 
+{
+    width: 100%;
+}

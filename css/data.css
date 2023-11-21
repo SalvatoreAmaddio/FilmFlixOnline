@@ -1,0 +1,38 @@
+table 
+{
+    background-color: white;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-radius: 1rem;
+}
+
+tr 
+{
+    border-radius: 1rem;
+}
+
+th 
+{
+    padding: 1rem;
+}
+
+th, td 
+{
+    border: 1px solid;
+    border-collapse: collapse;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:not(tr:first-child):hover {background-color: coral;}
+
+td p 
+{
+    padding-inline: 2rem;
+}
+
+td button 
+{
+    padding: 1rem;
+    display: block;
+}
