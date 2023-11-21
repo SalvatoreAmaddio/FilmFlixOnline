@@ -14,17 +14,20 @@ tr
 th 
 {
     padding: 1rem;
+    letter-spacing: 1px;
 }
 
 th, td 
 {
-    border: 1px solid;
     border-collapse: collapse;
     text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
-tr:not(tr:first-child):hover {background-color: coral;}
+tr:not(tr:first-child):hover 
+{
+    background-color: coral;
+}
 
 td p 
 {
@@ -34,5 +37,17 @@ td p
 td button 
 {
     padding: 1rem;
+    border-radius: 1rem;
     display: block;
+    width: 100%;
+    letter-spacing: 1px;
+    border: 1px solid black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+td button:hover 
+{
+    background-color: #D3D3D3;
+    text-decoration: underline;
 }
