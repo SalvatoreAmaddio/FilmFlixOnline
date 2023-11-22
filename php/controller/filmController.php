@@ -51,40 +51,33 @@ include("php/model/films.php");
         public function read() : bool
         {
             if (!$this->hasRequests()) return false;
-
-            if ($this->is_r_selectedID()) 
+            switch(true) 
             {
-                $this->model = $this->findID($this->r_selectedID());
-                $key = $this->currentIndex();
-                $this->moveTo($key);
-                $this->s_SelectedIndex($key);
-                echo $this->displayTableData();
+                case $this->is_r_selectedID():
+                    $this->model = $this->findID($this->r_selectedID());
+                    $key = $this->currentIndex();
+                    $this->moveTo($key);
+                    $this->s_SelectedIndex($key);
+                    echo $this->displayTableData();
                 return true;
-            }
-
-            if($this->is_r_updateRecordTracker()) 
-            {
-                $this->moveTo($this->s_SelectedIndex());
-                echo $this->addRecordTracker();
+                case $this->is_r_updateRecordTracker():
+                    $this->moveTo($this->s_SelectedIndex());
+                    echo $this->addRecordTracker();    
                 return true;
-            }
+            }            
         }
 
         public function findID($id) : Film
         {
             $result = array_values(array_filter($this->records, 
-            function($e) use ($id)
+            function($record) use ($id)
             {
                 /** @var Film $film */
-                $film = $e;
+                $film = $record;
                 return $film->filmID == $id;
             }));
 
-            if (count($result)>0) 
-            {
-                return $result[0];
-            }
-            return null;
+            return (count($result)>0) ? $result[0] : null;
         }
 
         public function model() : Film

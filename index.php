@@ -51,8 +51,7 @@
         </div>
 
         <script>
-            let form = new ListForm();
-            form.server = "index.php";
+            new ListForm("index.php");
         </script>
     </body>
 </html>

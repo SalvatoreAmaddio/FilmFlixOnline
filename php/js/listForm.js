@@ -5,16 +5,17 @@ class AbstractForm
     rt;
     #server;
 
-    constructor() 
+    constructor(server) 
     {
+        this.#server = server;
         this.dataSection = document.getElementById("dataSection");
         this.data = document.getElementById("data");
         this.rt = document.getElementsByClassName("rt")[0];
     }
 
-    set server(str) 
+    get newButton() 
     {
-        this.#server = str;
+        return this.rt.getElementsByTagName("button")[4];
     }
 
     send(param, evt) 
@@ -50,9 +51,9 @@ class AbstractForm
 
 class DataForm extends AbstractForm 
 {
-    constructor() 
+    constructor(server) 
     {
-        super();
+        super(server);
     }
 }
 
@@ -60,16 +61,22 @@ class ListForm extends AbstractForm
 {
     table;
     
-    constructor() 
+    constructor(server) 
     {
-        super();
+        super(server);
         this.table = this.data.getElementsByTagName("table")[0];
         this.#onRowClickedEvent();
+        this.newButton.addEventListener("click",(e)=>{alert("ciao")});
     }
 
     get rows() 
     {
         return this.table.children[0].children;
+    }
+
+    get rowCount() 
+    {
+        return this.rows.length;
     }
 
     #onRowClickedEvent() 
@@ -112,11 +119,6 @@ class ListForm extends AbstractForm
         {
             this.displayData(e);
         });
-    }
-
-    get rowCount() 
-    {
-        return this.rows.length;
     }
 
 }
