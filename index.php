@@ -12,6 +12,7 @@ $controller->readTable();
     <title>FilmFlix</title>
     <link rel="stylesheet" href="css/file.css">
     <link rel="stylesheet" href="css/data.css">
+    <link rel="stylesheet" href="css/recordTracker.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
@@ -26,7 +27,7 @@ $controller->readTable();
             <section id="searchSection">
                 <div id="searchPanel">
                     <input type="text" placeholder="Search...">
-                    <button>NEW</button>
+                    <button>+</button>
                 </div>
             </section>
 
@@ -34,28 +35,19 @@ $controller->readTable();
                 <div id="data">
                     <table>
                         <tr>
-                            <th>Title</th>
+                            <th colspan="2">Title</th>
                             <th>Year</th>
                             <th>Rating</th>
                             <th>Duration</th>
                             <th>Genre</th>
                             <th colspan="2">COMMANDS</th>
                         </tr>
-                        <?php
-                            $controller->displayTableData();
-                        ?>
-<!--                        <tr>
-                            <td><p>The Muppets</p></td>
-                            <td><p>2022</p></td>
-                            <td><p>PG</p></td>
-                            <td><p>116</p></td>
-                            <td><p>Comedy</p></td>
-                            <td><button>Edit</button></td>
-                            <td><button>Delete</button></td>
-                        </tr>-->
+                        <?php $controller->displayTableData();?>
                     </table>
                 </div>
             </section>
+
+            <?php $controller->addRecordTracker()?>
         </main>
     </div>
 </body>

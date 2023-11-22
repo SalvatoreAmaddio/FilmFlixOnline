@@ -123,6 +123,20 @@
             $this->recordIndex = $this->recordCount();
             $this->model = $this->model::returnNew();
         }
+
+        public function addRecordTracker() 
+        {
+            echo "<section class=recordTrackerSection>
+                    <div class=recordTracker>
+                        <button>⮜⮜</button>
+                        <button>⮜</button>
+                        <label>{$this->reportRecordPosition()}</label>
+                        <button>➤</button>
+                        <button>➤➤</button>
+                        <button class=newButton>+</button>
+                    </div>
+                 </section>";
+        }
     }
     
     interface ITableDisplayer 

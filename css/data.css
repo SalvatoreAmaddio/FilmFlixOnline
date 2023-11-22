@@ -51,3 +51,11 @@ td button:hover
     background-color: #D3D3D3;
     text-decoration: underline;
 }
+
+.recordIndicator 
+{
+    padding-inline: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #D3D3D3;
+    font-size: 2rem;
+}

@@ -18,6 +18,7 @@ include("php/model/films.php");
                 /** @var Film $film */
                 $film = $record;
                 echo "<tr>
+                    <td class=recordIndicator>&#129170;</td>
                     <td><p>{$film->title}</p></td>
                     <td><p>{$film->yearReleased}</p></td>
                     <td><p>{$film->rating}</p></td>

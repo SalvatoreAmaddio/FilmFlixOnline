@@ -31,14 +31,26 @@ nav
     border-radius: 1rem;
     border-color: black;
     border-spacing: 0;
-    width: 90%;
+    width: 96%;
 }
 
 #searchPanel button 
 {
-    padding: .5rem;
-    width: 9%;
-    border-radius: 1rem;
+    text-align: center;
+    display: inline-block;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+    min-height: 2.5rem;
+    max-height: 2.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 1px;
+    font-weight: bolder;
+    vertical-align: middle;
+    padding: 0.05rem;
+    font-size: 2rem;
+    color: white;
+    background-color: green;
 }
 
 #dataSection 

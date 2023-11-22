@@ -1,0 +1,42 @@
+.recordTrackerSection
+{
+    margin-top: 1rem;
+    background-color: var(--sectionBackground);
+    padding-block: 1rem;
+    border-radius: 1rem;
+}
+
+.recordTracker
+{
+    padding-inline: .5rem;
+}
+
+.recordTracker label 
+{
+    padding: .6rem;
+    background-color: white;
+}
+
+.recordTracker button 
+{
+    text-align: center;
+    display: inline-block;
+    padding: .5rem 0rem;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+    min-height: 2.5rem;
+    max-height: 2.5rem;
+    cursor: pointer;
+}
+
+.recordTracker .newButton 
+{
+    border-radius: 50%;
+    border-width: 1px;
+    font-weight: bolder;
+    vertical-align: top;
+    padding: 0.05rem;
+    font-size: 2rem;
+    color: white;
+    background-color: green;
+}
