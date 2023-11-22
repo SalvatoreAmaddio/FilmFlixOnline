@@ -2,7 +2,7 @@
     abstract class AbstractController 
     {
         public $records = array();
-        public AbstractModel $model;
+        protected AbstractModel $model;
         public Database $db;
         protected int $recordIndex = 0;
 
@@ -43,6 +43,8 @@
                 <p>{$this->reportRecordPosition()}</p>
                 </div>";
         }
+
+        public abstract function model() : Film;
 
         public function readTable() 
         {
@@ -123,5 +125,13 @@
         }
     }
     
+    interface ITableDisplayer 
+    {
+        public function displayTableData();
+    }
 
+    interface IFormDisplayer 
+    {
+        public function displayTableData();
+    }
 ?>

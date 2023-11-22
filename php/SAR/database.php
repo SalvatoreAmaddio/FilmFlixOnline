@@ -1,4 +1,6 @@
 <?php
+    include("abstractModel.php");
+    include("abstractController.php");
     class Database 
     {
         public string $serverName = "localhost";
@@ -61,19 +63,4 @@
             $this->table = $this->conn->query($this->model->select());
         }
     }
-
-include("abstractModel.php");
-include("abstractController.php");
-########################
-include("genre.php");
-include("films.php");
-include("filmController.php");
-
-$controller = new FilmController();
-$controller->readTable();
-$controller->printInfo();
-
-$controller->moveNew();
-$controller->printInfo();
-
 ?>

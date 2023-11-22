@@ -1,3 +1,9 @@
+<?php
+include("php/controller/filmController.php");
+$controller = new FilmController();
+$controller->readTable();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,10 +21,6 @@
             <h1>FilmFlix</h1>
             <h1>Management System</h1>
         </header>
-
-        <nav>
-            Nav Bar
-        </nav>
 
         <main>
             <section id="searchSection">
@@ -39,7 +41,10 @@
                             <th>Genre</th>
                             <th colspan="2">COMMANDS</th>
                         </tr>
-                        <tr>
+                        <?php
+                            $controller->displayTableData();
+                        ?>
+<!--                        <tr>
                             <td><p>The Muppets</p></td>
                             <td><p>2022</p></td>
                             <td><p>PG</p></td>
@@ -47,7 +52,7 @@
                             <td><p>Comedy</p></td>
                             <td><button>Edit</button></td>
                             <td><button>Delete</button></td>
-                        </tr>
+                        </tr>-->
                     </table>
                 </div>
             </section>

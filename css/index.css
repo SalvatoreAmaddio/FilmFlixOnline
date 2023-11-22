@@ -47,8 +47,3 @@ nav
     background-color: var(--sectionBackground);
     padding-block: 1rem;
 }
-
-#data 
-{
-    border: 1px solid red;
-}
