@@ -11,24 +11,29 @@
         public $table;
         public $tableAssoc;
 
-        public function __construct() 
-        {
-            $this->connect();
-            $this->getColumns();
-            $this->select();
-        }
-
         public function connect() 
         {
             $this->conn = new mysqli($this->serverName, $this->user, $this->pwd, $this->db);
             if ($this->conn->connect_error)
                 die("Connection failed: " . $this->conn->connect_error);
+
+            $this->getColumns();
+        }
+
+        public function setModel(AbstractModel &$model) 
+        {   
+            $this->model = $model;
         }
 
         public function isConnected() : bool 
         {
             if ($this->conn) return true;
             return false;
+        }
+
+        public function close() 
+        {
+            $this->conn->close();
         }
 
         public function columns() : int 
@@ -53,18 +58,21 @@
 
         public function select() 
         {
-            $this->table = $this->conn->query("SELECT * FROM tblFilms;");
+            $this->table = $this->conn->query($this->model->select());
         }
     }
 
-    
-$db = new Database();  
-$db->select();
+include("abstractModel.php");
+include("abstractController.php");
+########################
+include("films.php");
+include("filmController.php");
 
-while($row = $db->table->fetch_assoc()) 
-{
-    echo $row["title"] . " " . $row["yearReleased"];
-    echo "<br>";
-}
+$controller = new FilmController();
+$controller->readTable();
+$controller->printInfo();
+
+$controller->moveNew();
+$controller->printInfo();
 
 ?>
