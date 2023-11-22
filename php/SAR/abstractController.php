@@ -5,7 +5,6 @@
         protected AbstractModel $model;
         public Database $db;
         protected int $recordIndex = 0;
-        protected RecordTracker $tracker;
 
         public function __construct(AbstractModel $model) 
         {
@@ -13,7 +12,6 @@
             $this->model = $model;
             $this->db->setModel($this->model);
             $this->db->connect();
-            $this->tracker = new RecordTracker($this->recordIndex,$this->records,$this->model);
         }
 
         public function s_SelectedIndex(int $index = -1)
@@ -47,6 +45,11 @@
             return count($_REQUEST) > 0;
         }
 
+        public function currentIndex() : int 
+        {
+            return array_search($this->model,$this->records);
+        }
+
         public function reload() 
         {
             $this->readTable();
@@ -57,16 +60,23 @@
             return count($this->records);
         }
 
+        public function reportRecordPosition() : string
+        {
+            if ($this->recordCount()==0) return "No Records";
+            if ($this->isNewRecord()) return "New Record";
+            return "Record {$this->currentRecordPosition()} of {$this->recordCount()}";
+        }
+
         public function printInfo() 
         {
             echo "<div style='border: 1px solid black; padding: .5rem'>
-                <p><span>Record Position: </span>{$this->tracker->currentRecordPosition()}</p>
+                <p><span>Record Position: </span>{$this->currentRecordPosition()}</p>
                 <p><span>Current Record: </span>{$this->model}</p>
                 <p><span>Record Count: </span>{$this->recordCount()}</p>
-                <p><span>New Record: </span>{$this->tracker->isNewRecord()}</p>
-                <p><span>BOF: </span>{$this->tracker->BOF()}</p>
-                <p><span>EOF: </span>{$this->tracker->EOF()}</p>
-                <p>{$this->tracker->reportRecordPosition()}</p>
+                <p><span>New Record: </span>{$this->isNewRecord()}</p>
+                <p><span>BOF: </span>{$this->BOF()}</p>
+                <p><span>EOF: </span>{$this->EOF()}</p>
+                <p>{$this->reportRecordPosition()}</p>
                 </div>";
         }
 
@@ -84,59 +94,24 @@
             $this->db->close();
         }
 
-        public function addRecordTracker() 
+        public function currentRecordPosition() : int
         {
-            echo "<section class=recordTrackerSection>
-                    <div class=recordTracker>
-                        <button>⮜⮜</button>
-                        <button>⮜</button>
-                        <label>{$this->tracker->reportRecordPosition()}</label>
-                        <button>➤</button>
-                        <button>➤➤</button>
-                        <button class=newButton>+</button>
-                    </div>
-                 </section>";
-        }
-
-        public function findID($id) : AbstractModel
-        {
-            $result = array_values(array_filter($this->records, 
-            function($record) use ($id)
-            {
-                return true;
-            }));
-
-            return (count($result)>0) ? $result[0] : null;
-        }
-    }
-    
-    class RecordTracker
-    {
-
-        private int $recordIndex = 0;
-        private Array $records;
-        private AbstractModel $model;
-
-        public function __construct(int &$recordIndex, Array &$records, AbstractModel &$model) 
-        {
-            $this->recordIndex = $recordIndex;
-            $this->records = $records;
-            $this->model = $model;
+            return $this->recordIndex + 1;
         }
 
         public function EOF() : bool 
         {
-            return $this->recordIndex == count($this->records)-1;
+            return $this->recordIndex == $this->recordCount()-1;
+        }
+
+        public function isNewRecord() : bool 
+        {
+            return $this->recordIndex > $this->recordCount()-1;
         }
 
         public function BOF() : bool 
         {
             return $this->recordIndex == 0;
-        }
-
-        public function isNewRecord() : bool 
-        {
-            return $this->recordIndex > count($this->records)-1;
         }
 
         public function outOfRange() : bool 
@@ -149,7 +124,7 @@
             $this->recordIndex++;
             if ($this->isNewRecord()) 
             {
-                $this->recordIndex = count($this->records)-1;
+                $this->recordIndex = $this->recordCount()-1;
                 return;
             }
 
@@ -169,7 +144,7 @@
 
         public function moveLast() 
         {
-            $this->recordIndex = count($this->records)-1;
+            $this->recordIndex = $this->recordCount()-1;
             $this->model = $this->records[$this->recordIndex];
         }
 
@@ -181,7 +156,7 @@
 
         public function moveNew() 
         {
-            $this->recordIndex = count($this->records);
+            $this->recordIndex = $this->recordCount();
             $this->model = $this->model::returnNew();
         }
 
@@ -191,26 +166,34 @@
             $this->model = $this->records[$this->recordIndex];
         }
 
-        
-        public function currentIndex() : int 
+        public function addRecordTracker() 
         {
-            return array_search($this->model,$this->records);
+            echo "<section class=recordTrackerSection>
+                    <div class=recordTracker>
+                        <button>⮜⮜</button>
+                        <button>⮜</button>
+                        <label>{$this->reportRecordPosition()}</label>
+                        <button>➤</button>
+                        <button>➤➤</button>
+                        <button class=newButton>+</button>
+                    </div>
+                 </section>";
         }
 
-        public function currentRecordPosition() : int
-        {
-            return $this->recordIndex + 1;
-        }
+        abstract public function findIDCriteria($record,$id) : bool;
 
-        public function reportRecordPosition() : string
+        public function findID($id) : AbstractModel
         {
-            if (count($this->records)==0) return "No Records";
-            if ($this->isNewRecord()) return "New Record";
-            return "Record {$this->currentRecordPosition()} of {count($this->records)}";
-        }
+            $result = array_values(array_filter($this->records, 
+            function($record) use ($id)
+            {
+                return $this->findIDCriteria($record, $id);
+            }));
 
+            return (count($result)>0) ? $result[0] : null;
+        }
     }
-
+    
     interface ITableDisplayer 
     {
         public function displayTableData();

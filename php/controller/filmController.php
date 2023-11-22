@@ -55,16 +55,23 @@ include("php/model/films.php");
             {
                 case $this->is_r_selectedID():
                     $this->model = $this->findID($this->r_selectedID());
-                    $key = $this->tracker->currentIndex();
-                    $this->tracker->moveTo($key);
+                    $key = $this->currentIndex();
+                    $this->moveTo($key);
                     $this->s_SelectedIndex($key);
                     echo $this->displayTableData();
                 return true;
                 case $this->is_r_updateRecordTracker():
-                    $this->tracker->moveTo($this->s_SelectedIndex());
+                    $this->moveTo($this->s_SelectedIndex());
                     echo $this->addRecordTracker();    
                 return true;
             }            
+        }
+
+        public function findIDCriteria($record,$id) : bool
+        {
+              /** @var Film $film */
+              $film = $record;
+              return $film->filmID == $id;
         }
 
         public function findID($id) : Film
