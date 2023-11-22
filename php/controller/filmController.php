@@ -55,13 +55,13 @@ include("php/model/films.php");
             {
                 case $this->is_r_selectedID():
                     $this->model = $this->findID($this->r_selectedID());
-                    $key = $this->currentIndex();
-                    $this->moveTo($key);
+                    $key = $this->tracker->currentIndex();
+                    $this->tracker->moveTo($key);
                     $this->s_SelectedIndex($key);
                     echo $this->displayTableData();
                 return true;
                 case $this->is_r_updateRecordTracker():
-                    $this->moveTo($this->s_SelectedIndex());
+                    $this->tracker->moveTo($this->s_SelectedIndex());
                     echo $this->addRecordTracker();    
                 return true;
             }            
