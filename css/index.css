@@ -32,13 +32,13 @@ nav
     border-color: black;
     border-width: 1px;
     border-spacing: 0;
-    width: 96%;
+    width: 100%;
 }
 
 #searchPanel button 
 {
+    display: none;
     text-align: center;
-    display: inline-block;
     min-width: 2.5rem;
     max-width: 2.5rem;
     min-height: 2.5rem;

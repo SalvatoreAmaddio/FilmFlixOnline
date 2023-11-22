@@ -14,6 +14,37 @@
             $this->db->connect();
         }
 
+        public function s_SelectedIndex(int $index = -1)
+        {
+            if ($index < 0) return $_SESSION['selectedIndex'];
+            $_SESSION['selectedIndex'] = $index;
+        }
+
+        public function is_r_updateRecordTracker() : bool 
+        {
+            return isset($_REQUEST['updateRecordTracker']);
+        }
+
+        public function is_r_selectedID() : bool 
+        {
+            return isset($_REQUEST["selectedID"]);
+        }
+
+        public function r_selectedID() : int
+        {
+            return $_REQUEST["selectedID"];
+        }
+
+        public function hasRequests() : bool 
+        {
+            return count($_REQUEST) > 0;
+        }
+
+        public function currentIndex() : int 
+        {
+            return array_search($this->model,$this->records);
+        }
+
         public function reload() 
         {
             $this->readTable();
@@ -88,7 +119,7 @@
             $this->recordIndex++;
             if ($this->isNewRecord()) 
             {
-                $this->moveNew();
+                $this->recordIndex = $this->recordCount()-1;
                 return;
             }
 
@@ -122,6 +153,12 @@
         {
             $this->recordIndex = $this->recordCount();
             $this->model = $this->model::returnNew();
+        }
+
+        public function moveTo($index) 
+        {
+            $this->recordIndex = $index;
+            $this->model = $this->records[$this->recordIndex];
         }
 
         public function addRecordTracker() 

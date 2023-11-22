@@ -1,8 +1,17 @@
+.rt 
+{
+    position: fixed;
+    z-index: 99;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--sectionBackground);
+}
+
 .recordTrackerSection
 {
     margin-top: 1rem;
     background-color: var(--sectionBackground);
-    padding-block: 1rem;
+    padding-bottom: .5rem;
     border-radius: 1rem;
 }
 

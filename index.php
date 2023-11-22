@@ -1,7 +1,9 @@
 <?php
+    session_start();
     include("php/controller/filmController.php");
     $controller = new FilmController();
     $controller->readTable();
+    if ($controller->read()) exit;
 ?>
 
 <!DOCTYPE html>
@@ -37,27 +39,20 @@
                 <section id="dataSection">
                     <div id="data">
                         <table>
-                            <tr>
-                                <th colspan="2">Title</th>
-                                <th>Year</th>
-                                <th>Rating</th>
-                                <th>Duration</th>
-                                <th>Genre</th>
-                                <th colspan="2">COMMANDS</th>
-                            </tr>
                             <?php $controller->displayTableData();?>
                         </table>
                     </div>
                 </section>
 
-                <?php $controller->addRecordTracker()?>
+                <section class="rt">
+                    <?php $controller->addRecordTracker()?>
+                </section>
             </main>
         </div>
 
         <script>
             let form = new ListForm();
-            form.ajax = new Ajax("index.php");
-            
+            form.server = "index.php";
         </script>
     </body>
 </html>

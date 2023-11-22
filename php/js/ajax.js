@@ -1,21 +1,35 @@
 class Ajax 
 {
     xmlhttp = new XMLHttpRequest();
-    #where;
+    #server;
+    #event;
 
-    constructor(where) 
+    constructor(server) 
     {
-        this.#where = where;
+        this.#server = server;
+        this.xmlhttp.onreadystatechange = () =>
+        {
+            if (this.xmlhttp.readyState === XMLHttpRequest.DONE && this.xmlhttp.status === 200) 
+            {
+                this.#event(this.xmlhttp.responseText);
+            }
+        };
     }
 
-    set setEvent(event) 
+    get server() 
     {
-        this.xmlhttp.onload = event;
+        return this.#server;
     }
 
-    send(str) 
+    set on(event) 
     {
-        this.xmlhttp.open("POST", this.#where + str);
-        this.xmlhttp.send();
+        this.#event = event;
+    }
+
+    send(params) 
+    {
+        this.xmlhttp.open("POST", this.#server, true);
+        this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        this.xmlhttp.send(params);
     }
 }
