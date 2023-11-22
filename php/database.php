@@ -65,6 +65,7 @@
 include("abstractModel.php");
 include("abstractController.php");
 ########################
+include("genre.php");
 include("films.php");
 include("filmController.php");
 
