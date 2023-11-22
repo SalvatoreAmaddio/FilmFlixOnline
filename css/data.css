@@ -36,6 +36,7 @@ td p
 
 td button 
 {
+    margin-block: 0.2rem;
     min-width: 3rem;
     max-width: 3rem;
     min-height: 3rem;
@@ -64,8 +65,7 @@ td button:hover
 
 .recordIndicator 
 {
-    padding-inline: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem;
     background-color: #D3D3D3;
-    font-size: 2rem;
+    font-size: 1rem;
 }
