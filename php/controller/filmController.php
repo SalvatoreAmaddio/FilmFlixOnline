@@ -74,19 +74,6 @@ include("php/model/films.php");
               return $film->filmID == $id;
         }
 
-        public function findID($id) : Film
-        {
-            $result = array_values(array_filter($this->records, 
-            function($record) use ($id)
-            {
-                /** @var Film $film */
-                $film = $record;
-                return $film->filmID == $id;
-            }));
-
-            return (count($result)>0) ? $result[0] : null;
-        }
-
         public function model() : Film
         {
             /** @var Film $film */
