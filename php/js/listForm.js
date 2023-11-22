@@ -59,14 +59,17 @@ class DataForm extends AbstractForm
 class ListForm extends AbstractForm
 {
     table;
-    rows;
     
     constructor() 
     {
         super();
         this.table = this.data.getElementsByTagName("table")[0];
-        this.rows = this.table.children[0].children;
         this.#onRowClickedEvent();
+    }
+
+    get rows() 
+    {
+        return this.table.children[0].children;
     }
 
     #onRowClickedEvent() 
@@ -79,8 +82,7 @@ class ListForm extends AbstractForm
 
     displayData(data) 
     {
-        this.table.innerHTML=data;
-        this.rows = this.table.children[0].children;
+        this.table.innerHTML = data;
         this.#onRowClickedEvent();
         this.updateRecordTracker();
     }
