@@ -1,9 +1,13 @@
 table 
 {
     background-color: white;
-    margin: 0 auto;
     border-collapse: collapse;
     border-radius: 1rem;
+}
+
+table:empty 
+{
+    display: none;
 }
 
 tr 

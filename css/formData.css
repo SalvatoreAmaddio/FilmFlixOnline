@@ -1,0 +1,71 @@
+table 
+{
+    border: 1px solid;
+    border-radius: 0 0 1rem 1rem;
+    padding: .5rem;
+}
+
+table input
+{
+    padding: .6rem;
+    border-radius: 1rem;
+    border-width: 1px;
+}
+
+table caption 
+{
+    border: 1px solid;
+    padding: .5rem;
+    font-weight: bolder;
+    border-radius: 1rem 1rem 0 0;
+}
+
+table label 
+{
+    padding: .6rem;
+}
+
+table select 
+{
+    padding: 0.6rem;
+    border-radius: 1rem;
+    width: 100%;
+}
+
+.commands 
+{
+    display: flow-root;
+    width: fit-content;
+    margin-top: .5rem;
+}
+
+.commands button:first-child 
+{
+    margin-right: 1.3rem;
+}
+
+.commands button:last-child
+{
+    color: red;
+    padding-block: .2rem;
+}
+
+.commands button:hover 
+{
+    background-color: #D3D3D3;
+    text-decoration: underline;
+}
+
+.commands button 
+{
+    float: left;
+    cursor: pointer;
+    display: block;
+    font-size: 2.25rem;
+    padding: 0rem .5rem;
+    min-width: 8.2rem;
+    width: 40%;
+    border-radius: 1rem;
+    border-width: 1px;
+    font-weight: bolder;
+}

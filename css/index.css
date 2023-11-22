@@ -60,3 +60,9 @@ nav
     background-color: var(--sectionBackground);
     padding-block: 1rem;
 }
+
+#data 
+{
+    width: fit-content;
+    margin: 0 auto;
+}
