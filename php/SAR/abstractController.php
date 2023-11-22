@@ -180,6 +180,37 @@
                  </section>";
         }
 
+        public abstract function displayTableData();
+        public abstract function displayFormData();
+
+        protected function selectedRow($record) : string
+        {
+            if ($this->model == $record) 
+            {
+                return "style='background-color: coral;'";
+            }
+            return "";
+        }
+
+        public function read() : bool
+        {
+            if (!$this->hasRequests()) return false;
+            switch(true) 
+            {
+                case $this->is_r_selectedID():
+                    $this->model = $this->findID($this->r_selectedID());
+                    $key = $this->currentIndex();
+                    $this->moveTo($key);
+                    $this->s_SelectedIndex($key);
+                    echo $this->displayTableData();
+                return true;
+                case $this->is_r_updateRecordTracker():
+                    $this->moveTo($this->s_SelectedIndex());
+                    echo $this->addRecordTracker();    
+                return true;
+            }            
+        }
+
         abstract public function findIDCriteria($record,$id) : bool;
 
         public function findID($id) : AbstractModel
@@ -193,14 +224,5 @@
             return (count($result)>0) ? $result[0] : null;
         }
     }
-    
-    interface ITableDisplayer 
-    {
-        public function displayTableData();
-    }
-
-    interface IFormDisplayer 
-    {
-        public function displayTableData();
-    }
+      
 ?>

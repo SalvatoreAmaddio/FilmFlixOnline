@@ -3,21 +3,11 @@ include("php/SAR/database.php");
 include("php/model/genre.php");
 include("php/model/films.php");
 
-    class FilmController extends AbstractController implements ITableDisplayer
+    class FilmController extends AbstractController
     {        
         public function __construct() 
         {
             parent::__construct(new Film());
-        }
-
-        private function selectedRow($record) : string
-        {
-            if ($this->model == $record) 
-            {
-                return "style='background-color: coral;'";
-            }
-
-            return "";
         }
 
         public function displayTableData() 
@@ -48,23 +38,14 @@ include("php/model/films.php");
             }
         }
 
+        public function displayFormData()
+        {
+
+        }
+        
         public function read() : bool
         {
-            if (!$this->hasRequests()) return false;
-            switch(true) 
-            {
-                case $this->is_r_selectedID():
-                    $this->model = $this->findID($this->r_selectedID());
-                    $key = $this->currentIndex();
-                    $this->moveTo($key);
-                    $this->s_SelectedIndex($key);
-                    echo $this->displayTableData();
-                return true;
-                case $this->is_r_updateRecordTracker():
-                    $this->moveTo($this->s_SelectedIndex());
-                    echo $this->addRecordTracker();    
-                return true;
-            }            
+            return parent::read();
         }
 
         public function findIDCriteria($record,$id) : bool
