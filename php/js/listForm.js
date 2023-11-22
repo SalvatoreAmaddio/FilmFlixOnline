@@ -1,9 +1,7 @@
-class ListForm 
+class AbstractForm 
 {
     dataSection;
     data;
-    table;
-    rows;
     rt;
     #server;
 
@@ -11,10 +9,7 @@ class ListForm
     {
         this.dataSection = document.getElementById("dataSection");
         this.data = document.getElementById("data");
-        this.table = this.data.getElementsByTagName("table")[0];
-        this.rows = this.table.children[0].children;
-        this.rt=document.getElementsByClassName("rt")[0];
-        this.#onRowClickedEvent();
+        this.rt = document.getElementsByClassName("rt")[0];
     }
 
     set server(str) 
@@ -22,34 +17,75 @@ class ListForm
         this.#server = str;
     }
 
-    #onRowClickedEvent() 
+    send(param, evt) 
     {
-        for(let i = 1 ; i < this.rowCount; i++) 
-        {
-            this.rows[i].addEventListener("click", (e)=>this.rowClicked(e));
-        }
+        let ajax = new Ajax(this.server);
+        ajax.on = evt;
+        ajax.send(param);
     }
 
-    displayData(rows) 
+    get newButton() 
     {
-        this.table.innerHTML=rows;
-        this.rows = this.table.children[0].children;
-        this.#onRowClickedEvent();
+        return this.rt.getElementsByTagName("button")[4];
+    }
+
+    updateRecordTracker() 
+    {
         this.send("updateRecordTracker=true",
         (e)=>
         {
             this.rt.innerHTML = e;
         });
+
+        this.newButton.addEventListener("click",
+        (e)=>
+        {
+            alert("clicked");
+        });
     }
 
-    send(param, evt) 
+    displayData(data) {}
+
+}
+
+class DataForm extends AbstractForm 
+{
+    constructor() 
     {
-        let ajax = new Ajax(this.#server);
-        ajax.on = evt;
-        ajax.send(param);
+        super();
+    }
+}
+
+class ListForm extends AbstractForm
+{
+    table;
+    rows;
+    
+    constructor() 
+    {
+        super();
+        this.table = this.data.getElementsByTagName("table")[0];
+        this.rows = this.table.children[0].children;
+        this.#onRowClickedEvent();
     }
 
-    rowClicked(e) 
+    #onRowClickedEvent() 
+    {
+        for(let i = 1 ; i < this.rowCount; i++) 
+        {
+            this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
+        }
+    }
+
+    displayData(data) 
+    {
+        this.table.innerHTML=data;
+        this.rows = this.table.children[0].children;
+        this.#onRowClickedEvent();
+        this.updateRecordTracker();
+    }
+
+    #rowClicked(e) 
     {
         let el = e.target;
         let parentNode = "";
