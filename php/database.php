@@ -7,8 +7,9 @@
         public string $db = "FilmFlixDB";
         private $conn;
         protected AbstractModel $model;
-        protected $result;
         protected $schema;
+        public $table;
+        public $tableAssoc;
 
         public function __construct() 
         {
@@ -19,7 +20,9 @@
 
         public function connect() 
         {
-            $this->conn = mysqli_connect($this->serverName, $this->user, $this->pwd, $this->db);
+            $this->conn = new mysqli($this->serverName, $this->user, $this->pwd, $this->db);
+            if ($this->conn->connect_error)
+                die("Connection failed: " . $this->conn->connect_error);
         }
 
         public function isConnected() : bool 
@@ -35,10 +38,10 @@
 
         public function isEmpty() : bool 
         {
-            return $this->result->num_rows == 0;
+            return $this->table->num_rows == 0;
         }
 
-        public function getColumns() 
+        private function getColumns() 
         {
             $this->schema = $this->conn->query($this->schemaQuery());
         }
@@ -50,13 +53,18 @@
 
         public function select() 
         {
-            $this->result = $this->conn->query("SELECT * FROM tblFilms;");
-            $arr = $this->result->fetch_assoc();
-                print_r($arr);
-
+            $this->table = $this->conn->query("SELECT * FROM tblFilms;");
         }
     }
 
     
-$db = new Database();    
+$db = new Database();  
+$db->select();
+
+while($row = $db->table->fetch_assoc()) 
+{
+    echo $row["title"] . " " . $row["yearReleased"];
+    echo "<br>";
+}
+
 ?>
