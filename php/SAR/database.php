@@ -1,6 +1,6 @@
 <?php
-    include("abstractModel.php");
-    include("abstractController.php");
+    require_once 'abstractModel.php"';
+    require_once 'abstractController.php';
     class Database 
     {
         public string $serverName = "localhost";

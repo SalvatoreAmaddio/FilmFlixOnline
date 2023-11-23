@@ -3,7 +3,7 @@
     include("php/controller/filmController.php");
     $controller = new FilmController();
     $controller->fetchData();
-    $controller->readInputs();
+    $controller->readSessions();
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +16,6 @@
         <link rel="stylesheet" href="css/data.css">
         <link rel="stylesheet" href="css/recordTracker.css">
         <link rel="stylesheet" href="css/index.css">
-        <script src="php/js/ajax.js"></script>
         <script src="php/js/listForm.js"></script>
     </head>
 
@@ -52,7 +51,7 @@
         </div>
 
         <script>
-            new ListForm("");
+            new ListForm("php/controller/filmController.php");
         </script>
     </body>
 </html>

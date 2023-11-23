@@ -28,7 +28,7 @@ class Ajax
 
     send(params) 
     {
-        this.xmlhttp.open("POST", this.#server, true);
+        this.xmlhttp.open("POST", this.#server);
         this.xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         this.xmlhttp.send(params);
     }
@@ -56,7 +56,7 @@ class AbstractForm
 
     send(param, evt) 
     {
-        let ajax = new Ajax(this.server);
+        let ajax = new Ajax(this.#server);
         ajax.on = evt;
         ajax.send(param);
     }
@@ -79,14 +79,6 @@ class AbstractForm
 
 }
 
-class DataForm extends AbstractForm 
-{
-    constructor(server) 
-    {
-        super(server);
-    }
-}
-
 class ListForm extends AbstractForm
 {
     table;
@@ -96,15 +88,6 @@ class ListForm extends AbstractForm
         super(server);
         this.table = this.data.getElementsByTagName("table")[0];
         this.#onRowClickedEvent();
-        this.newButton.addEventListener("click",
-        (e)=>
-        {
-            this.send("newRecord=true",
-            (e)=>
-            {
-                location.href = e;
-            });
-        });
     }
 
     get rows() 
@@ -153,24 +136,12 @@ class ListForm extends AbstractForm
         }
 
         let param = "selectedID=" + id;
-        let isButton = e.target.className=="editButton";
-        if (isButton) 
-        {
-            param = param + "&amend=true";
-        }
+ //       let isButton = e.target.className=="editButton";
 
         this.send(param,
-        (e)=>
+        (output)=>
         {
-            if (isButton) 
-            {
-                location.href = e;
-            } 
-            else 
-            {
-                alert(e);
-//                this.displayData(e);
-            }
+            this.displayData(output);
         });
     }
 

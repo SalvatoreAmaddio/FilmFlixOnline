@@ -1,4 +1,5 @@
 <?php    
+    session_start();
     abstract class AbstractController 
     {
         public $records = array();
@@ -41,9 +42,13 @@
             $this->db->close();
         }
 
-        public function readInputs() : bool
+        public function readRequests()
         {
-            return false;           
+        }
+
+        public function readSessions() 
+        {
+
         }
 
         public function findID($id) : AbstractModel
@@ -61,6 +66,37 @@
     abstract class AbstractFormListController extends AbstractController
     {
 
+        public function readRequests()
+        {
+            if ($this->requests->isEmpty()) return;
+            switch(true) 
+            {
+                case $this->requests->is_r_selectedID():
+                    $id = $this->requests->r_selectedID();
+                    $this->sessions->s_SelectedID($id);
+                    $this->model = $this->findID( $this->sessions->s_SelectedID());
+                    $this->sessions->s_SelectedIndex(array_search( $this->model, $this->records));
+                    $this->recordTracker->moveTo($this->sessions->s_SelectedIndex());
+                    echo $this->displayData();    
+                break;
+                case $this->requests->is_r_updateRecordTracker():
+                     $this->recordTracker->moveTo($this->sessions->s_SelectedIndex());
+                    echo $this->recordTracker->addRecordTracker();                    
+                break;
+            }
+        }
+
+        public function readSessions()
+        {
+            if ($this->sessions->isEmpty()) return;
+            switch(true) 
+            {
+                case $this->sessions->issetSelectedID():
+                    $this->recordTracker->moveTo($this->sessions->s_SelectedIndex());
+                break;    
+            }
+        }
+
         protected function selectedRow($record) : string
         {
             if ($this->model == $record) 
@@ -68,11 +104,6 @@
                 return "class='selectedRow'";
             }
             return "";
-        }
-
-        public function readInputs() : bool
-        {
-            return false;           
         }
     }
 

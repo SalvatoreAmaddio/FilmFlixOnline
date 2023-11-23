@@ -1,7 +1,8 @@
 <?php
-include("php/SAR/database.php");
-include("php/model/genre.php");
-include("php/model/films.php");
+    $x = explode("php", __DIR__);
+    require_once $x[0].'/php/SAR/database.php';
+    require_once $x[0].'php/model/genre.php';
+    require_once $x[0].'php/model/films.php';
 
     class FilmController extends AbstractFormListController
     {        
@@ -92,4 +93,10 @@ include("php/model/films.php");
 
 
     }
+
+
+    $controller = new FilmController();
+    $controller->fetchData();
+    $controller->readRequests();
+    $controller->readSessions();
 ?>
