@@ -19,6 +19,7 @@
         public abstract function displayFormData();
         public abstract function findIDCriteria($record,$id) : bool;
 
+        ##SESSIONS MANAGER
         public function s_SelectedIndex(int $index = -1)
         {
             if ($index < 0) return $_SESSION['selectedIndex'];
@@ -39,6 +40,12 @@
         public function unsetAmendID() 
         {
             unset($_SESSION['amendID']);
+        }
+
+        ##REQUESTS MANAGER
+        public function hasRequests() : bool 
+        {
+            return count($_REQUEST) > 0;
         }
 
         public function is_r_amendID() : bool 
@@ -76,27 +83,12 @@
             return $_REQUEST['amendID'];
         }
 
-        public function hasRequests() : bool 
-        {
-            return count($_REQUEST) > 0;
-        }
-
+        ####RecordNavigation
         public function currentIndex() : int 
         {
             return array_search($this->model,$this->records);
         }
 
-        public function reload() 
-        {
-            $this->readTable();
-        }
-
-        public function recordCount() : int 
-        {
-            return count($this->records);
-        }
-
-        ####RecordNavigation
         public function reportRecordPosition() : string
         {
             if ($this->recordCount()==0) return "No Records";
@@ -204,6 +196,16 @@
         }
         ######
 
+        public function reload() 
+        {
+            $this->readTable();
+        }
+
+        public function recordCount() : int 
+        {
+            return count($this->records);
+        }
+
         public function readTable() 
         {
             $this->db->select();
@@ -253,7 +255,6 @@
             }
             return false;           
         }
-
 
         public function findID($id) : AbstractModel
         {
