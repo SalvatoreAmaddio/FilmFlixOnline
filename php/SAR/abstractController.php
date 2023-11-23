@@ -26,6 +26,16 @@
             $_SESSION['amendID'] = $id;
         }
 
+        public function issetAmendID() : bool
+        {
+            return isset($_SESSION['amendID']);
+        }
+
+        public function unsetAmendID() 
+        {
+            unset($_SESSION['amendID']);
+        }
+
         public function is_r_amendID() : bool 
         {
             return isset($_REQUEST['amendID']);
@@ -215,7 +225,6 @@
 
         public function read() : bool
         {
-            if (!$this->hasRequests()) return false;
             switch(true) 
             {
                 case $this->is_r_selectedID():
@@ -233,8 +242,12 @@
                     echo 'amend.php';
                 return true;
                 case $this->is_r_amendID():
-                    $this->s_AmendID($this->r_amendID());
-                    echo 'amend.php';
+                     $this->s_AmendID($this->r_amendID());
+                     echo 'amend.php';
+                return true;
+                case $this->issetAmendID():
+                    $this->model = $this->findID($this->s_AmendID());
+                    $this->unsetAmendID();
                 return true;
             }
             return false;           

@@ -36,8 +36,8 @@ include("php/model/films.php");
                         <td><p>{$film->rating}</p></td>
                         <td><p>{$film->duration}</p></td>
                         <td><p>{$film->genre->genreName}</p></td>
-                        <td><button value={$film->filmID}>✎</button></td>
-                        <td><button value={$film->filmID}>X</button></td>
+                        <td><button class=editButton value={$film->filmID}>✎</button></td>
+                        <td><button class=deleteButton value={$film->filmID}>X</button></td>
                     </tr>";
             }
         }
