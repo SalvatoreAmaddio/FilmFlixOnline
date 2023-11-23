@@ -29,7 +29,7 @@
             <main>
                 <section id="searchSection">
                     <div id="searchPanel">
-                        <input type="text" placeholder="Search...">
+                        <input id="searchBar" type="text" placeholder="Search...">
                         <button>+</button>
                     </div>
                 </section>
@@ -37,8 +37,7 @@
                 <section id="dataSection">
                     <div id="data">
                         <table>
-                            <?php 
-                            $controller->displayData();?>
+                            <?php $controller->displayData();?>
                         </table>
                     </div>
                 </section>
@@ -50,14 +49,7 @@
         </div>
 
         <script>
-            class FilmFormListController extends ListForm 
-            {
-                constructor() 
-                {
-                    super("php/controller/filmController.php");
-                }
-            }
-            new FilmFormListController("php/controller/filmController.php");
+            new ListForm("php/controller/filmController.php");
         </script>
     </body>
 </html>

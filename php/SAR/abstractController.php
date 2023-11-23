@@ -24,10 +24,16 @@
         public abstract function model() : AbstractModel;
         public abstract function displayData();
         public abstract function findIDCriteria($record,$id) : bool;
+        public abstract function findRecordCriteria($record,$id) : bool;
 
         public function me() : string 
         {
             return get_class($this);
+        }
+
+        public function currentIndex() : int 
+        {
+            return array_search($this->model,$this->records);
         }
 
         public function recordCount() : int 
@@ -65,11 +71,58 @@
             }));
 
             return (count($result)>0) ? $result[0] : null;
-        }   
+        }
+        
+        public function filterRecords($value)
+        {
+            $this->records = array_values(array_filter($this->records, 
+            function($record) use ($value)
+            {
+                return $this->findRecordCriteria($record, $value);
+            }));
+
+            if (count($this->records)>0) 
+            {
+                $this->recordIndex = 0;
+                $this->model = $this->records[$this->recordIndex];
+                $this->sessions->selectedIndex($this->recordIndex);
+            }
+        }
     }
 
     abstract class AbstractFormListController extends AbstractController
     {
+
+        public function fetchData()
+        {
+            parent::fetchData();
+            if ($this->sessions->issetSearchValue()) 
+            {
+                $this->filterRecords($this->sessions->searchValue());
+            }
+        }
+
+        private function resetIndex(int $direction) 
+        {
+            $this->recordIndex = $this->sessions->selectedIndex();
+            switch($direction) 
+            {
+                case 0:
+                    $this->recordTracker->moveNext();
+                break;
+                case 1:
+                    $this->recordTracker->movePrevious();
+                break;
+                case 2:
+                    $this->recordTracker->moveFirst();
+                break;
+                case 3:
+                    $this->recordTracker->moveLast();
+                break;
+            }
+            $this->sessions->selectedIndex($this->recordIndex);
+            echo $this->displayData();
+        }
 
         public function readRequests()
         {
@@ -77,16 +130,31 @@
             switch(true) 
             {
                 case $this->requests->is_selectedID():
-                    $id = $this->requests->selectedID();
-                    $this->sessions->selectedID($id);
+                    $this->sessions->selectedID($this->requests->selectedID());
                     $this->model = $this->findID( $this->sessions->selectedID());
-                    $this->sessions->selectedIndex(array_search( $this->model, $this->records));
+                    $this->sessions->selectedIndex($this->currentIndex());
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
                     echo $this->displayData();    
                 break;
+                case $this->requests->is_goNext():
+                    $this->resetIndex(0);
+                break;
+                case $this->requests->is_goPrevious():
+                    $this->resetIndex(1);
+                break;
+                case $this->requests->is_goFirst():
+                    $this->resetIndex(2);
+                break;
+                case $this->requests->is_goLast():
+                    $this->resetIndex(3);
+                break;
+                case $this->requests->is_searchValue():
+                    $this->sessions->searchValue($this->requests->searchValue());
+                    echo $this->displayData();
+                break;
                 case $this->requests->is_updateRecordTracker():
                      $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                    echo $this->recordTracker->addRecordTracker();                    
+                     echo $this->recordTracker->reportRecordPosition();                    
                 break;
             }
         }
@@ -94,11 +162,12 @@
         public function readSessions()
         {
             if ($this->sessions->isEmpty()) return;
+
+
             switch(true) 
             {
                 case $this->sessions->issetSelectedID():
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                break;    
             }
         }
 
@@ -128,6 +197,17 @@
         public function isEmpty() : bool 
         {
             return count($_SESSION) == 0;
+        }
+
+        public function searchValue(string $str = 'n/a')
+        {
+            if ($str == 'n/a') return $_SESSION[$this->origin.'searchValue'];
+            $_SESSION[$this->origin.'searchValue'] = $str;
+        }
+
+        public function issetSearchValue() : bool
+        {
+            return isset($_SESSION[$this->origin.'searchValue']);
         }
 
         public function selectedIndex(int $index = -1)
@@ -196,6 +276,36 @@
             return isset($_REQUEST["selectedID"]);
         }
 
+        public function is_searchValue() : bool 
+        {
+            return isset($_REQUEST["searchValue"]);
+        }
+
+        public function searchValue() : string
+        {
+            return $_REQUEST["searchValue"];
+        }
+
+        public function is_goNext() : bool 
+        {
+            return isset($_REQUEST["goNext"]);
+        }
+
+        public function is_goPrevious() : bool 
+        {
+            return isset($_REQUEST["goPrevious"]);
+        }
+
+        public function is_goFirst() : bool 
+        {
+            return isset($_REQUEST["goFirst"]);
+        }
+
+        public function is_goLast() : bool 
+        {
+            return isset($_REQUEST["goLast"]);
+        }
+
         public function is_newRecord() : bool 
         {
             return isset($_REQUEST["newRecord"]);
@@ -225,12 +335,6 @@
         public function recordCount() : int 
         {
             return count($this->records);
-        }
-
-
-        public function currentIndex() : int 
-        {
-            return array_search($this->model,$this->records);
         }
 
         public function reportRecordPosition() : string
@@ -283,10 +387,9 @@
             $this->recordIndex++;
             if ($this->isNewRecord()) 
             {
-                $this->recordIndex = $this->recordCount()-1;
+                $this->recordIndex = 0;
                 return;
             }
-
             $this->model = $this->records[$this->recordIndex];
         }
 
@@ -297,7 +400,6 @@
             {
                 $this->recordIndex = 0;
             }
-
             $this->model = $this->records[$this->recordIndex];
         }
 
@@ -322,7 +424,8 @@
         public function moveTo($index) 
         {
             $this->recordIndex = $index;
-            $this->model = $this->records[$this->recordIndex];
+            if (count($this->records)>0)
+                $this->model = $this->records[$this->recordIndex];
         }
 
         public function addRecordTracker() 
@@ -331,7 +434,7 @@
                     <div class=recordTracker>
                         <button>⮜⮜</button>
                         <button>⮜</button>
-                        <label>{$this->reportRecordPosition()}</label>
+                        <label class='recordTrackerLabel'>{$this->reportRecordPosition()}</label>
                         <button>➤</button>
                         <button>➤➤</button>
                         <button class=newButton>+</button>

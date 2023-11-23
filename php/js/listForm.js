@@ -40,12 +40,35 @@ class AbstractForm
     data;
     rt;
     #server;
+    recordTrackerLabel;
+
     constructor(server) 
     {
         this.#server = server;
         this.dataSection = document.getElementById("dataSection");
         this.data = document.getElementById("data");
         this.rt = document.getElementsByClassName("rt")[0];
+        this.recordTrackerLabel = this.rt.getElementsByClassName("recordTrackerLabel")[0];
+    }
+
+    get goFirstButton() 
+    {
+        return this.rt.getElementsByTagName("button")[0];
+    }
+
+    get goPreviousButton() 
+    {
+        return this.rt.getElementsByTagName("button")[1];
+    }
+
+    get goNextButton() 
+    {
+        return this.rt.getElementsByTagName("button")[2];
+    }
+
+    get goLastButton() 
+    {
+        return this.rt.getElementsByTagName("button")[3];
     }
 
     get newButton() 
@@ -67,10 +90,10 @@ class AbstractForm
 
     updateRecordTracker() 
     {
-        this.send(this.origin+"updateRecordTracker=true",
+        this.send("updateRecordTracker=true",
         (e)=>
         {
-            this.rt.innerHTML = e;
+            this.recordTrackerLabel.innerHTML = e;
         });
     }
 
@@ -81,12 +104,45 @@ class AbstractForm
 class ListForm extends AbstractForm
 {
     table;
-    
+    #searchBar;
+
     constructor(server) 
     {
         super(server);
+        this.#searchBar = document.getElementById("searchBar");
         this.table = this.data.getElementsByTagName("table")[0];
         this.#onRowClickedEvent();
+        this.goNextButton.addEventListener("click",(e)=>this.#sendDirection(0));
+        this.goPreviousButton.addEventListener("click",(e)=>this.#sendDirection(1));
+        this.goFirstButton.addEventListener("click",(e)=>this.#sendDirection(2));
+        this.goLastButton.addEventListener("click",(e)=>this.#sendDirection(3));
+        this.#searchBar.addEventListener("keyup",
+        (e)=>
+        {
+            this.send("searchValue=" + e.target.value, (e)=>this.displayData(e));
+        });
+    }
+
+    #sendDirection(direction) 
+    {
+        let param = "";
+        switch(direction) 
+        {
+            case 0:
+                param='goNext=true';
+            break;
+            case 1:
+                param='goPrevious=true';
+            break;
+            case 2:
+                param='goFirst=true';
+            break;
+            case 3:
+                param='goLast=true';
+            break;
+        }
+
+        this.send(param,(e)=>this.displayData(e));
     }
 
     get rows() 
@@ -135,7 +191,6 @@ class ListForm extends AbstractForm
         }
 
         let param = "selectedID=" + id;
- //       let isButton = e.target.className=="editButton";
 
         this.send(param,
         (output)=>

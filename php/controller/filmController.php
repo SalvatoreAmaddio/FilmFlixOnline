@@ -47,6 +47,13 @@
               return $film->filmID == $id;
         }
 
+        public function findRecordCriteria($record,$value) : bool
+        {
+              /** @var Film $obj */
+              $obj = $record;
+              return str_contains(strtolower($obj->title), strtolower($value));
+        }
+
         public function model() : Film
         {
             /** @var Film $film */
@@ -75,6 +82,13 @@
                 $genre = $record;
                 echo "<option value=". $genre->genreID .">". $genre . "</option>";
             }
+        }
+
+        public function findRecordCriteria($record, $value) : bool
+        {
+              /** @var Genre $obj */
+              $obj = $record;
+              return $obj->genreID == $value;
         }
 
         public function findIDCriteria($record,$id) : bool
