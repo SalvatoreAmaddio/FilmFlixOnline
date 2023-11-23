@@ -150,6 +150,7 @@
                 break;
                 case $this->requests->is_searchValue():
                     $this->sessions->searchValue($this->requests->searchValue());
+                    $this->filterRecords($this->sessions->searchValue());        
                     echo $this->displayData();
                 break;
                 case $this->requests->is_updateRecordTracker():
