@@ -17,13 +17,18 @@
             $this->db->setModel($this->model);
             $this->db->connect();
             $this->recordTracker =  new RecordTracker($this->model,$this->recordIndex,$this->records);
-            $this->requests = new RequestManager();
-            $this->sessions = new SessionManager();
+            $this->requests = new RequestManager($this->me());
+            $this->sessions = new SessionManager($this->me());
         }
 
         public abstract function model() : AbstractModel;
         public abstract function displayData();
         public abstract function findIDCriteria($record,$id) : bool;
+
+        public function me() : string 
+        {
+            return get_class($this);
+        }
 
         public function recordCount() : int 
         {
@@ -114,6 +119,12 @@
 
     class SessionManager implements IManager
     {
+        private string $origin;
+        public function __construct(string $origin) 
+        {
+            $this->origin = $origin;
+        }
+
         public function isEmpty() : bool 
         {
             return count($_SESSION) == 0;
@@ -121,44 +132,49 @@
 
         public function s_SelectedIndex(int $index = -1)
         {
-            if ($index < 0) return $_SESSION['selectedIndex'];
-            $_SESSION['selectedIndex'] = $index;
+            if ($index < 0) return $_SESSION[$this->origin.'selectedIndex'];
+            $_SESSION[$this->origin.'selectedIndex'] = $index;
         }
 
         public function issetSelectedID() : bool
         {
-            return isset($_SESSION['selectedID']);
+            return isset($_SESSION[$this->origin.'selectedID']);
         }
 
         public function s_SelectedID(int $index = -1)
         {
-            if ($index < 0) return $_SESSION['selectedID'];
-            $_SESSION['selectedID'] = $index;
+            if ($index < 0) return $_SESSION[$this->origin.'selectedID'];
+            $_SESSION[$this->origin.'selectedID'] = $index;
         }
 
         public function unsetSelectedID()
         {
-            unset($_SESSION['selectedID']);
+            unset($_SESSION[$this->origin.'selectedID']);
         }
 
         public function s_Amend(bool $value)
         {
-            $_SESSION['amend'] = $value;
+            $_SESSION[$this->origin.'amend'] = $value;
         }
 
         public function issetAmend() : bool
         {
-            return isset($_SESSION['amend']);
+            return isset($_SESSION[$this->origin.'amend']);
         }
 
         public function unsetAmend() 
         {
-            unset($_SESSION['amend']);
+            unset($_SESSION[$this->origin.'amend']);
         }
     }
 
     class RequestManager implements IManager
     {
+        private string $origin;
+        public function __construct(string $origin) 
+        {
+            $this->origin = $origin;
+        }
 
         public function isEmpty() : bool 
         {
@@ -167,37 +183,37 @@
 
         public function is_r_amend() : bool 
         {
-            return isset($_REQUEST['amend']);
+            return isset($_REQUEST[$this->origin.'amend']);
         }
 
         public function is_r_deleteID() : bool 
         {
-            return isset($_REQUEST['deleteID']);
+            return isset($_REQUEST[$this->origin.'deleteID']);
         }
 
         public function is_r_updateRecordTracker() : bool 
         {
-            return isset($_REQUEST['updateRecordTracker']);
+            return isset($_REQUEST[$this->origin.'updateRecordTracker']);
         }
 
         public function is_r_selectedID() : bool 
         {
-            return isset($_REQUEST["selectedID"]);
+            return isset($_REQUEST[$this->origin."selectedID"]);
         }
 
         public function is_r_newRecord() : bool 
         {
-            return isset($_REQUEST["newRecord"]);
+            return isset($_REQUEST[$this->origin."newRecord"]);
         }
 
         public function r_selectedID() : int
         {
-            return $_REQUEST["selectedID"];
+            return $_REQUEST[$this->origin."selectedID"];
         }
 
         public function r_amendID() : int 
         {
-            return $_REQUEST['amendID'];
+            return $_REQUEST[$this->origin.'amendID'];
         }
     }
 

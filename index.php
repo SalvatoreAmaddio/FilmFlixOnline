@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include("php/controller/filmController.php");
     $controller = new FilmController();
     $controller->fetchData();
@@ -55,3 +54,7 @@
         </script>
     </body>
 </html>
+
+<?php
+    print_r($_SESSION)
+?>
