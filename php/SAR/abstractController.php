@@ -252,7 +252,6 @@
                 case $this->issetAmendID():
                     $this->model = $this->findID($this->s_AmendID());
                     $this->moveTo($this->currentIndex());
-                    $this->unsetAmendID();
                 return true;
             }
             return false;           
