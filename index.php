@@ -2,8 +2,8 @@
     session_start();
     include("php/controller/filmController.php");
     $controller = new FilmController();
-    $controller->readTable();
-    if ($controller->readInputs()) exit;
+    $controller->fetchData();
+    if ($controller->readInputs()) return;
 ?>
 
 <!DOCTYPE html>
@@ -39,19 +39,20 @@
                 <section id="dataSection">
                     <div id="data">
                         <table>
-                            <?php $controller->displayTableData();?>
+                            <?php 
+                            $controller->displayData();?>
                         </table>
                     </div>
                 </section>
 
                 <section class="rt">
-                    <?php $controller->addRecordTracker()?>
+                    <?php $controller->recordTracker->addRecordTracker()?>
                 </section>
             </main>
         </div>
 
         <script>
-            new ListForm("index.php");
+            new ListForm("filmController.php");
         </script>
     </body>
 </html>

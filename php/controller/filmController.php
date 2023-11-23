@@ -3,7 +3,7 @@ include("php/SAR/database.php");
 include("php/model/genre.php");
 include("php/model/films.php");
 
-    class FilmController extends AbstractController
+    class FilmController extends AbstractFormListController
     {        
         public GenreController $genreController;
 
@@ -14,7 +14,7 @@ include("php/model/films.php");
             $this->genreController->readTable();
         }
 
-        public function displayTableData() 
+        public function displayData() 
         {
             echo "<tr>
             <th colspan='2'>Title</th>
@@ -42,16 +42,6 @@ include("php/model/films.php");
             }
         }
 
-        public function displayFormData()
-        {
-
-        }
-        
-        public function readInput() : bool
-        {
-            return parent::readInputs();
-        }
-
         public function findIDCriteria($record,$id) : bool
         {
               /** @var Film $film */
@@ -74,16 +64,11 @@ include("php/model/films.php");
             parent::__construct(new Genre());
         }
 
-        public function displayFormData()
+        public function displayData()
         {
 
         }
-
-        public function displayTableData()
-        {
-
-        }
-
+        
         public function genreList() 
         {
             foreach($this->records as $record) 

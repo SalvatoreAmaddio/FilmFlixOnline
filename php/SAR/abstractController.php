@@ -1,10 +1,13 @@
-<?php
+<?php    
     abstract class AbstractController 
     {
         public $records = array();
         protected AbstractModel $model;
         public Database $db;
         protected int $recordIndex = 0;
+        public RecordTracker $recordTracker;
+        public RequestManager $requests;
+        public SessionManager $sessions;
 
         public function __construct(AbstractModel $model) 
         {
@@ -12,45 +15,123 @@
             $this->model = $model;
             $this->db->setModel($this->model);
             $this->db->connect();
+            $this->recordTracker =  new RecordTracker($this->model,$this->recordIndex,$this->records);
+            $this->requests = new RequestManager();
+            $this->sessions = new SessionManager();
         }
 
         public abstract function model() : AbstractModel;
-        public abstract function displayTableData();
-        public abstract function displayFormData();
+        public abstract function displayData();
         public abstract function findIDCriteria($record,$id) : bool;
 
-        ##SESSIONS MANAGER
+        public function recordCount() : int 
+        {
+            return count($this->records);
+        }
+
+        public function fetchData() 
+        {
+            $this->db->select();
+            while($row = $this->db->table->fetch_assoc()) 
+                array_push($this->records, $this->model->readRow($row));
+
+            if ($this->recordCount()>0)
+                $this->model = $this->records[$this->recordIndex];
+
+            $this->db->close();
+        }
+
+        public function readInputs() : bool
+        {
+            return false;           
+        }
+
+        public function findID($id) : AbstractModel
+        {
+            $result = array_values(array_filter($this->records, 
+            function($record) use ($id)
+            {
+                return $this->findIDCriteria($record, $id);
+            }));
+
+            return (count($result)>0) ? $result[0] : null;
+        }   
+    }
+
+    abstract class AbstractFormListController extends AbstractController
+    {
+
+        protected function selectedRow($record) : string
+        {
+            if ($this->model == $record) 
+            {
+                return "class='selectedRow'";
+            }
+            return "";
+        }
+    }
+
+    interface IManager 
+    {
+        public function isEmpty() : bool;
+    }
+
+    class SessionManager implements IManager
+    {
+        public function isEmpty() : bool 
+        {
+            return count($_SESSION) == 0;
+        }
+
         public function s_SelectedIndex(int $index = -1)
         {
             if ($index < 0) return $_SESSION['selectedIndex'];
             $_SESSION['selectedIndex'] = $index;
         }
 
-        public function s_AmendID(int $id = -1)
+        public function issetSelectedID() : bool
         {
-            if ($id < 0) return $_SESSION['amendID'];
-            $_SESSION['amendID'] = $id;
+            return isset($_SESSION['selectedID']);
         }
 
-        public function issetAmendID() : bool
+        public function s_SelectedID(int $index = -1)
         {
-            return isset($_SESSION['amendID']);
+            if ($index < 0) return $_SESSION['selectedID'];
+            $_SESSION['selectedID'] = $index;
         }
 
-        public function unsetAmendID() 
+        public function unsetSelectedID()
         {
-            unset($_SESSION['amendID']);
+            unset($_SESSION['selectedID']);
         }
 
-        ##REQUESTS MANAGER
-        public function hasRequests() : bool 
+        public function s_Amend(bool $value)
         {
-            return count($_REQUEST) > 0;
+            $_SESSION['amend'] = $value;
         }
 
-        public function is_r_amendID() : bool 
+        public function issetAmend() : bool
         {
-            return isset($_REQUEST['amendID']);
+            return isset($_SESSION['amend']);
+        }
+
+        public function unsetAmend() 
+        {
+            unset($_SESSION['amend']);
+        }
+    }
+
+    class RequestManager implements IManager
+    {
+
+        public function isEmpty() : bool 
+        {
+            return count($_REQUEST) == 0;
+        }
+
+        public function is_r_amend() : bool 
+        {
+            return isset($_REQUEST['amend']);
         }
 
         public function is_r_deleteID() : bool 
@@ -82,8 +163,28 @@
         {
             return $_REQUEST['amendID'];
         }
+    }
 
-        ####RecordNavigation
+    class RecordTracker 
+    {
+     
+        private $records = array();
+        private AbstractModel $model;
+        private int $recordIndex = 0;
+
+        public function __construct(AbstractModel &$model, int &$recordIndex, &$records) 
+        {
+            $this->model = &$model;
+            $this->recordIndex = &$recordIndex;
+            $this->records = &$records;
+        }
+
+        public function recordCount() : int 
+        {
+            return count($this->records);
+        }
+
+
         public function currentIndex() : int 
         {
             return array_search($this->model,$this->records);
@@ -194,78 +295,7 @@
                     </div>
                  </section>";
         }
-        ######
+        ######        
 
-        public function reload() 
-        {
-            $this->readTable();
-        }
-
-        public function recordCount() : int 
-        {
-            return count($this->records);
-        }
-
-        public function readTable() 
-        {
-            $this->db->select();
-            while($row = $this->db->table->fetch_assoc()) 
-                array_push($this->records, $this->model->readRow($row));
-
-            if ($this->recordCount()>0)
-                $this->model = $this->records[$this->recordIndex];
-
-            $this->db->close();
-        }
-
-        protected function selectedRow($record) : string
-        {
-            if ($this->model == $record) 
-            {
-                return "style='background-color: coral;'";
-            }
-            return "";
-        }
-
-        public function readInputs() : bool
-        {
-            switch(true) 
-            {
-                case $this->is_r_selectedID():
-                    $this->model = $this->findID($this->r_selectedID());
-                    $index = $this->currentIndex();
-                    $this->moveTo($index);
-                    $this->s_SelectedIndex($index);
-                    if ($_REQUEST["amend"]) 
-                    {
-                        echo 'amend.php';
-                    }
-                    else 
-                    {
-                        echo $this->displayTableData();
-                    }
-                return true;
-                case $this->is_r_updateRecordTracker():
-                    $this->moveTo($this->s_SelectedIndex());
-                    echo $this->addRecordTracker();    
-                return true;
-                case $this->is_r_newRecord():
-                    echo 'amend.php';
-                return true;
-            }
-            return false;           
-        }
-
-        public function findID($id) : AbstractModel
-        {
-            $result = array_values(array_filter($this->records, 
-            function($record) use ($id)
-            {
-                return $this->findIDCriteria($record, $id);
-            }));
-
-            return (count($result)>0) ? $result[0] : null;
-        }
     }
-      
 ?>

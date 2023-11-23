@@ -10,6 +10,11 @@ table:empty
     display: none;
 }
 
+.selectedRow 
+{
+    background-color: coral
+}
+
 tr 
 {
     border-radius: 1rem;
