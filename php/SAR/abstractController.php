@@ -14,6 +14,11 @@
             $this->db->connect();
         }
 
+        public abstract function model() : AbstractModel;
+        public abstract function displayTableData();
+        public abstract function displayFormData();
+        public abstract function findIDCriteria($record,$id) : bool;
+
         public function s_SelectedIndex(int $index = -1)
         {
             if ($index < 0) return $_SESSION['selectedIndex'];
@@ -91,6 +96,7 @@
             return count($this->records);
         }
 
+        ####RecordNavigation
         public function reportRecordPosition() : string
         {
             if ($this->recordCount()==0) return "No Records";
@@ -109,20 +115,6 @@
                 <p><span>EOF: </span>{$this->EOF()}</p>
                 <p>{$this->reportRecordPosition()}</p>
                 </div>";
-        }
-
-        public abstract function model() : AbstractModel;
-
-        public function readTable() 
-        {
-            $this->db->select();
-            while($row = $this->db->table->fetch_assoc()) 
-                array_push($this->records, $this->model->readRow($row));
-
-            if ($this->recordCount()>0)
-                $this->model = $this->records[$this->recordIndex];
-
-            $this->db->close();
         }
 
         public function currentRecordPosition() : int
@@ -210,9 +202,19 @@
                     </div>
                  </section>";
         }
+        ######
 
-        public abstract function displayTableData();
-        public abstract function displayFormData();
+        public function readTable() 
+        {
+            $this->db->select();
+            while($row = $this->db->table->fetch_assoc()) 
+                array_push($this->records, $this->model->readRow($row));
+
+            if ($this->recordCount()>0)
+                $this->model = $this->records[$this->recordIndex];
+
+            $this->db->close();
+        }
 
         protected function selectedRow($record) : string
         {
@@ -234,7 +236,6 @@
                     $this->s_SelectedIndex($index);
                     if ($_REQUEST["amend"]) 
                     {
-                        $this->s_AmendID($this->r_selectedID());
                         echo 'amend.php';
                     }
                     else 
@@ -249,15 +250,10 @@
                 case $this->is_r_newRecord():
                     echo 'amend.php';
                 return true;
-                case $this->issetAmendID():
-                    $this->model = $this->findID($this->s_AmendID());
-                    $this->moveTo($this->currentIndex());
-                return true;
             }
             return false;           
         }
 
-        abstract public function findIDCriteria($record,$id) : bool;
 
         public function findID($id) : AbstractModel
         {

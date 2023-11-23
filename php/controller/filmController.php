@@ -47,9 +47,9 @@ include("php/model/films.php");
 
         }
         
-        public function read() : bool
+        public function readInput() : bool
         {
-            return parent::read();
+            return parent::readInputs();
         }
 
         public function findIDCriteria($record,$id) : bool

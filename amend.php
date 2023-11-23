@@ -3,7 +3,7 @@
     include("php/controller/filmController.php");
     $controller = new FilmController();
     $controller->readTable();
-    $controller->readInputs();
+    if ($controller->readInputs()) exit;
 ?>
 
 <!DOCTYPE html>
