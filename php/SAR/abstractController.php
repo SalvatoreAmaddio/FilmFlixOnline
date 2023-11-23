@@ -17,7 +17,7 @@
             $this->db->setModel($this->model);
             $this->db->connect();
             $this->recordTracker =  new RecordTracker($this->model,$this->recordIndex,$this->records);
-            $this->requests = new RequestManager($this->me());
+            $this->requests = new RequestManager();
             $this->sessions = new SessionManager($this->me());
         }
 
@@ -170,11 +170,6 @@
 
     class RequestManager implements IManager
     {
-        private string $origin;
-        public function __construct(string $origin) 
-        {
-            $this->origin = $origin;
-        }
 
         public function isEmpty() : bool 
         {
@@ -183,37 +178,37 @@
 
         public function is_r_amend() : bool 
         {
-            return isset($_REQUEST[$this->origin.'amend']);
+            return isset($_REQUEST['amend']);
         }
 
         public function is_r_deleteID() : bool 
         {
-            return isset($_REQUEST[$this->origin.'deleteID']);
+            return isset($_REQUEST['deleteID']);
         }
 
         public function is_r_updateRecordTracker() : bool 
         {
-            return isset($_REQUEST[$this->origin.'updateRecordTracker']);
+            return isset($_REQUEST['updateRecordTracker']);
         }
 
         public function is_r_selectedID() : bool 
         {
-            return isset($_REQUEST[$this->origin."selectedID"]);
+            return isset($_REQUEST["selectedID"]);
         }
 
         public function is_r_newRecord() : bool 
         {
-            return isset($_REQUEST[$this->origin."newRecord"]);
+            return isset($_REQUEST["newRecord"]);
         }
 
         public function r_selectedID() : int
         {
-            return $_REQUEST[$this->origin."selectedID"];
+            return $_REQUEST["selectedID"];
         }
 
         public function r_amendID() : int 
         {
-            return $_REQUEST[$this->origin.'amendID'];
+            return $_REQUEST['amendID'];
         }
     }
 

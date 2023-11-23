@@ -1,6 +1,6 @@
 <?php
     include("php/controller/filmController.php");
-    $controller = new FilmController();
+    $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readSessions();
 ?>
@@ -50,11 +50,14 @@
         </div>
 
         <script>
-            new ListForm("php/controller/filmController.php");
+            class FilmFormListController extends ListForm 
+            {
+                constructor() 
+                {
+                    super("php/controller/filmController.php");
+                }
+            }
+            new FilmFormListController("php/controller/filmController.php");
         </script>
     </body>
 </html>
-
-<?php
-    print_r($_SESSION)
-?>

@@ -4,7 +4,7 @@
     require_once $x[0].'php/model/genre.php';
     require_once $x[0].'php/model/films.php';
 
-    class FilmController extends AbstractFormListController
+    class FilmFormListController extends AbstractFormListController
     {        
 
         public function __construct() 
@@ -95,7 +95,7 @@
     }
 
 
-    $controller = new FilmController();
+    $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readRequests();
     $controller->readSessions();

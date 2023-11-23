@@ -40,7 +40,6 @@ class AbstractForm
     data;
     rt;
     #server;
-
     constructor(server) 
     {
         this.#server = server;
@@ -68,7 +67,7 @@ class AbstractForm
 
     updateRecordTracker() 
     {
-        this.send("updateRecordTracker=true",
+        this.send(this.origin+"updateRecordTracker=true",
         (e)=>
         {
             this.rt.innerHTML = e;
