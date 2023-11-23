@@ -37,12 +37,6 @@ class AbstractForm
         {
             this.rt.innerHTML = e;
         });
-
-        this.newButton.addEventListener("click",
-        (e)=>
-        {
-            alert("clicked");
-        });
     }
 
     displayData(data) {}
@@ -66,7 +60,15 @@ class ListForm extends AbstractForm
         super(server);
         this.table = this.data.getElementsByTagName("table")[0];
         this.#onRowClickedEvent();
-        this.newButton.addEventListener("click",(e)=>{alert("ciao")});
+        this.newButton.addEventListener("click",
+        (e)=>
+        {
+            this.send("newRecord=true",
+            (e)=>
+            {
+                location.href = e;
+            });
+        });
     }
 
     get rows() 

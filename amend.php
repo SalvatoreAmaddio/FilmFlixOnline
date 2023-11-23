@@ -37,7 +37,7 @@
                                     <label>Title</label>
                                 </td>
                                 <td>
-                                    <input type="text">
+                                    <input type="text" value='<?php echo $controller->model()->title?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -45,7 +45,7 @@
                                     <label>Year</label>
                                 </td>
                                 <td>
-                                    <input type="number">
+                                    <input type="number" value='<?php echo $controller->model()->yearReleased?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -53,7 +53,7 @@
                                     <label>Rating</label>
                                 </td>
                                 <td>
-                                    <input type="text">
+                                    <input type="text" value='<?php echo $controller->model()->rating?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -61,7 +61,7 @@
                                     <label>Duration</label>
                                 </td>
                                 <td>
-                                    <input type="number">
+                                    <input type="number" value='<?php echo $controller->model()->duration?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -70,6 +70,7 @@
                                 </td>
                                 <td>
                                     <select>
+                                        <?php $controller->genreController->genreList()?>
                                     </select>
                                 </td>
                             </tr>

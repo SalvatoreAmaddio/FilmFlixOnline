@@ -20,6 +20,22 @@
             $_SESSION['selectedIndex'] = $index;
         }
 
+        public function s_AmendID(int $id = -1)
+        {
+            if ($id < 0) return $_SESSION['amendID'];
+            $_SESSION['amendID'] = $id;
+        }
+
+        public function is_r_amendID() : bool 
+        {
+            return isset($_REQUEST['amendID']);
+        }
+
+        public function is_r_deleteID() : bool 
+        {
+            return isset($_REQUEST['deleteID']);
+        }
+
         public function is_r_updateRecordTracker() : bool 
         {
             return isset($_REQUEST['updateRecordTracker']);
@@ -38,6 +54,11 @@
         public function r_selectedID() : int
         {
             return $_REQUEST["selectedID"];
+        }
+
+        public function r_amendID() : int 
+        {
+            return $_REQUEST['amendID'];
         }
 
         public function hasRequests() : bool 
@@ -80,7 +101,7 @@
                 </div>";
         }
 
-        public abstract function model() : Film;
+        public abstract function model() : AbstractModel;
 
         public function readTable() 
         {
@@ -199,16 +220,24 @@
             {
                 case $this->is_r_selectedID():
                     $this->model = $this->findID($this->r_selectedID());
-                    $key = $this->currentIndex();
-                    $this->moveTo($key);
-                    $this->s_SelectedIndex($key);
+                    $index = $this->currentIndex();
+                    $this->moveTo($index);
+                    $this->s_SelectedIndex($index);
                     echo $this->displayTableData();
                 return true;
                 case $this->is_r_updateRecordTracker():
                     $this->moveTo($this->s_SelectedIndex());
                     echo $this->addRecordTracker();    
                 return true;
-            }            
+                case $this->is_r_newRecord():
+                    echo 'amend.php';
+                return true;
+                case $this->is_r_amendID():
+                    $this->s_AmendID($this->r_amendID());
+                    echo 'amend.php';
+                return true;
+            }
+            return false;           
         }
 
         abstract public function findIDCriteria($record,$id) : bool;

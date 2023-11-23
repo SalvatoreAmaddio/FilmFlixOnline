@@ -53,7 +53,6 @@ table select
 .commands button:hover 
 {
     background-color: #D3D3D3;
-    text-decoration: underline;
 }
 
 .commands button 

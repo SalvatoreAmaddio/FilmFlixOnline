@@ -5,9 +5,13 @@ include("php/model/films.php");
 
     class FilmController extends AbstractController
     {        
+        public GenreController $genreController;
+
         public function __construct() 
         {
             parent::__construct(new Film());
+            $this->genreController = new GenreController();
+            $this->genreController->readTable();
         }
 
         public function displayTableData() 
@@ -61,5 +65,49 @@ include("php/model/films.php");
             $film = $this->model;
             return $film;
         }
+    }
+
+    class GenreController extends AbstractController 
+    {
+        public function __construct() 
+        {
+            parent::__construct(new Genre());
+        }
+
+        public function displayFormData()
+        {
+
+        }
+
+        public function displayTableData()
+        {
+
+        }
+
+        public function genreList() 
+        {
+            foreach($this->records as $record) 
+            {
+                /** @var Genre $genre */
+                $genre = $record;
+                echo "<option value=". $genre->genreID .">". $genre . "</option>";
+            }
+        }
+
+        public function findIDCriteria($record,$id) : bool
+        {
+              /** @var Genre $genre */
+              $genre = $record;
+              return $genre->genreID == $id;
+        }
+
+        public function model() : Genre
+        {
+            /** @var Genre $genre */
+            $genre = $this->model;
+            return $genre;
+        }
+
+
     }
 ?>

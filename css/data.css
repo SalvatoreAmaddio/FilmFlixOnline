@@ -64,7 +64,6 @@ td:last-child button
 td button:hover 
 {
     background-color: #D3D3D3;
-    text-decoration: underline;
 }
 
 .recordIndicator 
