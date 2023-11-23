@@ -76,16 +76,16 @@
             if ($this->requests->isEmpty()) return;
             switch(true) 
             {
-                case $this->requests->is_r_selectedID():
-                    $id = $this->requests->r_selectedID();
-                    $this->sessions->s_SelectedID($id);
-                    $this->model = $this->findID( $this->sessions->s_SelectedID());
-                    $this->sessions->s_SelectedIndex(array_search( $this->model, $this->records));
-                    $this->recordTracker->moveTo($this->sessions->s_SelectedIndex());
+                case $this->requests->is_selectedID():
+                    $id = $this->requests->selectedID();
+                    $this->sessions->selectedID($id);
+                    $this->model = $this->findID( $this->sessions->selectedID());
+                    $this->sessions->selectedIndex(array_search( $this->model, $this->records));
+                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
                     echo $this->displayData();    
                 break;
-                case $this->requests->is_r_updateRecordTracker():
-                     $this->recordTracker->moveTo($this->sessions->s_SelectedIndex());
+                case $this->requests->is_updateRecordTracker():
+                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
                     echo $this->recordTracker->addRecordTracker();                    
                 break;
             }
@@ -97,7 +97,7 @@
             switch(true) 
             {
                 case $this->sessions->issetSelectedID():
-                    $this->recordTracker->moveTo($this->sessions->s_SelectedIndex());
+                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
                 break;    
             }
         }
@@ -130,7 +130,7 @@
             return count($_SESSION) == 0;
         }
 
-        public function s_SelectedIndex(int $index = -1)
+        public function selectedIndex(int $index = -1)
         {
             if ($index < 0) return $_SESSION[$this->origin.'selectedIndex'];
             $_SESSION[$this->origin.'selectedIndex'] = $index;
@@ -141,7 +141,7 @@
             return isset($_SESSION[$this->origin.'selectedID']);
         }
 
-        public function s_SelectedID(int $index = -1)
+        public function selectedID(int $index = -1)
         {
             if ($index < 0) return $_SESSION[$this->origin.'selectedID'];
             $_SESSION[$this->origin.'selectedID'] = $index;
@@ -152,7 +152,7 @@
             unset($_SESSION[$this->origin.'selectedID']);
         }
 
-        public function s_Amend(bool $value)
+        public function amend(bool $value)
         {
             $_SESSION[$this->origin.'amend'] = $value;
         }
@@ -176,40 +176,36 @@
             return count($_REQUEST) == 0;
         }
 
-        public function is_r_amend() : bool 
+        public function is_amend() : bool 
         {
             return isset($_REQUEST['amend']);
         }
 
-        public function is_r_deleteID() : bool 
+        public function is_deleteID() : bool 
         {
             return isset($_REQUEST['deleteID']);
         }
 
-        public function is_r_updateRecordTracker() : bool 
+        public function is_updateRecordTracker() : bool 
         {
             return isset($_REQUEST['updateRecordTracker']);
         }
 
-        public function is_r_selectedID() : bool 
+        public function is_selectedID() : bool 
         {
             return isset($_REQUEST["selectedID"]);
         }
 
-        public function is_r_newRecord() : bool 
+        public function is_newRecord() : bool 
         {
             return isset($_REQUEST["newRecord"]);
         }
 
-        public function r_selectedID() : int
+        public function selectedID() : int
         {
             return $_REQUEST["selectedID"];
         }
 
-        public function r_amendID() : int 
-        {
-            return $_REQUEST['amendID'];
-        }
     }
 
     class RecordTracker 
