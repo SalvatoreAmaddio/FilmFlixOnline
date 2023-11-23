@@ -86,16 +86,6 @@ class ListForm extends AbstractForm
         for(let i = 1 ; i < this.rowCount; i++) 
         {
             this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
-            let editButton = this.rows[i].getElementsByClassName("editButton")[0];
-            editButton.addEventListener("click",(e)=>
-            {
-                this.send("amendID=" + e.target.value,
-                (e)=>
-                {
-                    location.href = e;
-                });
-
-            });
         }
     }
 
@@ -126,10 +116,24 @@ class ListForm extends AbstractForm
             }
         }
 
-        this.send("selectedID=" + id,
+        let param = "selectedID=" + id;
+        let isButton = e.target.className=="editButton";
+        if (isButton) 
+        {
+            param = param + "&amend=true";
+        }
+
+        this.send(param,
         (e)=>
         {
-            this.displayData(e);
+            if (isButton) 
+            {
+                location.href = e;
+            } 
+            else 
+            {
+                this.displayData(e);
+            }
         });
     }
 

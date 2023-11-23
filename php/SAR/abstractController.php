@@ -223,7 +223,7 @@
             return "";
         }
 
-        public function read() : bool
+        public function readInputs() : bool
         {
             switch(true) 
             {
@@ -232,7 +232,15 @@
                     $index = $this->currentIndex();
                     $this->moveTo($index);
                     $this->s_SelectedIndex($index);
-                    echo $this->displayTableData();
+                    if ($_REQUEST["amend"]) 
+                    {
+                        $this->s_AmendID($this->r_selectedID());
+                        echo 'amend.php';
+                    }
+                    else 
+                    {
+                        echo $this->displayTableData();
+                    }
                 return true;
                 case $this->is_r_updateRecordTracker():
                     $this->moveTo($this->s_SelectedIndex());
@@ -241,12 +249,9 @@
                 case $this->is_r_newRecord():
                     echo 'amend.php';
                 return true;
-                case $this->is_r_amendID():
-                     $this->s_AmendID($this->r_amendID());
-                     echo 'amend.php';
-                return true;
                 case $this->issetAmendID():
                     $this->model = $this->findID($this->s_AmendID());
+                    $this->moveTo($this->currentIndex());
                     $this->unsetAmendID();
                 return true;
             }

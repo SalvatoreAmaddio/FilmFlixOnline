@@ -3,7 +3,7 @@
     include("php/controller/filmController.php");
     $controller = new FilmController();
     $controller->readTable();
-    if ($controller->read()) exit;
+    $controller->readInputs();
 ?>
 
 <!DOCTYPE html>
@@ -77,8 +77,8 @@
                         </table>
 
                         <div class="commands">
-                            <button>💾</button>
-                            <button>X</button>
+                            <button value='<?php echo $controller->model()->filmID?>'>💾</button>
+                            <button value='<?php echo $controller->model()->filmID?>'>X</button>
                         </div>
                     </div>
                 </section>
