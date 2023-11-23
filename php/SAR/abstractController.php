@@ -69,6 +69,11 @@
             }
             return "";
         }
+
+        public function readInputs() : bool
+        {
+            return false;           
+        }
     }
 
     interface IManager 

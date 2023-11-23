@@ -3,7 +3,7 @@
     include("php/controller/filmController.php");
     $controller = new FilmController();
     $controller->fetchData();
-    if ($controller->readInputs()) return;
+    $controller->readInputs();
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +52,7 @@
         </div>
 
         <script>
-            new ListForm("filmController.php");
+            new ListForm("");
         </script>
     </body>
 </html>

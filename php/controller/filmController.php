@@ -5,13 +5,10 @@ include("php/model/films.php");
 
     class FilmController extends AbstractFormListController
     {        
-        public GenreController $genreController;
 
         public function __construct() 
         {
             parent::__construct(new Film());
-            $this->genreController = new GenreController();
-            $this->genreController->readTable();
         }
 
         public function displayData() 
