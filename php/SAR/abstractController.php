@@ -31,6 +31,11 @@
             return get_class($this);
         }
 
+        public function len() : int 
+        {
+            return $this->recordCount()-1;
+        }
+
         public function recordCount() : int 
         {
             return count($this->records);
@@ -60,7 +65,7 @@
 
         }
 
-        public function findID($id) : AbstractModel
+        public function findID($id) : ?AbstractModel
         {
             $result = array_values(array_filter($this->records, 
             function($record) use ($id)
@@ -90,6 +95,22 @@
             if ($this->sessions->issetSearchValue()) 
             {
                 $this->filterRecords($this->sessions->searchValue());
+                $temp = $this->findID($this->sessions->selectedID());
+                
+                if ($this->recordCount() > 0) 
+                {
+                    switch(true) 
+                    {
+                        case ($temp!=null):
+                            $this->model = $temp;
+                        break;
+                        case $this->sessions->selectedIndex() <= $this->len():
+                            $this->model = $this->records[$this->sessions->selectedIndex()];
+                        break;
+                        default:
+                            $this->model = $this->records[$this->len()];                        
+                    }
+                }
             }
         }
 
@@ -394,7 +415,6 @@
             if ($this->isNewRecord()) 
             {
                 $this->recordIndex = 0;
-                return;
             }
             $this->model = $this->records[$this->recordIndex];
         }
@@ -429,8 +449,9 @@
 
         public function moveTo($index) 
         {
-            if ($index > $this->len()) 
-                $index = $this->currentIndex();
+            if ($index > $this->len())
+                $index = $this->len();
+
             $this->recordIndex = $index;
             if ($this->recordCount() > 0)
                 $this->model = $this->records[$this->recordIndex];
