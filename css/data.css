@@ -89,6 +89,7 @@ td button:hover
 {
     display: block;
     position: relative;
+    width: 10.4rem;
 }
 
 #noData p 
@@ -105,5 +106,6 @@ td button:hover
     border-radius: 1rem;
     text-decoration: underline;
     text-shadow: 0px 0px 2rem black;
+    color: white;
     font-family: 'Paytone One', sans-serif;
 }
