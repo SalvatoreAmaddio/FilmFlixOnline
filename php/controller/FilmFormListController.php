@@ -17,7 +17,12 @@
             if ($this->recordCount()==0) 
             {
                 echo "<tr>
-                <th colspan='6'>NO DATA</th>
+                <th colspan='6' style='padding: 0rem;'>
+                <div id='noData'>
+                    <p>NO DATA</p>
+                    <img src='img/idk.png'>
+                </div>
+                </th>
                 </tr>";    
                 return;
             }

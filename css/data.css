@@ -77,3 +77,32 @@ td button:hover
     background-color: #D3D3D3;
     font-size: 1rem;
 }
+
+#noData 
+{
+    background-color: var(--sectionBackground);
+    position: relative;
+}
+
+#noData img 
+{
+    display: block;
+    position: relative;
+}
+
+#noData p 
+{
+    position: absolute;
+    font-weight: bolder;
+    width: fit-content;
+    font-size: 2rem;
+    bottom: -1rem;
+    left:0px;
+    right:0px;
+    margin: 0 auto;
+    z-index: 2;
+    border-radius: 1rem;
+    text-decoration: underline;
+    text-shadow: 0px 0px 2rem black;
+    font-family: 'Paytone One', sans-serif;
+}
