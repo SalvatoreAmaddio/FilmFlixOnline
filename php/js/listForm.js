@@ -178,7 +178,7 @@ class ListForm extends AbstractForm
 
     displayData(data) 
     {
-        this.table.innerHTML = data;
+        this.data.innerHTML = data;
         this.#onRowClickedEvent();
         this.updateRecordTracker();
     }
