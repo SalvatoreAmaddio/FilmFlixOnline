@@ -1,5 +1,5 @@
 <?php
-    include("php/controller/filmController.php");
+    include("php/controller/FilmFormListController.php");
     $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readSessions();
@@ -49,7 +49,7 @@
         </div>
 
         <script>
-            new ListForm("php/controller/filmController.php");
+            new ListForm("php/controller/FilmFormListController.php");
         </script>
     </body>
 </html>

@@ -1,9 +1,9 @@
 <?php
     session_start();
-    include("php/controller/filmController.php");
-    $controller = new FilmController();
-    $controller->readTable();
-    $controller->readInputs();
+    include("php/controller/FilmFormListController.php");
+    $controller = new FilmFormListController();
+    $controller->fetchData();
+    $controller->readSessions();
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +90,7 @@
         </div>
 
         <script>
-            new DataForm("amend.php");
+            new ListForm("php/controller/filmController.php");
         </script>
     </body>
 </html>
