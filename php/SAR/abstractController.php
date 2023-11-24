@@ -38,12 +38,15 @@
 
         public function fetchData() 
         {
+            $this->records = array_diff($this->records, $this->records); ;
             $this->db->select();
             while($row = $this->db->table->fetch_assoc()) 
                 array_push($this->records, $this->model->readRow($row));
 
-            if ($this->recordCount()>0)
+            if ($this->recordCount() > 0) 
+            {
                 $this->model = $this->records[$this->recordIndex];
+            }
 
             $this->db->close();
         }
@@ -70,7 +73,6 @@
         
         public function filterRecords($value)
         {
-            if (strlen($value)==0) return;
             $this->records = array_values(array_filter($this->records, 
             function($record) use ($value)
             {
@@ -123,7 +125,7 @@
                     $this->model = $this->findID( $this->sessions->selectedID());
                     $this->sessions->selectedIndex($this->recordTracker->currentIndex());
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                    echo $this->displayData();    
+                    echo $this->displayData();   
                 break;
                 case $this->requests->is_goNext():
                     $this->resetIndex(0);
@@ -138,8 +140,9 @@
                     $this->resetIndex(3);
                 break;
                 case $this->requests->is_searchValue():
-                    $this->sessions->searchValue($this->requests->searchValue());
-                    $this->filterRecords($this->sessions->searchValue());        
+                    $this->sessions->setSearchValue($this->requests->searchValue());
+                    $this->db->connect();
+                    $this->fetchData();
                     echo $this->displayData();
                 break;
                 case $this->requests->is_updateRecordTracker():
@@ -152,7 +155,6 @@
         public function readSessions()
         {
             if ($this->sessions->isEmpty()) return;
-
 
             switch(true) 
             {
@@ -189,9 +191,13 @@
             return count($_SESSION) == 0;
         }
 
-        public function searchValue(string $str = 'n/a')
+        public function searchValue() : string
         {
-            if ($str == 'n/a') return $_SESSION[$this->origin.'searchValue'];
+            return $_SESSION[$this->origin.'searchValue'];
+        }
+
+        public function setSearchValue(string $str)
+        {
             $_SESSION[$this->origin.'searchValue'] = $str;
         }
 
@@ -327,6 +333,11 @@
             return array_search($this->model,$this->records);
         }
 
+        public function len() : int 
+        {
+            return $this->recordCount()-1;
+        }
+
         public function recordCount() : int 
         {
             return count($this->records);
@@ -359,12 +370,12 @@
 
         public function EOF() : bool 
         {
-            return $this->recordIndex == $this->recordCount()-1;
+            return $this->recordIndex == $this->len();
         }
 
         public function isNewRecord() : bool 
         {
-            return $this->recordIndex > $this->recordCount()-1;
+            return $this->recordIndex > $this->len();
         }
 
         public function BOF() : bool 
@@ -418,8 +429,10 @@
 
         public function moveTo($index) 
         {
+            if ($index > $this->len()) 
+                $index = $this->currentIndex();
             $this->recordIndex = $index;
-            if (count($this->records)>0 && $this->recordIndex <= (count($this->records)-1))
+            if ($this->recordCount() > 0)
                 $this->model = $this->records[$this->recordIndex];
         }
 

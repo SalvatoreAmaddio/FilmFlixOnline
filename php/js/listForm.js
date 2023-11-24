@@ -116,7 +116,7 @@ class ListForm extends AbstractForm
         this.goPreviousButton.addEventListener("click",(e)=>this.#sendDirection(1));
         this.goFirstButton.addEventListener("click",(e)=>this.#sendDirection(2));
         this.goLastButton.addEventListener("click",(e)=>this.#sendDirection(3));
-        this.#searchBar.addEventListener("keyup",
+        this.#searchBar.addEventListener("input",
         (e)=>
         {
             this.send("searchValue=" + e.target.value, (e)=>this.displayData(e));

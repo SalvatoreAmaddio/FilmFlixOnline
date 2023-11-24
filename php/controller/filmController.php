@@ -51,7 +51,7 @@
         {
               /** @var Film $obj */
               $obj = $record;
-              return str_contains(strtolower($obj->title), strtolower($value));
+              return str_contains(strtolower(trim($obj->title)), strtolower(trim($value)));
         }
 
         public function model() : Film
