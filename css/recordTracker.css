@@ -1,12 +1,12 @@
-.rt 
+footer
 {
-    background-color: var(--sectionBackground);
+    font-family: 'Roboto', sans-serif;
+    background-position-y: -900px;
 }
 
 .recordTrackerSection
 {
     margin-top: 1rem;
-    background-color: var(--sectionBackground);
     padding-block: .5rem;
     border-radius: 1rem;
 }

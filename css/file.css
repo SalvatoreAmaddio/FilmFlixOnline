@@ -11,6 +11,12 @@
     text-rendering: optimizeLegibility;
 }
 
+header, section, footer
+{
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 h1 
 {
     letter-spacing: 2px;

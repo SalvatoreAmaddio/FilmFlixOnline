@@ -47,7 +47,7 @@ class AbstractForm
         this.#server = server;
         this.dataSection = document.getElementById("dataSection");
         this.data = document.getElementById("data");
-        this.rt = document.getElementsByClassName("rt")[0];
+        this.rt = document.getElementsByTagName("footer")[0];
         this.recordTrackerLabel = this.rt.getElementsByClassName("recordTrackerLabel")[0];
     }
 

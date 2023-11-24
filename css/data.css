@@ -80,7 +80,6 @@ td button:hover
 
 #noData 
 {
-    background-color: var(--sectionBackground);
     position: relative;
     padding-bottom: 2rem;
 }

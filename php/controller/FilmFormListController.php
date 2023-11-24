@@ -16,18 +16,18 @@
         {
             if ($this->recordCount()==0) 
             {
-                echo "<tr>
-                <th colspan='6' style='padding: 0rem;'>
+                echo "<table style='background-color:transparent'><tr>
+                <th colspan='6' style='padding: 0rem; border-bottom: none;'>
                 <div id='noData'>
                     <p>NO DATA</p>
                     <img src='img/idk.png'>
                 </div>
                 </th>
-                </tr>";    
+                </tr></table>";    
                 return;
             }
 
-            echo "<tr>
+            echo "<table><tr>
             <th colspan='2'>Title</th>
             <th>Year</th>
             <th>Rating</th>
@@ -51,6 +51,7 @@
                         <td><button class=deleteButton value={$film->filmID}>X</button></td>
                     </tr>";
             }
+            echo "</table>";
         }
 
         public function findIDCriteria($record,$id) : bool
