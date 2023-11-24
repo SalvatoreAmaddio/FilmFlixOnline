@@ -27,7 +27,8 @@
                 return;
             }
 
-            echo "<table><tr>
+            echo "<table style='background-color: white;'>
+            <tr>
             <th colspan='2'>Title</th>
             <th>Year</th>
             <th>Rating</th>
