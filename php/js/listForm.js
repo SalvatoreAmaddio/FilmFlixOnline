@@ -111,14 +111,12 @@ class Form extends AbstractForm
 
 class ListForm extends AbstractForm
 {
-    table;
     #searchBar;
 
     constructor(server) 
     {
         super(server);
         this.#searchBar = document.getElementById("searchBar");
-        this.table = this.data.getElementsByTagName("table")[0];
         this.#onRowClickedEvent();
         this.goNextButton.addEventListener("click",(e)=>this.#sendDirection(0));
         this.goPreviousButton.addEventListener("click",(e)=>this.#sendDirection(1));
@@ -134,6 +132,11 @@ class ListForm extends AbstractForm
         let storedSearchVal = sessionStorage.getItem("searchValue");
         if (storedSearchVal) 
             this.#searchBar.value = storedSearchVal;
+    }
+
+    get table() 
+    {
+        return this.data.getElementsByTagName("table")[0];
     }
 
     #sendDirection(direction) 
