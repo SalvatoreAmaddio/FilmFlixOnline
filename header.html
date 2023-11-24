@@ -6,6 +6,23 @@ header
     padding-inline: 1rem;
     position: relative;
     background-position-y: 57%;   
+    position: relative;
+}
+
+#infoButton 
+{
+    position: absolute;
+    display: block;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#infoButton img 
+{
+    width: 10%;
+    margin: 0;
 }
 
 header img 
@@ -48,6 +65,46 @@ header img
 {
     color: red;
     font-style: italic;
+}
+
+@media screen and (min-width: 2300px) {
+
+#headerTitle h2 
+{
+    line-height: 2rem;
+}
+
+#headerTitle 
+{
+    font-size: 1.8rem;
+}
+}
+
+
+@media screen and (min-width: 2000px) and (max-width: 2300px) {
+
+#headerTitle h2 
+{
+    line-height: 2rem;
+}
+
+#headerTitle 
+{
+    font-size: 1.4rem;
+}
+}
+
+@media screen and (min-width: 1500.5px) and (max-width: 2000px) {
+
+    #headerTitle h2 
+    {
+        line-height: 1rem;
+    }
+
+    #headerTitle 
+    {
+        font-size: 1.2rem;
+    }
 }
 
 @media screen and (max-width: 1200.5px) {
@@ -170,6 +227,9 @@ header img
 </style>
 
 <header style="background-image: url('img/projector.jpg')">
+        <a id="infoButton">
+            <img src="img/info.png">
+        </a>
     <img src="img/theater.png">
     <div id="headerTitle">
         <h2>Welcome to the</h2>

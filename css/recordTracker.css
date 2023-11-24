@@ -4,6 +4,11 @@ footer
     background-position-y: 60%;
 }
 
+footer p 
+{
+    display: none;
+}
+
 .recordTrackerSection
 {
     margin-top: 1rem;
@@ -51,10 +56,21 @@ footer
     footer 
     {
         background-position-y: 100%; 
+        position: relative;
+    }
+
+    footer p 
+    {
+        display: block;
+        position: relative;
+        top: .5rem;
+        padding-inline: 1rem;
+        text-align: center;
+        color: white;
     }
 
     .recordTracker 
     {
-        visibility: hidden;
+        display: none;
     }
 }

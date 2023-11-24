@@ -1,3 +1,51 @@
+#searchSection 
+{
+    padding: 1rem;
+    padding-top: 0;
+    background-color: var(--sectionBackground);
+    background-position-y: 75%;
+}
+
+#searchPanel 
+{
+    padding: 1rem;
+}
+
+#searchPanel input[type=text] 
+{
+    padding: .7rem;
+    border-radius: 1rem;
+    border-color: black;
+    border-width: 1px;
+    border-spacing: 0;
+    width: 100%;
+}
+
+#searchPanel button 
+{
+    display: none;
+    text-align: center;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+    min-height: 2.5rem;
+    max-height: 2.5rem;
+    cursor: pointer;
+    border-radius: 50%;
+    border-width: 1px;
+    font-weight: bolder;
+    vertical-align: middle;
+    padding: 0.05rem;
+    font-size: 2rem;
+    color: white;
+    background-color: green;
+}
+
+#data 
+{
+    max-height: 19rem;
+    overflow: auto;
+}
+
 .responsiveTitle 
 {
     display: none;
@@ -123,6 +171,38 @@ td button:hover
 
 @media screen and (max-width:700.5px)
 {
+    #searchSection 
+    {
+        position: sticky;
+        top: 0;
+    }
+
+    #searchPanel 
+    {
+        display: flow-root;
+        padding-inline: 0;
+    }
+
+    #searchPanel input[type=text] 
+    {
+        max-width: 90%;
+        float: left;
+        margin-right: 1rem;
+    }
+
+    #searchPanel button 
+    {
+        display: block;
+        width: 10%;
+        float: left;
+    }
+
+    #data 
+    {
+        max-height: unset;
+        overflow: unset;
+    }
+
     #dataSection 
     {
         background-position-y: 0;
@@ -197,4 +277,109 @@ td button:hover
         display: block;
     }
 
+}
+
+@media screen and (max-width: 591.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 89%;
+    }
+}
+
+@media screen and (max-width: 540.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 88%;
+    }
+}
+
+@media screen and (max-width: 498.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 87%;
+    }
+}
+
+@media screen and (max-width: 462.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 86%;
+    }
+}
+
+@media screen and (max-width: 431.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 85%;
+    }
+}
+
+@media screen and (max-width: 404.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 84%;
+    }
+}
+
+@media screen and (max-width: 381.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 83%;
+    }
+}
+
+@media screen and (max-width: 361.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 82%;
+    }
+}
+
+@media screen and (max-width: 342.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 81%;
+    }
+}
+
+@media screen and (max-width: 326.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 80%;
+    }
+}
+
+@media screen and (max-width: 311.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        max-width: 79%;
+    }
+}
+
+@media screen and (max-width: 298.5px)
+{
+    #searchPanel input[type=text] 
+    {
+        width: 50%;
+        max-width: 70%;
+    }
+}
+
+@media screen and (max-width:375.5px)
+{
+    #searchSection 
+    {
+        background-position-y: 100%;
+    }
 }
