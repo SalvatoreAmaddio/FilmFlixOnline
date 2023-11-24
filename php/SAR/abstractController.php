@@ -31,11 +31,6 @@
             return get_class($this);
         }
 
-        public function currentIndex() : int 
-        {
-            return array_search($this->model,$this->records);
-        }
-
         public function recordCount() : int 
         {
             return count($this->records);
@@ -75,18 +70,12 @@
         
         public function filterRecords($value)
         {
+            if (strlen($value)==0) return;
             $this->records = array_values(array_filter($this->records, 
             function($record) use ($value)
             {
                 return $this->findRecordCriteria($record, $value);
             }));
-
-            if (count($this->records)>0) 
-            {
-                $this->recordIndex = 0;
-                $this->model = $this->records[$this->recordIndex];
-                $this->sessions->selectedIndex($this->recordIndex);
-            }
         }
     }
 
@@ -132,7 +121,7 @@
                 case $this->requests->is_selectedID():
                     $this->sessions->selectedID($this->requests->selectedID());
                     $this->model = $this->findID( $this->sessions->selectedID());
-                    $this->sessions->selectedIndex($this->currentIndex());
+                    $this->sessions->selectedIndex($this->recordTracker->currentIndex());
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
                     echo $this->displayData();    
                 break;
@@ -333,6 +322,11 @@
             $this->records = &$records;
         }
 
+        public function currentIndex() : int 
+        {
+            return array_search($this->model,$this->records);
+        }
+
         public function recordCount() : int 
         {
             return count($this->records);
@@ -425,7 +419,7 @@
         public function moveTo($index) 
         {
             $this->recordIndex = $index;
-            if (count($this->records)>0)
+            if (count($this->records)>0 && $this->recordIndex <= (count($this->records)-1))
                 $this->model = $this->records[$this->recordIndex];
         }
 
