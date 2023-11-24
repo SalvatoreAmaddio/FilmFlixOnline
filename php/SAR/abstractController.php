@@ -95,13 +95,18 @@
             if ($this->sessions->issetSearchValue()) 
             {
                 $this->filterRecords($this->sessions->searchValue());
-                $temp = $this->findID($this->sessions->selectedID());
                 
                 if ($this->recordCount() > 0) 
                 {
+                    if ($this->sessions->issetSelectedID()) 
+                        $temp =$this->findID($this->sessions->selectedID());
+                    else 
+                        $temp = $this->records[0];
+                        $this->sessions->selectedIndex(0);
+    
                     switch(true) 
                     {
-                        case $this->sessions->selectedIndex() <= $this->len():
+                        case $this->sessions->issetSelectedIndex() && $this->sessions->selectedIndex() <= $this->len():
                             $this->model = $this->records[$this->sessions->selectedIndex()];
                         break;
                         case ($temp!=null):
@@ -115,7 +120,7 @@
 
         private function resetIndex(int $direction) 
         {
-            $this->recordIndex = $this->sessions->selectedIndex();
+            $this->recordIndex = ($this->sessions->issetSelectedIndex()) ? $this->sessions->selectedIndex() : 0;
             switch($direction) 
             {
                 case 0:
@@ -166,7 +171,8 @@
                     echo $this->displayData();
                 break;
                 case $this->requests->is_updateRecordTracker():
-                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
+                     $index = ($this->sessions->issetSelectedIndex()) ? $this->sessions->selectedIndex() : 0;
+                     $this->recordTracker->moveTo($index);
                      echo $this->recordTracker->reportRecordPosition();                    
                 break;
             }
@@ -178,7 +184,7 @@
 
             switch(true) 
             {
-                case $this->sessions->issetSelectedID():
+                case $this->sessions->issetSelectedID() && $this->sessions->issetSelectedIndex():
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
             }
         }
@@ -230,6 +236,11 @@
         {
             if ($index < 0) return $_SESSION[$this->origin.'selectedIndex'];
             $_SESSION[$this->origin.'selectedIndex'] = $index;
+        }
+
+        public function issetSelectedIndex() : bool
+        {
+            return isset($_SESSION[$this->origin.'selectedIndex']);
         }
 
         public function issetSelectedID() : bool
