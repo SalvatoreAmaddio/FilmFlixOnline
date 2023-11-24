@@ -26,6 +26,11 @@
         public abstract function findIDCriteria($record,$id) : bool;
         public abstract function findRecordCriteria($record,$id) : bool;
 
+        public function refresh() 
+        {
+            header("Refresh:0");
+        }
+
         public function me() : string 
         {
             return get_class($this);

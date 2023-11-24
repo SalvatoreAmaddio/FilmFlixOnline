@@ -74,53 +74,6 @@
         }
     }
 
-    class GenreController extends AbstractController 
-    {
-        public function __construct() 
-        {
-            parent::__construct(new Genre());
-        }
-
-        public function displayData()
-        {
-
-        }
-        
-        public function genreList() 
-        {
-            foreach($this->records as $record) 
-            {
-                /** @var Genre $genre */
-                $genre = $record;
-                echo "<option value=". $genre->genreID .">". $genre . "</option>";
-            }
-        }
-
-        public function findRecordCriteria($record, $value) : bool
-        {
-              /** @var Genre $obj */
-              $obj = $record;
-              return $obj->genreID == $value;
-        }
-
-        public function findIDCriteria($record,$id) : bool
-        {
-              /** @var Genre $genre */
-              $genre = $record;
-              return $genre->genreID == $id;
-        }
-
-        public function model() : Genre
-        {
-            /** @var Genre $genre */
-            $genre = $this->model;
-            return $genre;
-        }
-
-
-    }
-
-
     $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readRequests();
