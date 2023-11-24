@@ -1,3 +1,16 @@
+.responsiveTitle 
+{
+    display: none;
+    text-align: center;
+    border-top: 1px solid black;
+}
+
+.responsiveTitle p 
+{
+    font-weight: bold;
+    padding: .2rem;
+}
+
 table 
 {
     border-collapse: collapse;

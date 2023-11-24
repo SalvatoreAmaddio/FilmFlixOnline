@@ -43,13 +43,19 @@
                 $film = $record;
                 echo "<tr {$this->selectedRow($record)} value='{$film->filmID}'>
                         <td class=recordIndicator>➤</td>
+                        <td class='responsiveTitle'><p>Title</p></td>
                         <td><p>{$film->title}</p></td>
+                        <td class='responsiveTitle'><p>Year</p></td>
                         <td><p>{$film->yearReleased}</p></td>
+                        <td class='responsiveTitle'><p>Rating</p></td>
                         <td><p>{$film->rating}</p></td>
+                        <td class='responsiveTitle'><p>Duration</p></td>
                         <td><p>{$film->duration}</p></td>
+                        <td class='responsiveTitle'><p>Genre</p></td>
                         <td><p>{$film->genre->genreName}</p></td>
-                        <td><button class=editButton value={$film->filmID}>✎</button></td>
-                        <td><button class=deleteButton value={$film->filmID}>X</button></td>
+                        <td class='responsiveTitle'><p></p></td>
+                        <td class='commands'><button class=editButton value={$film->filmID}>✎</button></td>
+                        <td class='commands'><button class=deleteButton value={$film->filmID}>X</button></td>
                     </tr>";
             }
             echo "</table>";

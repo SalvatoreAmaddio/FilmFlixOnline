@@ -81,11 +81,17 @@
 
 @media screen and (max-width:700.5px)
 {
+    .responsiveTitle 
+    {
+        display: block;
+    }
+
     #data 
     {
         margin: 0;
         padding-inline: 1rem;
         width: 100%;
+        display: flow-root;
     }
 
     table 
@@ -101,6 +107,11 @@
     td 
     {
         display: block;
+        border-bottom: none;
+    }
+
+    td:not(.responsiveTitle)
+    {
         min-height: 3rem;
     }
 
@@ -112,5 +123,16 @@
     tr 
     {
         display: block;
+    }
+
+    .recordIndicator 
+    {
+        color: #D3D3D3;
+    }
+
+    .commands 
+    {
+        width: 49%;
+        display: inline-block;
     }
 }
