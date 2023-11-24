@@ -14,6 +14,14 @@
 
         public function displayData() 
         {
+            if ($this->recordCount()==0) 
+            {
+                echo "<tr>
+                <th colspan='6'>NO DATA</th>
+                </tr>";    
+                return;
+            }
+
             echo "<tr>
             <th colspan='2'>Title</th>
             <th>Year</th>

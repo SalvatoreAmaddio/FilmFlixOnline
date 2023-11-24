@@ -98,21 +98,19 @@
                 
                 if ($this->recordCount() > 0) 
                 {
-                    if ($this->sessions->issetSelectedID()) 
-                        $temp =$this->findID($this->sessions->selectedID());
-                    else 
-                        $temp = $this->records[0];
-                        $this->sessions->selectedIndex(0);
+                        $temp = ($this->sessions->issetSelectedID()) 
+                        ? $this->findID($this->sessions->selectedID())
+                        : $this->records[0];
     
                     switch(true) 
                     {
-                        case $this->sessions->issetSelectedIndex() && $this->sessions->selectedIndex() <= $this->len():
+                        case $this->sessions->selectedIndex() <= $this->len():
                             $this->model = $this->records[$this->sessions->selectedIndex()];
                         break;
                         case ($temp!=null):
                             $this->model = $temp;
                         break;
-                        default: $this->model = $this->records[$this->len()];                        
+                        default: $this->model = $this->records[$this->len()];
                     }
                 }
             }
@@ -120,7 +118,7 @@
 
         private function resetIndex(int $direction) 
         {
-            $this->recordIndex = ($this->sessions->issetSelectedIndex()) ? $this->sessions->selectedIndex() : 0;
+            $this->recordIndex = $this->sessions->selectedIndex();
             switch($direction) 
             {
                 case 0:
@@ -171,8 +169,7 @@
                     echo $this->displayData();
                 break;
                 case $this->requests->is_updateRecordTracker():
-                     $index = ($this->sessions->issetSelectedIndex()) ? $this->sessions->selectedIndex() : 0;
-                     $this->recordTracker->moveTo($index);
+                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
                      echo $this->recordTracker->reportRecordPosition();                    
                 break;
             }
@@ -184,7 +181,7 @@
 
             switch(true) 
             {
-                case $this->sessions->issetSelectedID() && $this->sessions->issetSelectedIndex():
+                case $this->sessions->issetSelectedID():
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
             }
         }
@@ -207,9 +204,12 @@
     class SessionManager implements IManager
     {
         private string $origin;
+
         public function __construct(string $origin) 
         {
             $this->origin = $origin;
+            if (!$this->issetSelectedIndex())
+                $this->selectedIndex(0);
         }
 
         public function isEmpty() : bool 
