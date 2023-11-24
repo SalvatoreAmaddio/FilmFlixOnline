@@ -1,7 +1,7 @@
 footer
 {
     font-family: 'Roboto', sans-serif;
-    background-position-y: -900px;
+    background-position-y: 60%;
 }
 
 .recordTrackerSection
@@ -44,4 +44,17 @@ footer
     font-size: 2rem;
     color: white;
     background-color: green;
+}
+
+@media screen and (max-width:700.5px)
+{
+    footer 
+    {
+        background-position-y: 100%; 
+    }
+
+    .recordTracker 
+    {
+        visibility: hidden;
+    }
 }

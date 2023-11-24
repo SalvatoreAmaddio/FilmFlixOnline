@@ -11,25 +11,20 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Amend Record</title>
-        <link rel="stylesheet" href="css/file.css">
+        <?php include 'head.html' ?>
         <link rel="stylesheet" href="css/formData.css">
         <link rel="stylesheet" href="css/index.css">
-        <link rel="stylesheet" href="css/recordTracker.css">
-        <script src="php/js/listForm.js"></script>
     </head>
+    
     <body>
         <div id="wrapper">
-            <header>
-                <h2>Welcome to the</h2>
-                <h1>FilmFlix</h1>
-                <h1>Management System</h1>
-            </header>
+        <?php include 'header.html'?>
 
             <main>
-                <section id="dataSection">
+                <section id="dataSection" style="background-image: url('img/projector.jpg')">
                     <div id="data">
                         <table>
-                            <caption>Data</caption>
+                            <caption>Record</caption>
                             <tr>
                                 <td>
                                     <label>Title</label>
@@ -80,11 +75,11 @@
                         </div>
                     </div>
                 </section>
-
-                <section class="rt">
-                    <?php $controller->recordTracker->addRecordTracker()?>
-                </section>
             </main>
+
+            <footer style="background-image: url('img/projector.jpg')">
+                    <?php $controller->recordTracker->addRecordTracker()?>
+            </footer>
         </div>
 
         <script>

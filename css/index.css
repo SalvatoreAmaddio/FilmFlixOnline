@@ -1,56 +1,9 @@
-header 
-{
-    color: black;
-    line-height: 2rem;
-    text-align: center;
-    padding-inline: 1rem;
-    position: relative;
-    background-position-y: -450px;   
-}
-
-header img 
-{
-    display: block;
-    margin: 0 auto;
-    position: relative;
-    width: 30%;
-}
-
-#headerTitle 
-{
-    position: absolute;
-    width: fit-content;
-    top: 4.1rem;
-    left: 0rem;
-    right: 0;
-    margin: 0 auto;
-    font-family: 'Bebas Neue', sans-serif;
-}
-
-#headerTitle h1, #headerTitle h2 
-{
-    letter-spacing: 4px;
-}
-
-#headerTitle h1:first-of-type 
-{
-    font-family: 'Rowdies', sans-serif;
-    letter-spacing: 1px;
-    padding-bottom: .2rem;
-}
-
-#headerTitle h1:first-of-type span 
-{
-    color: red;
-    font-style: italic;
-}
-
 #searchSection 
 {
     padding: 1rem;
     padding-top: 0;
     background-color: var(--sectionBackground);
-    background-position-y: -809px;
+    background-position-y: 75%;
 }
 
 #searchPanel 
@@ -92,7 +45,7 @@ header img
     margin-top: 1rem;
     background-color: var(--sectionBackground);
     padding-block: 1rem;
-    background-position-y: -809px;
+    background-position-y: 76%;
 }
 
 #data 
@@ -100,4 +53,64 @@ header img
     width: fit-content;
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
+}
+
+@media screen and (max-width:1240.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 86%;
+    }        
+}
+
+@media screen and (max-width:930.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 96%;
+    }        
+}
+
+@media screen and (max-width:775.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 20%;
+    }        
+}
+
+@media screen and (max-width:700.5px)
+{
+    #data 
+    {
+        margin: 0;
+        padding-inline: 1rem;
+        width: 100%;
+    }
+
+    table 
+    {
+        width: 100%;
+    }
+
+    th
+    {
+        display: none;
+    }
+
+    td 
+    {
+        display: block;
+        min-height: 3rem;
+    }
+
+    td p 
+    {
+        padding-block: 1rem;
+    }
+
+    tr 
+    {
+        display: block;
+    }
 }
