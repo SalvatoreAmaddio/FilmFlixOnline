@@ -23,14 +23,14 @@
             <main>
                 <section id="searchSection" style="background-image: url('img/projector.jpg')">
                     <div id="searchPanel">
-                        <input id="searchBar" type="text" placeholder="Search...">
+                        <input id="searchBar" type="text" placeholder="Search movie...">
                         <button>+</button>
                     </div>
                 </section>
 
                 <section id="dataSection" style="background-image: url('img/projector.jpg')">
                     <div id="data">
-                            <?php $controller->displayData();?>
+                        <?php $controller->displayData();?>
                     </div>
                 </section>
             </main>

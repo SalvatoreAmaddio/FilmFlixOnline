@@ -120,3 +120,81 @@ td button:hover
     color: white;
     font-family: 'Paytone One', sans-serif;
 }
+
+@media screen and (max-width:700.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 0;
+        background-position-x: 75%;
+    }
+
+    .responsiveTitle 
+    {
+        display: block;
+    }
+
+    #dataSection #data 
+    {
+        margin: 0;
+        padding-inline: 1rem;
+        width: 100%;
+    }
+
+    table 
+    {
+        width: 100%;
+    }
+
+    th
+    {
+        display: none;
+    }
+
+    td 
+    {
+        display: block;
+        border-bottom: none;
+    }
+
+    td:not(.responsiveTitle)
+    {
+        min-height: 3rem;
+        max-height: 3rem;
+    }
+
+    td p 
+    {
+        padding-block: 1rem;
+    }
+
+    tr 
+    {
+        display: block;
+        border-radius: 0;
+        display: flow-root;
+    }
+
+    .recordIndicator 
+    {
+        color: #D3D3D3;
+    }
+
+    .commands 
+    {
+        width: 50%;
+        display: block;
+        background-color: red;
+        float: left;
+    }
+
+    td button 
+    {
+        margin: 0 auto;
+        width: 100%;
+        min-width: 100%;
+        border-radius: 0;
+        display: block;
+    }
+
+}

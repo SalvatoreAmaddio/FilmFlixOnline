@@ -53,7 +53,7 @@
                         <td><p>{$film->duration}</p></td>
                         <td class='responsiveTitle'><p>Genre</p></td>
                         <td><p>{$film->genre->genreName}</p></td>
-                        <td class='responsiveTitle'><p></p></td>
+                        <td class='responsiveTitle'><p style='padding: 0rem'></p></td>
                         <td class='commands'><button class=editButton value={$film->filmID}>✎</button></td>
                         <td class='commands'><button class=deleteButton value={$film->filmID}>X</button></td>
                     </tr>";
