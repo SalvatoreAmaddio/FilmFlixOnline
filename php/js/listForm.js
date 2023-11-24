@@ -119,8 +119,13 @@ class ListForm extends AbstractForm
         this.#searchBar.addEventListener("input",
         (e)=>
         {
-            this.send("searchValue=" + e.target.value, (e)=>this.displayData(e));
+            sessionStorage.setItem("searchValue", e.target.value);
+            this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
         });
+
+        let storedSearchVal = sessionStorage.getItem("searchValue");
+        if (storedSearchVal) 
+            this.#searchBar.value = storedSearchVal;
     }
 
     #sendDirection(direction) 

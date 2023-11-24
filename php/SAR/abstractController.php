@@ -101,14 +101,13 @@
                 {
                     switch(true) 
                     {
-                        case ($temp!=null):
-                            $this->model = $temp;
-                        break;
                         case $this->sessions->selectedIndex() <= $this->len():
                             $this->model = $this->records[$this->sessions->selectedIndex()];
                         break;
-                        default:
-                            $this->model = $this->records[$this->len()];                        
+                        case ($temp!=null):
+                            $this->model = $temp;
+                        break;
+                        default: $this->model = $this->records[$this->len()];                        
                     }
                 }
             }
@@ -450,7 +449,7 @@
         public function moveTo($index) 
         {
             if ($index > $this->len())
-                $index = $this->len();
+                $index = $this->currentRecordPosition()-1;
 
             $this->recordIndex = $index;
             if ($this->recordCount() > 0)
