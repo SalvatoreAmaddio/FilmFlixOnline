@@ -3,21 +3,58 @@ header
     color: black;
     line-height: 2rem;
     text-align: center;
-    padding: 1rem;
-    background-color: var(--sectionBackground);
+    padding-inline: 1rem;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -450px;   
 }
 
-nav 
+header img 
 {
-    border: 1px solid black;
-    height: 3rem;
-    background-color: white;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    width: 30%;
+}
+
+#headerTitle 
+{
+    position: absolute;
+    width: fit-content;
+    top: 4.1rem;
+    left: 0rem;
+    right: 0;
+    margin: 0 auto;
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+#headerTitle h1, #headerTitle h2 
+{
+    letter-spacing: 4px;
+}
+
+#headerTitle h1:first-of-type 
+{
+    font-family: 'Rowdies', sans-serif;
+    letter-spacing: 1px;
+    padding-bottom: .2rem;
+}
+
+#headerTitle h1:first-of-type span 
+{
+    color: red;
+    font-style: italic;
 }
 
 #searchSection 
 {
     padding: 1rem;
+    padding-top: 0;
     background-color: var(--sectionBackground);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -802px;
 }
 
 #searchPanel 
