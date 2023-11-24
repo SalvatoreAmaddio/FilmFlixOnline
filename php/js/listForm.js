@@ -101,6 +101,14 @@ class AbstractForm
 
 }
 
+class Form extends AbstractForm 
+{
+    constructor(server) 
+    {
+        super(server);
+    }
+}
+
 class ListForm extends AbstractForm
 {
     table;

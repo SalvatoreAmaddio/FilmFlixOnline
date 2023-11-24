@@ -1,7 +1,6 @@
 <?php
-    session_start();
-    include("php/controller/FilmFormListController.php");
-    $controller = new FilmFormListController();
+    include("php/controller/FilmFormController.php");
+    $controller = new FilmFormController();
     $controller->fetchData();
     $controller->readSessions();
 ?>
@@ -16,7 +15,6 @@
         <link rel="stylesheet" href="css/formData.css">
         <link rel="stylesheet" href="css/index.css">
         <link rel="stylesheet" href="css/recordTracker.css">
-        <script src="php/js/ajax.js"></script>
         <script src="php/js/listForm.js"></script>
     </head>
     <body>
@@ -84,13 +82,13 @@
                 </section>
 
                 <section class="rt">
-                    <?php $controller->addRecordTracker()?>
+                    <?php $controller->recordTracker->addRecordTracker()?>
                 </section>
             </main>
         </div>
 
         <script>
-            new ListForm("php/controller/filmController.php");
+            new Form("php/controller/FilmFormController.php");
         </script>
     </body>
 </html>

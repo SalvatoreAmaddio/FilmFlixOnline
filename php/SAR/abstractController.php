@@ -86,6 +86,11 @@
         }
     }
 
+    abstract class AbstractFormController extends AbstractController
+    {
+
+    }
+
     abstract class AbstractFormListController extends AbstractController
     {
 
