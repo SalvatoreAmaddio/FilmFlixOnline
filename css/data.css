@@ -82,6 +82,7 @@ td button:hover
 {
     background-color: var(--sectionBackground);
     position: relative;
+    padding-bottom: 2rem;
 }
 
 #noData img 
@@ -96,7 +97,7 @@ td button:hover
     font-weight: bolder;
     width: fit-content;
     font-size: 2rem;
-    bottom: -1rem;
+    bottom: 1rem;
     left:0px;
     right:0px;
     margin: 0 auto;
