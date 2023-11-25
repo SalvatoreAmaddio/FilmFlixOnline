@@ -147,6 +147,7 @@ td button:hover
 #noData img 
 {
     display: block;
+    margin: 0 auto;
     position: relative;
     width: 10.4rem;
 }

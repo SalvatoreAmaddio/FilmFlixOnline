@@ -17,12 +17,10 @@
             if ($this->recordCount()==0) 
             {
                 echo "<table style='background-color:transparent'><tr>
-                <th colspan='6' style='padding: 0rem; border-bottom: none;'>
                 <div id='noData'>
                     <p>NO DATA</p>
                     <img src='img/idk.png'>
                 </div>
-                </th>
                 </tr></table>";    
                 return;
             }

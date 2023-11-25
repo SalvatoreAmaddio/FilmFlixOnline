@@ -37,7 +37,6 @@
 
 
             <footer style="background-image: url('img/projector.jpg')">
-            <p>Developed by Salvatore Amaddio Rivolta</p>
                     <?php $controller->recordTracker->addRecordTracker()?>
             </footer>
         </div>

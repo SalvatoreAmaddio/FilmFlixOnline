@@ -479,7 +479,8 @@
 
         public function addRecordTracker() 
         {
-            echo "<section class=recordTrackerSection>
+            echo "<p>Developed by Salvatore Amaddio Rivolta</p>
+                  <section class=recordTrackerSection>
                     <div class=recordTracker>
                         <button>⮜⮜</button>
                         <button>⮜</button>
