@@ -166,6 +166,12 @@ class ListForm extends AbstractForm
 
         let storedSearchVal = sessionStorage.getItem("searchValue");
         if (storedSearchVal) this.#searchBar.value = storedSearchVal;
+        this.newButton.addEventListener("click",(e)=>this.goNew());
+    }
+
+    get newButton() 
+    {
+        return document.getElementById("searchPanel").children[1];
     }
 
     get table() 
