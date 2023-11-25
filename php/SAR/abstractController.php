@@ -22,13 +22,33 @@
         }
 
         public abstract function model() : AbstractModel;
-        public abstract function displayData();
         public abstract function findIDCriteria($record,$id) : bool;
         public abstract function findRecordCriteria($record,$id) : bool;
 
+        protected function resetIndex(int $direction) 
+        {
+            $this->recordIndex = $this->sessions->selectedIndex();
+            switch($direction) 
+            {
+                case 0:
+                    $this->recordTracker->moveNext();
+                break;
+                case 1:
+                    $this->recordTracker->movePrevious();
+                break;
+                case 2:
+                    $this->recordTracker->moveFirst();
+                break;
+                case 3:
+                    $this->recordTracker->moveLast();
+                break;
+            }
+            $this->sessions->selectedIndex($this->recordIndex);
+        }
+
         public function refresh() 
         {
-            header("Refresh:0");
+            header('Location: '.$_SERVER['REQUEST_URI']);
         }
 
         public function me() : string 
@@ -93,11 +113,75 @@
 
     abstract class AbstractFormController extends AbstractController
     {
+        public function __construct(AbstractModel $model) 
+        {
+            parent::__construct($model);
+            $this->recordTracker->allowNewRecord = true;
+        }
 
+        protected function resetIndex($direction) 
+        {
+            parent::resetIndex($direction);
+            $this->sessions->selectedIndex($this->recordIndex);
+        }
+
+        public function readSessions()
+        {
+            if ($this->sessions->isEmpty()) return;
+            switch(true) 
+            {
+                case $this->sessions->issetSelectedID():
+                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
+                break;
+            }
+        }
+
+        public function readRequests()
+        {
+            if ($this->requests->isEmpty()) return;
+            switch(true) 
+            {
+                case $this->requests->is_selectedID():
+                    $this->sessions->selectedID($this->requests->selectedID());
+                    $this->model = $this->findID( $this->sessions->selectedID());
+                    $this->sessions->selectedIndex($this->recordTracker->currentIndex());
+                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
+                break;
+                case $this->requests->is_newRecord():
+                    $this->recordTracker->moveNew();
+                    $this->sessions->selectedIndex($this->recordIndex);
+                    $this->sessions->selectedID(0); 
+                break;
+                case $this->requests->is_goNext():
+                    $this->resetIndex(0);
+                break;
+                case $this->requests->is_goPrevious():
+                    $this->resetIndex(1);
+                break;
+                case $this->requests->is_goFirst():
+                    $this->resetIndex(2);
+                break;
+                case $this->requests->is_goLast():
+                    $this->resetIndex(3);
+                break;
+                case $this->requests->is_updateRecordTracker():
+                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
+                     echo $this->recordTracker->reportRecordPosition();                    
+                break;
+            }
+        }
     }
 
     abstract class AbstractFormListController extends AbstractController
     {
+
+        protected function resetIndex($direction) 
+        {
+            parent::resetIndex($direction);
+            echo $this->displayData();
+        }
+
+        public abstract function displayData();
 
         public function fetchData()
         {
@@ -126,28 +210,6 @@
             }
         }
 
-        private function resetIndex(int $direction) 
-        {
-            $this->recordIndex = $this->sessions->selectedIndex();
-            switch($direction) 
-            {
-                case 0:
-                    $this->recordTracker->moveNext();
-                break;
-                case 1:
-                    $this->recordTracker->movePrevious();
-                break;
-                case 2:
-                    $this->recordTracker->moveFirst();
-                break;
-                case 3:
-                    $this->recordTracker->moveLast();
-                break;
-            }
-            $this->sessions->selectedIndex($this->recordIndex);
-            echo $this->displayData();
-        }
-
         public function readRequests()
         {
             if ($this->requests->isEmpty()) return;
@@ -172,15 +234,15 @@
                 case $this->requests->is_goLast():
                     $this->resetIndex(3);
                 break;
+                case $this->requests->is_updateRecordTracker():
+                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
+                     echo $this->recordTracker->reportRecordPosition();                    
+                break;
                 case $this->requests->is_searchValue():
                     $this->sessions->setSearchValue($this->requests->searchValue());
                     $this->db->connect();
                     $this->fetchData();
                     echo $this->displayData();
-                break;
-                case $this->requests->is_updateRecordTracker():
-                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                     echo $this->recordTracker->reportRecordPosition();                    
                 break;
             }
         }
@@ -268,21 +330,6 @@
         {
             unset($_SESSION[$this->origin.'selectedID']);
         }
-
-        public function amend(bool $value)
-        {
-            $_SESSION[$this->origin.'amend'] = $value;
-        }
-
-        public function issetAmend() : bool
-        {
-            return isset($_SESSION[$this->origin.'amend']);
-        }
-
-        public function unsetAmend() 
-        {
-            unset($_SESSION[$this->origin.'amend']);
-        }
     }
 
     class RequestManager implements IManager
@@ -361,6 +408,7 @@
         private $records = array();
         private AbstractModel $model;
         private int $recordIndex = 0;
+        public bool $allowNewRecord = false;
 
         public function __construct(AbstractModel &$model, int &$recordIndex, &$records) 
         {
@@ -432,9 +480,16 @@
         public function moveNext() 
         {
             $this->recordIndex++;
-            if ($this->isNewRecord()) 
+
+            switch(true) 
             {
-                $this->recordIndex = 0;
+                case $this->isNewRecord() && !$this->allowNewRecord:
+                    $this->recordIndex = 0;
+                break;
+                case $this->isNewRecord() && $this->allowNewRecord:
+                    $this->moveNew();
+                    return;
+                break;
             }
             $this->model = $this->records[$this->recordIndex];
         }
@@ -469,8 +524,13 @@
 
         public function moveTo($index) 
         {
-            if ($index > $this->len())
-                $index = $this->currentRecordPosition()-1;
+            if ($index == $this->recordCount()) 
+            {
+                $this->moveNew();
+                return;
+            }
+
+            if ($index > $this->len()) $index = $this->currentRecordPosition()-1;
 
             $this->recordIndex = $index;
             if ($this->recordCount() > 0)

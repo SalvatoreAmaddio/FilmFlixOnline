@@ -30,10 +30,6 @@
               return str_contains(strtolower(trim($obj->title)), strtolower(trim($value)));
         }
 
-        public function displayData() 
-        {
-        }
-
         public function model() : Film
         {
             /** @var Film $film */
@@ -47,11 +43,6 @@
         public function __construct() 
         {
             parent::__construct(new Genre());
-        }
-
-        public function displayData()
-        {
-
         }
         
         public function genreList() 

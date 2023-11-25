@@ -49,6 +49,11 @@ class AbstractForm
         this.data = document.getElementById("data");
         this.rt = document.getElementsByTagName("footer")[0];
         this.recordTrackerLabel = this.rt.getElementsByClassName("recordTrackerLabel")[0];
+        this.goNextButton.addEventListener("click",(e)=>this.sendDirection(0));
+        this.goPreviousButton.addEventListener("click",(e)=>this.sendDirection(1));
+        this.goFirstButton.addEventListener("click",(e)=>this.sendDirection(2));
+        this.goLastButton.addEventListener("click",(e)=>this.sendDirection(3));
+        this.goNewButton.addEventListener("click",(e)=>this.goNew());
     }
 
     get goFirstButton() 
@@ -71,13 +76,14 @@ class AbstractForm
         return this.rt.getElementsByTagName("button")[3];
     }
 
-    get newButton() 
+    get goNewButton() 
     {
         return this.rt.getElementsByTagName("button")[4];
     }
 
-    send(param, evt) 
+    send(param, evt, server='') 
     {
+        if (server) this.#server = server;        
         let ajax = new Ajax(this.#server);
         ajax.on = evt;
         ajax.send(param);
@@ -97,49 +103,7 @@ class AbstractForm
         });
     }
 
-    displayData(data) {}
-
-}
-
-class Form extends AbstractForm 
-{
-    constructor(server) 
-    {
-        super(server);
-    }
-}
-
-class ListForm extends AbstractForm
-{
-    #searchBar;
-    
-    constructor(server) 
-    {
-        super(server);
-        this.#searchBar = document.getElementById("searchBar");
-        this.#onRowClickedEvent();
-        this.goNextButton.addEventListener("click",(e)=>this.#sendDirection(0));
-        this.goPreviousButton.addEventListener("click",(e)=>this.#sendDirection(1));
-        this.goFirstButton.addEventListener("click",(e)=>this.#sendDirection(2));
-        this.goLastButton.addEventListener("click",(e)=>this.#sendDirection(3));
-        this.#searchBar.addEventListener("input",
-        (e)=>
-        {
-            sessionStorage.setItem("searchValue", e.target.value);
-            this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
-        });
-
-        let storedSearchVal = sessionStorage.getItem("searchValue");
-        if (storedSearchVal) 
-            this.#searchBar.value = storedSearchVal;
-    }
-
-    get table() 
-    {
-        return this.data.getElementsByTagName("table")[0];
-    }
-
-    #sendDirection(direction) 
+    sendDirection(direction) 
     {
         let param = "";
         switch(direction) 
@@ -159,6 +123,54 @@ class ListForm extends AbstractForm
         }
 
         this.send(param,(e)=>this.displayData(e));
+    }
+
+    displayData(data) {}
+
+    goNew() {}
+}
+
+class Form extends AbstractForm 
+{
+    constructor(server) 
+    {
+        super(server);
+    }
+
+    goNew() 
+    {
+        this.send("newRecord=true", (output)=>{location.reload();});     
+    }
+
+    displayData(data) 
+    {
+        location.reload();
+    }
+}
+
+class ListForm extends AbstractForm
+{
+    #searchBar;
+    
+    constructor(server) 
+    {
+        super(server);
+        this.#searchBar = document.getElementById("searchBar");
+        this.#onRowClickedEvent();
+        this.#searchBar.addEventListener("input",
+        (e)=>
+        {
+            sessionStorage.setItem("searchValue", e.target.value);
+            this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
+        });
+
+        let storedSearchVal = sessionStorage.getItem("searchValue");
+        if (storedSearchVal) this.#searchBar.value = storedSearchVal;
+    }
+
+    get table() 
+    {
+        return this.data.getElementsByTagName("table")[0];
     }
 
     get rows() 
@@ -222,9 +234,17 @@ class ListForm extends AbstractForm
         {
             if (elementClicked.className.includes("editButton")) 
             {
+                this.send(param,
+                    (output)=>{},'/php/controller/FilmFormController.php');     
                 location.href = "amend.php";
             }
         }
     }
 
+    goNew() 
+    {
+        this.send("newRecord=true",
+            (output)=>{},'/php/controller/FilmFormController.php');     
+        location.href = "amend.php";
+    }
 }
