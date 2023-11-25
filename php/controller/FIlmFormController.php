@@ -8,11 +8,13 @@
     {
 
         public GenreController $genreController;
+        public RatingController $ratingController;
 
         public function __construct() 
         {
             parent::__construct(new Film());
             $this->genreController = new GenreController();
+            $this->ratingController = new RatingController();
             $this->genreController->fetchData();
         }
         
@@ -122,6 +124,55 @@
         }
 
 
+    }
+
+    class RatingController extends AbstractController 
+    {
+        public function __construct() 
+        {
+            parent::__construct(new Rating());
+        }
+        
+        public function ratingList(?Rating $rating) 
+        {
+            $selected=-1;
+            if ($rating!=null) 
+            {
+                $selected = $rating->ratingID;
+            }
+
+            echo '<option value="-1" selected disabled hidden>Select Genre</option>';
+            foreach($this->records as $record) 
+            {
+                /** @var Rating $rating */
+                $rating = $record;
+                if ($rating->ratingID==$selected) 
+                    echo "<option value=". $rating->ratingID ." selected>". $rating . "</option>";                
+                else 
+                    echo "<option value=". $rating->ratingID .">". $rating . "</option>";
+            }
+        }
+
+        public function findRecordCriteria($record, $value) : bool
+        {
+              /** @var Rating $obj */
+              $obj = $record;
+              return $obj->ratingID == $value;
+        }
+
+        public function findIDCriteria($record,$id) : bool
+        {
+              /** @var Rating $obj */
+              $obj = $record;
+              return $obj->ratingID == $id;
+        }
+
+        public function model() : Rating
+        {
+            /** @var Rating $obj */
+            $obj = $this->model;
+            return $obj;
+        }
     }
 
     $controller = new FilmFormController();

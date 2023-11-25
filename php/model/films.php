@@ -4,15 +4,17 @@
         public int $filmID = 0;
         public string $title = "";
         public int $yearReleased = 0;
-        public string $rating = "";
+        public Rating $rating;
         public int $duration = 0;
         public Genre $genre;
 
         public function __construct() 
         {
             $this->tableName = "tblfilms";
-            $this->yearReleased = date("Y");
+            #$this->yearReleased = date("Y");
+            $this->yearReleased = 2016;
             $this->genre = new Genre();
+            $this->rating = new Rating();
         }
 
         public function isNewRecord(): bool
@@ -27,7 +29,7 @@
 
         public function select() : string 
         {
-            return "SELECT tblfilms.*, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID;";
+            return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID;";
         }
 
         public static function readRow(array $row) : Film
@@ -36,7 +38,7 @@
             $film->filmID = $row["filmID"];
             $film->title = $row["title"];
             $film->yearReleased = $row["yearReleased"];
-            $film->rating = $row["rating"];
+            $film->rating = $film->rating->readRow($row);
             $film->duration = $row["duration"];
             $film->genre = $film->genre->readRow($row);
             return $film;
