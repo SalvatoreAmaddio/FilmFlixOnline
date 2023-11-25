@@ -273,6 +273,11 @@
                     $this->fetchData();
                     echo $this->displayData();
                 break;
+                case $this->requests->is_delete():
+                    $this->delete();
+                    $this->resetIndex(-1);
+                    echo $this->displayData();
+               break;
             }
         }
 

@@ -236,12 +236,15 @@ class ListForm extends AbstractForm
         return this.table.getElementsByClassName("editButton");
     }
 
+    get deleteButtons() 
+    {
+        return this.table.getElementsByClassName("deleteButton");
+    }
+
     #onRowClickedEvent() 
     {
-        for(let i = 1 ; i < this.rowCount; i++) 
-        {
+        for(let i = 1 ; i < this.rowCount; i++)
             this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
-        }
     }
 
     displayData(data) 
@@ -285,6 +288,14 @@ class ListForm extends AbstractForm
                 this.send(param,
                     (output)=>{},'/php/controller/FilmFormController.php');     
                 location.href = "amend.php";
+            }
+            if (elementClicked.className.includes("deleteButton")) 
+            {
+                this.send(param,
+                    (output)=>
+                    {
+                        this.displayData(output);
+                    });     
             }
         }
     }
