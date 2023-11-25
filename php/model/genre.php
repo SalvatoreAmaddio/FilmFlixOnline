@@ -9,6 +9,16 @@
             $this->tableName = "genre";
         }
 
+        public function isNewRecord(): bool
+        {
+            return $this->genreID==0;
+        }
+
+        public function insertSQL(): string
+        {
+            return "";
+        }
+        
         public function updateSQL(): string
         {
             return "";    

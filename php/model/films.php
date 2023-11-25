@@ -15,6 +15,11 @@
             $this->genre = new Genre();
         }
 
+        public function isNewRecord(): bool
+        {
+            return $this->filmID==0;
+        }
+        
         public static function returnNew() : Film
         {
             return new Film();
@@ -35,6 +40,11 @@
             $film->duration = $row["duration"];
             $film->genre = $film->genre->readRow($row);
             return $film;
+        }
+
+        public function insertSQL(): string
+        {
+            return "";
         }
 
         public function updateSQL(): string

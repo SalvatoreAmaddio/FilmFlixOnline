@@ -58,11 +58,19 @@
             return "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '{$this->db}' AND TABLE_NAME = 'tblFilms';";
         }
 
-        public function update(...$vars) 
+        public function save(...$vars) 
         {
             $this->connect();
-            $stmt = $this->conn->prepare($this->model->updateSQL());
-            $stmt->bind_param($this->model->bindParam(2), ...$vars);
+            if ($this->model->isNewRecord()) 
+            {
+                $stmt = $this->conn->prepare($this->model->insertSQL());
+                $stmt->bind_param($this->model->bindParam(3), ...$vars);    
+            } 
+            else 
+            {
+                $stmt = $this->conn->prepare($this->model->updateSQL());
+                $stmt->bind_param($this->model->bindParam(2), ...$vars);    
+            }
             $stmt->execute();
             $stmt->close();
             $this->close();
