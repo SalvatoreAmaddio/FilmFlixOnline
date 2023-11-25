@@ -29,7 +29,7 @@
                                     <label>Title</label>
                                 </td>
                                 <td>
-                                    <input type="text" value='<?php echo $controller->model()->title?>'>
+                                    <input class="recordField" type="text" value='<?php echo $controller->model()->title?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -37,7 +37,7 @@
                                     <label>Year</label>
                                 </td>
                                 <td>
-                                    <input type="number" value='<?php echo $controller->model()->yearReleased?>'>
+                                    <input class="recordField" type="number" value='<?php echo $controller->model()->yearReleased?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -45,7 +45,7 @@
                                     <label>Rating</label>
                                 </td>
                                 <td>
-                                    <input type="text" value='<?php echo $controller->model()->rating?>'>
+                                    <input class="recordField" type="text" value='<?php echo $controller->model()->rating?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -53,7 +53,7 @@
                                     <label>Duration</label>
                                 </td>
                                 <td>
-                                    <input type="number" value='<?php echo $controller->model()->duration?>'>
+                                    <input class="recordField" type="number" value='<?php echo $controller->model()->duration?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -61,16 +61,16 @@
                                     <label>Genre</label>
                                 </td>
                                 <td>
-                                    <select>
-                                        <?php $controller->genreController->genreList()?>
+                                    <select class="recordField" value='<?php echo $controller->model()->genre->genreID?>'>
+                                        <?php $controller->genreController->genreList($controller->model()->genre)?>
                                     </select>
                                 </td>
                             </tr>
                         </table>
 
                         <div class="commands">
-                            <button value='<?php echo $controller->model()->filmID?>'>💾</button>
-                            <button value='<?php echo $controller->model()->filmID?>'>X</button>
+                            <button class="saveButton" value='<?php echo $controller->model()->filmID?>'>💾</button>
+                            <button class="deleteButton" value='<?php echo $controller->model()->filmID?>'>X</button>
                         </div>
                     </div>
                 </section>
@@ -85,4 +85,5 @@
             new Form("php/controller/FilmFormController.php");
         </script>
     </body>
+    <?php echo $controller->model()->genre?>
 </html>

@@ -135,6 +135,36 @@ class Form extends AbstractForm
     constructor(server) 
     {
         super(server);
+        this.saveButton.addEventListener("click",(e)=>this.save(e));
+    }
+
+    get recordFields() 
+    {
+        return this.data.getElementsByClassName("recordField");
+    }
+
+    save(e) 
+    {
+        let values=[];
+        for(let i=0; i < this.recordFields.length; i++) 
+        {
+            values.push(this.recordFields[i].value);
+        }
+        let json = JSON.stringify(values);
+        this.send("save=" + json,(e)=>
+        {
+            alert(e);
+        });
+    }
+
+    get saveButton() 
+    {
+        return this.data.getElementsByClassName("saveButton")[0];
+    }
+
+    get deleteButton() 
+    {
+        return this.data.getElementsByClassName("saveButton")[1];
     }
 
     goNew() 

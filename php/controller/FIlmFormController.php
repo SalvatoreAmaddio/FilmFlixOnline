@@ -16,6 +16,15 @@
             $this->genreController->fetchData();
         }
         
+        public function fillRecord(array $data)
+        {
+            $this->model()->title = $data[0];
+            $this->model()->yearReleased=$data[1];
+            $this->model()->rating=$data[2];
+            $this->model()->duration=$data[3];
+            $this->model()->genre->genreID=$data[4];    
+        }
+
         public function findIDCriteria($record,$id) : bool
         {
               /** @var Film $film */
@@ -45,13 +54,23 @@
             parent::__construct(new Genre());
         }
         
-        public function genreList() 
+        public function genreList(?Genre $genre) 
         {
+            $selected=-1;
+            if ($genre!=null) 
+            {
+                $selected = $genre->genreID;
+            }
+
+            echo '<option value="-1" selected disabled hidden>Select Genre</option>';
             foreach($this->records as $record) 
             {
                 /** @var Genre $genre */
                 $genre = $record;
-                echo "<option value=". $genre->genreID .">". $genre . "</option>";
+                if ($genre->genreID==$selected) 
+                    echo "<option value=". $genre->genreID ." selected>". $genre . "</option>";                
+                else 
+                    echo "<option value=". $genre->genreID .">". $genre . "</option>";
             }
         }
 

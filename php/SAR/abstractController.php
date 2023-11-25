@@ -25,6 +25,11 @@
         public abstract function findIDCriteria($record,$id) : bool;
         public abstract function findRecordCriteria($record,$id) : bool;
 
+        public function save() 
+        {
+            
+        }
+
         protected function resetIndex(int $direction) 
         {
             $this->recordIndex = $this->sessions->selectedIndex();
@@ -125,6 +130,8 @@
             $this->sessions->selectedIndex($this->recordIndex);
         }
 
+        abstract function fillRecord(Array $data); 
+
         public function readSessions()
         {
             if ($this->sessions->isEmpty()) return;
@@ -167,6 +174,10 @@
                 case $this->requests->is_updateRecordTracker():
                      $this->recordTracker->moveTo($this->sessions->selectedIndex());
                      echo $this->recordTracker->reportRecordPosition();                    
+                break;
+                case $this->requests->is_save():
+                    $this->fillRecord($this->requests->data());
+                    $this->save();
                 break;
             }
         }
@@ -340,11 +351,6 @@
             return count($_REQUEST) == 0;
         }
 
-        public function is_amend() : bool 
-        {
-            return isset($_REQUEST['amend']);
-        }
-
         public function is_deleteID() : bool 
         {
             return isset($_REQUEST['deleteID']);
@@ -368,6 +374,16 @@
         public function searchValue() : string
         {
             return $_REQUEST["searchValue"];
+        }
+
+        public function is_save() : bool 
+        {
+            return isset($_REQUEST["save"]);
+        }
+
+        public function data() : Array
+        {
+            return json_decode($_POST['save']);
         }
 
         public function is_goNext() : bool 
