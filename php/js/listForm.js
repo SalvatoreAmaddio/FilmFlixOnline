@@ -231,16 +231,6 @@ class ListForm extends AbstractForm
         return this.rows.length;
     }
 
-    get editButtons() 
-    {
-        return this.table.getElementsByClassName("editButton");
-    }
-
-    get deleteButtons() 
-    {
-        return this.table.getElementsByClassName("deleteButton");
-    }
-
     #onRowClickedEvent() 
     {
         for(let i = 1 ; i < this.rowCount; i++)
