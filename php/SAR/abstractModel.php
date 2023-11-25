@@ -9,6 +9,7 @@ abstract class AbstractModel
 
     abstract public function insertSQL() : string;
     abstract public function updateSQL() : string;
+    abstract public function deleteSQL() : string;
 
 //1select
 //2update

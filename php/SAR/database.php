@@ -58,22 +58,49 @@
             return "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '{$this->db}' AND TABLE_NAME = 'tblFilms';";
         }
 
-        public function save(...$vars) 
+        public function save(...$vars) : int
         {
+            $id=0;
             $this->connect();
+            $sql="";
+            $params="";
             if ($this->model->isNewRecord()) 
             {
-                $stmt = $this->conn->prepare($this->model->insertSQL());
-                $stmt->bind_param($this->model->bindParam(3), ...$vars);    
+                $sql = $this->model->insertSQL();
+                $params = $this->model->bindParam(3);    
             } 
             else 
             {
-                $stmt = $this->conn->prepare($this->model->updateSQL());
-                $stmt->bind_param($this->model->bindParam(2), ...$vars);    
+                $sql = $this->model->updateSQL();
+                $params = $this->model->bindParam(2);    
             }
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param($params, ...$vars);    
             $stmt->execute();
+            if ($this->model->isNewRecord()) 
+            {
+                $id = $stmt->insert_id;
+            }
+            else 
+            {
+                $id = $stmt->affected_rows;
+            }
             $stmt->close();
             $this->close();
+            return $id;
+        }
+
+        public function delete(...$vars) : int
+        {
+            $this->connect();
+            $stmt = $this->conn->prepare($this->model->deleteSQL());
+            $stmt->bind_param($this->model->bindParam(4), ...$vars);    
+            $stmt->execute();
+            $id = $stmt->affected_rows;
+            $stmt->close();
+            $this->close();
+            return $id;
         }
 
         public function select() 

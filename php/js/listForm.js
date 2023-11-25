@@ -136,11 +136,23 @@ class Form extends AbstractForm
     {
         super(server);
         this.saveButton.addEventListener("click",(e)=>this.save(e));
+        this.deleteButton.addEventListener("click",(e)=>this.delete(e));
     }
 
     get recordFields() 
     {
         return this.data.getElementsByClassName("recordField");
+    }
+
+    delete(e) 
+    {
+        if (confirm("Are you sure you want to delete this record?") == true) 
+        {
+            this.send("delete=true", (e)=>
+            {
+                if (e) location.reload();
+            });        
+        }
     }
 
     save(e) 
@@ -153,7 +165,7 @@ class Form extends AbstractForm
         let json = JSON.stringify(values);
         this.send("save=" + json,(e)=>
         {
-            alert(e);
+            if (e) location.reload();
         });
     }
 
@@ -164,7 +176,7 @@ class Form extends AbstractForm
 
     get deleteButton() 
     {
-        return this.data.getElementsByClassName("saveButton")[1];
+        return this.data.getElementsByClassName("deleteButton")[0];
     }
 
     goNew() 

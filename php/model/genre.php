@@ -19,6 +19,11 @@
             return "";
         }
         
+        public function deleteSQL(): string
+        {
+            return "";
+        }
+
         public function updateSQL(): string
         {
             return "";    
@@ -35,7 +40,7 @@
                 case 3:
                 return "";
                 case 4:
-                return "";
+                return "i";
             }
         }
 

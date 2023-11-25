@@ -4,7 +4,7 @@
     require_once $x[0].'php/model/genre.php';
     require_once $x[0].'php/model/films.php';
 
-    class FilmFormController extends  AbstractFormController
+    class FilmFormController extends AbstractFormController
     {
 
         public GenreController $genreController;
@@ -16,7 +16,7 @@
             $this->genreController->fetchData();
         }
         
-        public function fillRecord(array $data)
+        public function fillRecord(?array $data)
         {
             $this->model()->filmID = $this->sessions->selectedID();
             $this->model()->title = $data[0];
@@ -49,14 +49,27 @@
 
         public function save(array $data)
         {
-            $this->db->save(
-                $this->model()->title,
-                $this->model()->yearReleased,
-                $this->model()->rating,
-                $this->model()->duration,
-                $this->model()->genre->genreID,
-                $this->model()->filmID
-            );
+            if ($this->model()->isNewRecord()) 
+            {
+                $this->db->save(
+                    $this->model()->title,
+                    $this->model()->yearReleased,
+                    $this->model()->rating,
+                    $this->model()->duration,
+                    $this->model()->genre->genreID,
+                );
+            }
+            else 
+            {
+                $this->db->save(
+                    $this->model()->title,
+                    $this->model()->yearReleased,
+                    $this->model()->rating,
+                    $this->model()->duration,
+                    $this->model()->genre->genreID,
+                    $this->model()->filmID
+                );
+            }
         }
     }
 

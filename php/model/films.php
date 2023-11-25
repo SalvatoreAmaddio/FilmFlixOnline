@@ -44,12 +44,17 @@
 
         public function insertSQL(): string
         {
-            return "";
+            return "INSERT INTO {$this->tableName} (title, yearReleased, rating, duration, genreID) VALUES (?,?,?,?,?);";
         }
 
         public function updateSQL(): string
         {
             return "UPDATE {$this->tableName} SET title=?, yearReleased=?, rating=?, duration=?, genreID=? WHERE filmID=?;";
+        }
+
+        public function deleteSQL(): string
+        {
+            return "DELETE FROM {$this->tableName} WHERE filmID=?;";
         }
 
         public function bindParam(int $crud): string
@@ -61,9 +66,9 @@
                 case 2://update
                 return "sisiii";
                 case 3://insert
-                return "";
+                    return "sisii";
                 case 4://delete
-                return "";
+                return "i";
             }
         }
 
