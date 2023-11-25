@@ -13,7 +13,6 @@
         <title>Amend Record</title>
         <?php include 'head.html' ?>
         <link rel="stylesheet" href="css/formData.css">
-        <link rel="stylesheet" href="css/index.css">
     </head>
     
     <body>

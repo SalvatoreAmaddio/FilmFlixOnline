@@ -13,7 +13,6 @@
         <title>FilmFlix</title>
         <?php include 'head.html' ?>
         <link rel="stylesheet" href="css/data.css">
-        <link rel="stylesheet" href="css/index.css">
     </head>
 
     <body>

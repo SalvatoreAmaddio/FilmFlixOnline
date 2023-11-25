@@ -26,3 +26,42 @@ h1
 {
     width: 100%;
 }
+
+#dataSection 
+{
+    margin-top: 1rem;
+    background-color: var(--sectionBackground);
+    padding-block: 1rem;
+    background-position-y: 76%;
+}
+
+#data 
+{
+    width: fit-content;
+    margin: 0 auto;
+    font-family: 'Roboto', sans-serif;
+}
+
+@media screen and (max-width:1240.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 86%;
+    }        
+}
+
+@media screen and (max-width:930.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 96%;
+    }        
+}
+
+@media screen and (max-width:775.5px)
+{
+    #dataSection 
+    {
+        background-position-y: 100%;
+    }        
+}

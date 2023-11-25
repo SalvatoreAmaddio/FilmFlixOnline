@@ -112,7 +112,7 @@ class Form extends AbstractForm
 class ListForm extends AbstractForm
 {
     #searchBar;
-
+    
     constructor(server) 
     {
         super(server);
@@ -171,6 +171,11 @@ class ListForm extends AbstractForm
         return this.rows.length;
     }
 
+    get editButtons() 
+    {
+        return this.table.getElementsByClassName("editButton");
+    }
+
     #onRowClickedEvent() 
     {
         for(let i = 1 ; i < this.rowCount; i++) 
@@ -188,31 +193,38 @@ class ListForm extends AbstractForm
 
     #rowClicked(e) 
     {
-        let el = e.target;
+        let elementClicked = e.target;
+        let temp = elementClicked;
         let parentNode = "";
         let clickedRow;
         let id;
 
         while(true) 
         {
-            el = el.parentNode;
-            parentNode = el;
-
+            parentNode = temp.parentNode;
             if (parentNode.tagName=="TR") 
             {
                 clickedRow = parentNode;
                 id = clickedRow.getAttribute("value");
                 break;
             }
+            temp = temp.parentNode;
         }
 
         let param = "selectedID=" + id;
-
         this.send(param,
         (output)=>
         {
             this.displayData(output);
         });
+
+        if (elementClicked.tagName=="BUTTON") 
+        {
+            if (elementClicked.className.includes("editButton")) 
+            {
+                location.href = "amend.php";
+            }
+        }
     }
 
 }
