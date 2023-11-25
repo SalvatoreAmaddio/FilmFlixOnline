@@ -89,11 +89,6 @@ class AbstractForm
         ajax.send(param);
     }
 
-    get newButton() 
-    {
-        return this.rt.getElementsByTagName("button")[4];
-    }
-
     updateRecordTracker() 
     {
         this.send("updateRecordTracker=true",
