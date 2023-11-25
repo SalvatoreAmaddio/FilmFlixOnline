@@ -10,6 +10,9 @@ abstract class AbstractModel
     abstract public function insertSQL() : string;
     abstract public function updateSQL() : string;
     abstract public function deleteSQL() : string;
+    abstract public function checkIntegrity() : bool;
+    abstract public function checkMandatory() : bool;
+
 
 //1select
 //2update

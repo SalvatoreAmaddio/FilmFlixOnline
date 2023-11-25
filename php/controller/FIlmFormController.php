@@ -16,14 +16,40 @@
             $this->genreController = new GenreController();
             $this->ratingController = new RatingController();
             $this->genreController->fetchData();
+            $this->ratingController->fetchData();
         }
-        
+
+        public function save(array $data)
+        {
+            if ($this->model()->isNewRecord()) 
+            {
+                $this->db->save(
+                    $this->model()->title,
+                    $this->model()->yearReleased,
+                    $this->model()->rating->ratingID,
+                    $this->model()->duration,
+                    $this->model()->genre->genreID,
+                );
+            }
+            else 
+            {
+                $this->db->save(
+                    $this->model()->title,
+                    $this->model()->yearReleased,
+                    $this->model()->rating->ratingID,
+                    $this->model()->duration,
+                    $this->model()->genre->genreID,
+                    $this->model()->filmID
+                );
+            }
+        }
+
         public function fillRecord(?array $data)
         {
             $this->model()->filmID = $this->sessions->selectedID();
             $this->model()->title = $data[0];
             $this->model()->yearReleased = $data[1];
-            $this->model()->rating = $data[2];
+            $this->model()->rating->ratingID = $data[2];
             $this->model()->duration = $data[3];
             $this->model()->genre->genreID = $data[4];    
         }
@@ -47,31 +73,6 @@
             /** @var Film $film */
             $film = $this->model;
             return $film;
-        }
-
-        public function save(array $data)
-        {
-            if ($this->model()->isNewRecord()) 
-            {
-                $this->db->save(
-                    $this->model()->title,
-                    $this->model()->yearReleased,
-                    $this->model()->rating,
-                    $this->model()->duration,
-                    $this->model()->genre->genreID,
-                );
-            }
-            else 
-            {
-                $this->db->save(
-                    $this->model()->title,
-                    $this->model()->yearReleased,
-                    $this->model()->rating,
-                    $this->model()->duration,
-                    $this->model()->genre->genreID,
-                    $this->model()->filmID
-                );
-            }
         }
     }
 
@@ -141,7 +142,7 @@
                 $selected = $rating->ratingID;
             }
 
-            echo '<option value="-1" selected disabled hidden>Select Genre</option>';
+            echo '<option value="-1" selected disabled hidden>Select Rating</option>';
             foreach($this->records as $record) 
             {
                 /** @var Rating $rating */

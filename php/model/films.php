@@ -29,7 +29,7 @@
 
         public function select() : string 
         {
-            return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID;";
+            return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID ORDER BY tblFilms.filmID;";
         }
 
         public static function readRow(array $row) : Film
@@ -46,12 +46,12 @@
 
         public function insertSQL(): string
         {
-            return "INSERT INTO {$this->tableName} (title, yearReleased, rating, duration, genreID) VALUES (?,?,?,?,?);";
+            return "INSERT INTO {$this->tableName} (title, yearReleased, ratingID, duration, genreID) VALUES (?,?,?,?,?);";
         }
 
         public function updateSQL(): string
         {
-            return "UPDATE {$this->tableName} SET title=?, yearReleased=?, rating=?, duration=?, genreID=? WHERE filmID=?;";
+            return "UPDATE {$this->tableName} SET title=?, yearReleased=?, ratingID=?, duration=?, genreID=? WHERE filmID=?;";
         }
 
         public function deleteSQL(): string
@@ -66,9 +66,9 @@
                 case 1://select
                 return "";
                 case 2://update
-                return "sisiii";
+                return "siiiii";
                 case 3://insert
-                    return "sisii";
+                    return "siiii";
                 case 4://delete
                 return "i";
             }

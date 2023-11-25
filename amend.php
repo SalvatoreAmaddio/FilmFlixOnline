@@ -46,7 +46,9 @@
                                     <label>Rating</label>
                                 </td>
                                 <td>
-                                    <input class="recordField" type="text" value='<?php echo $controller->model()->rating?>'>
+                                    <select class="recordField" value='<?php echo $controller->model()->rating->ratingID?>'>
+                                            <?php $controller->ratingController->ratingList($controller->model()->rating)?>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>

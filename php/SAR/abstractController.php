@@ -193,8 +193,10 @@
                      echo true;
                 break;
                 case $this->requests->is_save():
-                     $this->fillRecord($this->requests->data());
-                     $this->save($this->requests->data());
+                     $data = $this->requests->data();
+                     $this->fillRecord($data);
+                     if ($this->model()->checkIntegrity() && $this->model()->checkMandatory())
+                         $this->save($data);
                      echo $this->model()->isNewRecord();
                 break;
             }
