@@ -49,7 +49,7 @@
 
         public function save(array $data)
         {
-            $this->db->update(
+            $this->db->save(
                 $this->model()->title,
                 $this->model()->yearReleased,
                 $this->model()->rating,

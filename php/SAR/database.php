@@ -22,9 +22,9 @@
             $this->getColumns();
         }
 
-        public function setModel(AbstractModel $model) 
+        public function setModel(AbstractModel &$model) 
         {   
-            $this->model = $model;
+            $this->model = &$model;
         }
 
         public function isConnected() : bool 
