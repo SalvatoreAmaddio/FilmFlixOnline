@@ -62,6 +62,23 @@
             return $this->genreName;
         }
 
+        public function checkIntegrity(): bool
+        {
+            return true;
+        }
+
+        public function checkMandatory(): bool
+        {
+            switch(true) 
+            {
+                case is_null($this->genreID):
+                return false;
+                case is_null($this->genreName):
+                return false;
+            }
+            return true;
+        }
+
     }
 
     class Rating extends AbstractModel 
@@ -125,6 +142,23 @@
         public function __toString() : string
         {
             return $this->ratingName;
+        }
+
+        public function checkIntegrity(): bool
+        {
+            return true;
+        }
+
+        public function checkMandatory(): bool
+        {
+            switch(true) 
+            {
+                case is_null($this->ratingID):
+                return false;
+                case is_null($this->ratingName):
+                return false;
+            }
+            return true;
         }
 
     }
