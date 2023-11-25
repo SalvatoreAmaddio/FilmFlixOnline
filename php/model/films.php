@@ -37,6 +37,26 @@
             return $film;
         }
 
+        public function updateSQL(): string
+        {
+            return "UPDATE {$this->tableName} SET title=?, yearReleased=?, rating=?, duration=?, genreID=? WHERE filmID=?;";
+        }
+
+        public function bindParam(int $crud): string
+        {
+            switch($crud) 
+            {
+                case 1://select
+                return "";
+                case 2://update
+                return "sisiii";
+                case 3://insert
+                return "";
+                case 4://delete
+                return "";
+            }
+        }
+
         public function __toString() : string
         {
             return $this->title;

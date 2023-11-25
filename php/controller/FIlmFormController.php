@@ -18,11 +18,12 @@
         
         public function fillRecord(array $data)
         {
+            $this->model()->filmID = $this->sessions->selectedID();
             $this->model()->title = $data[0];
-            $this->model()->yearReleased=$data[1];
-            $this->model()->rating=$data[2];
-            $this->model()->duration=$data[3];
-            $this->model()->genre->genreID=$data[4];    
+            $this->model()->yearReleased = $data[1];
+            $this->model()->rating = $data[2];
+            $this->model()->duration = $data[3];
+            $this->model()->genre->genreID = $data[4];    
         }
 
         public function findIDCriteria($record,$id) : bool
@@ -44,6 +45,18 @@
             /** @var Film $film */
             $film = $this->model;
             return $film;
+        }
+
+        public function save(array $data)
+        {
+            $this->db->update(
+                $this->model()->title,
+                $this->model()->yearReleased,
+                $this->model()->rating,
+                $this->model()->duration,
+                $this->model()->genre->genreID,
+                $this->model()->filmID
+            );
         }
     }
 

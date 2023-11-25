@@ -22,7 +22,7 @@
             $this->getColumns();
         }
 
-        public function setModel(AbstractModel &$model) 
+        public function setModel(AbstractModel $model) 
         {   
             $this->model = $model;
         }
@@ -56,6 +56,16 @@
         private function schemaQuery() : string
         {
             return "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '{$this->db}' AND TABLE_NAME = 'tblFilms';";
+        }
+
+        public function update(...$vars) 
+        {
+            $this->connect();
+            $stmt = $this->conn->prepare($this->model->updateSQL());
+            $stmt->bind_param($this->model->bindParam(2), ...$vars);
+            $stmt->execute();
+            $stmt->close();
+            $this->close();
         }
 
         public function select() 

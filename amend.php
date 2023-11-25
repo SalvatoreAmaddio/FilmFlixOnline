@@ -3,6 +3,7 @@
     $controller = new FilmFormController();
     $controller->fetchData();
     $controller->readSessions();
+    $controller->sessions->selectedID($controller->model()->filmID);
 ?>
 
 <!DOCTYPE html>
@@ -85,5 +86,4 @@
             new Form("php/controller/FilmFormController.php");
         </script>
     </body>
-    <?php echo $controller->model()->genre?>
 </html>

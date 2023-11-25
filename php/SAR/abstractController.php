@@ -25,11 +25,6 @@
         public abstract function findIDCriteria($record,$id) : bool;
         public abstract function findRecordCriteria($record,$id) : bool;
 
-        public function save() 
-        {
-            
-        }
-
         protected function resetIndex(int $direction) 
         {
             $this->recordIndex = $this->sessions->selectedIndex();
@@ -124,6 +119,8 @@
             $this->recordTracker->allowNewRecord = true;
         }
 
+        abstract public function save(Array $data);
+
         protected function resetIndex($direction) 
         {
             parent::resetIndex($direction);
@@ -176,8 +173,8 @@
                      echo $this->recordTracker->reportRecordPosition();                    
                 break;
                 case $this->requests->is_save():
-                    $this->fillRecord($this->requests->data());
-                    $this->save();
+                     $this->fillRecord($this->requests->data());
+                     $this->save($this->requests->data());
                 break;
             }
         }
