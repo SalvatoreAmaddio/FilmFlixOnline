@@ -219,6 +219,7 @@
             parent::fetchData();
             if ($this->sessions->issetSearchValue()) 
             {
+                if (empty($this->sessions->searchValue())) return;
                 $this->filterRecords($this->sessions->searchValue());
                 
                 if ($this->recordCount() > 0) 

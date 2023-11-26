@@ -2,13 +2,16 @@
 {
     padding: 1rem;
     padding-top: 0;
+    padding-bottom: 2.3rem;
     background-color: var(--sectionBackground);
     background-position-y: 75%;
+    position: relative;
 }
 
 #searchPanel 
 {
     padding: 1rem;
+    padding-top: 0;
 }
 
 #searchPanel input[type=text] 
@@ -38,6 +41,63 @@
     font-size: 2rem;
     color: white;
     background-color: green;
+}
+
+#dropDownContainer 
+{
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+}
+
+#dropDownContainer img 
+{
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: white;
+    padding: .5rem;
+}
+
+#filterContainer 
+{
+    color: white;
+    border: 1px solid;
+    border-radius: 1rem;
+    display: none;
+}
+
+#filters 
+{
+    color: inherit;
+    border: inherit;
+    border-radius: inherit;
+    padding: .5rem;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+#filters select
+{
+    display: block;
+    margin: 0 auto;
+    padding: .5rem;
+    border-radius: 1rem;
+    border-width: 1px;
+}
+
+#filterOptions 
+{
+    width: fit-content;
+    margin: 0 auto;
+    padding: .8rem;
+}
+
+#filterOptions input[type='checkbox'] 
+{
+    vertical-align: middle;
+    margin-right: 1rem;
 }
 
 #data 
