@@ -34,6 +34,32 @@ class Ajax
     }
 }
 
+class AnimationManager 
+{
+    constructor() 
+    {
+        const info = document.getElementById("info");
+        const infoContent = document.getElementById("infoContent");
+
+        document.getElementById("infoButton").addEventListener("click",(e)=>
+        {
+            infoContent.classList.remove("animateInfoContent2");
+            info.classList.remove("animateInfo2");
+            info.classList.add("animateInfo");
+            infoContent.classList.add("animateInfoContent");
+            info.style.display="block";
+        });
+
+        document.getElementById("closeInfoContent").addEventListener("click",(e)=>
+        {
+            infoContent.classList.remove("animateInfoContent");
+            info.classList.remove("animateInfo");
+            info.classList.add("animateInfo2");
+            infoContent.classList.add("animateInfoContent2");
+        });
+
+    }
+}
 class AbstractForm 
 {
     dataSection;
@@ -44,6 +70,7 @@ class AbstractForm
 
     constructor(server) 
     {
+        new AnimationManager();
         this.#server = server;
         this.dataSection = document.getElementById("dataSection");
         this.data = document.getElementById("data");

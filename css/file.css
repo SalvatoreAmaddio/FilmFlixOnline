@@ -42,6 +42,110 @@ h1
     font-family: 'Roboto', sans-serif;
 }
 
+@keyframes showInfo
+{
+    from {width: 0%; height: 0%;}
+    to {width: 100%; height: 100%;}
+}
+
+@keyframes showInfo2
+{
+    from {width: 100%; height: 100%;}
+    to {width: 0%; height: 0%;
+        display: none;
+    }
+}
+
+@keyframes showInfoContent2
+{
+    to {opacity: 0; width: 50%;}
+    from {opacity: 1; width: 0%;}
+}
+
+@keyframes showInfoContent 
+{
+    from {opacity: 0; width: 0;}
+    to {opacity: 1; width: 50%;}
+}
+
+
+#info 
+{
+    display: none;
+    position: fixed;
+    padding: 1rem;
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    overflow: auto;
+}
+
+.animateInfo 
+{
+    animation-name: showInfo;
+    animation-duration: .5s;
+}
+
+.animateInfo2
+{
+    animation-name: showInfo2;
+    animation-duration: .5s;
+    animation-fill-mode:forwards;
+}
+
+#infoContent 
+{
+    width: 50%;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+    margin: 0 auto;
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: whitesmoke;
+}
+
+.animateInfoContent 
+{
+    animation-name: showInfoContent;
+    animation-duration: 1s;
+}
+
+.animateInfoContent2 
+{
+    animation-name: showInfoContent2;
+    animation-duration: 1s;
+    animation-fill-mode:forwards;
+}
+
+#infoContent h2 
+{
+    margin-bottom: 1rem;
+}
+
+#closeInfoContent 
+{
+    padding: 1rem;
+    display: block;
+    position: absolute;
+    font-weight: bolder;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+}
+
+.block 
+{
+    padding: .4rem; border-radius: 1rem; 
+}
+
+#closeInfoContent:hover
+{
+    background-color: black;
+    color: white;
+}
 @media screen and (max-width:1240.5px)
 {
     #dataSection 

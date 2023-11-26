@@ -42,6 +42,23 @@
 
         <script>
             new ListForm("php/controller/FilmFormListController.php");
+
+            const s = document.getElementById("searchSection");
+            const k = document.getElementById("infoButton");
+            window.addEventListener("scroll",(e)=>
+            {
+                let x=s.getBoundingClientRect().top;
+                if (x==0) 
+                {
+                    k.style.top="4.5rem";
+                    k.style.left="88%";
+                }
+                else 
+                {
+                    k.style.top="1rem";
+                    k.style.left="1rem";
+                }
+            });
         </script>
     </body>
 </html>
