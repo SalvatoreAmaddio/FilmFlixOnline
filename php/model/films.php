@@ -1,61 +1,36 @@
 <?php
     class Film extends AbstractModel
     {
-        public int $filmID = 0;
-        public string $title = "";
-        public int $yearReleased = 0;
-        public Rating $rating;
-        public int $duration = 0;
-        public Genre $genre;
+        public int $pkfilmID = 0;
+        public string $_title = "";
+        public int $_yearReleased = 0;
+        public Rating $fkrating;
+        public int $_duration = 0;
+        public Genre $fkgenre;
 
         public function __construct() 
         {
-            $this->tableName = "tblfilms";
-            $this->yearReleased = date("Y");
-            $this->genre = new Genre();
-            $this->rating = new Rating();
+            parent::__construct();
+            $this->_yearReleased = date("Y");
+            $this->fkgenre = new Genre();
+            $this->fkrating = new Rating();
         }
 
         public static function readRow(array $row) : Film
         {
             $film = new Film();
-            $film->filmID = $row["filmID"];
-            $film->title = $row["title"];
-            $film->yearReleased = $row["yearReleased"];
-            $film->rating = $film->rating->readRow($row);
-            $film->duration = $row["duration"];
-            $film->genre = $film->genre->readRow($row);
+            $film->pkfilmID = $row["filmID"];
+            $film->_title = $row["title"];
+            $film->_yearReleased = $row["yearReleased"];
+            $film->fkrating = $film->fkrating->readRow($row);
+            $film->_duration = $row["duration"];
+            $film->fkgenre = $film->fkgenre->readRow($row);
             return $film;
         }
-
-        public function isNewRecord(): bool
-        {
-            return $this->filmID==0;
-        }
         
-        public static function returnNew() : Film
-        {
-            return new Film();
-        }
-
         public function select() : string 
         {
             return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID ORDER BY tblfilms.filmID;";
-        }
-
-        public function insertSQL(): string
-        {
-            return "INSERT INTO {$this->tableName} (title, yearReleased, ratingID, duration, genreID) VALUES (?,?,?,?,?);";
-        }
-
-        public function updateSQL(): string
-        {
-            return "UPDATE {$this->tableName} SET title=?, yearReleased=?, ratingID=?, duration=?, genreID=? WHERE filmID=?;";
-        }
-
-        public function deleteSQL(): string
-        {
-            return "DELETE FROM {$this->tableName} WHERE filmID=?;";
         }
 
         public function bindParam(int $crud): string
@@ -75,10 +50,10 @@
 
         public function checkIntegrity(): bool
         {
-            $this->title = ucwords($this->title);
-            if ($this->yearReleased < 1888) return false;
-            if ($this->yearReleased > date("Y")) return false;
-            if ($this->duration <= 0) return false;
+            $this->_title = ucwords($this->_title);
+            if ($this->_yearReleased < 1888) return false;
+            if ($this->_yearReleased > date("Y")) return false;
+            if ($this->_duration <= 0) return false;
             return true;
         }
 
@@ -86,17 +61,17 @@
         {
             switch(true) 
             {
-                case is_null($this->title):
+                case is_null($this->_title):
                 return false;
-                case empty($this->title):
+                case empty($this->_title):
                 return false;
-                case is_null($this->yearReleased):
+                case is_null($this->_yearReleased):
                 return false;
-                case is_null($this->duration):
+                case is_null($this->_duration):
                 return false;
-                case !$this->genre->checkMandatory():
+                case !$this->fkgenre->checkMandatory():
                 return false;
-                case !$this->rating->checkMandatory():
+                case !$this->fkrating->checkMandatory():
                 return false;
             }
             return true;
@@ -104,7 +79,7 @@
 
         public function __toString() : string
         {
-            return $this->title;
+            return "Ciao".$this->_title;
         }
     }
 

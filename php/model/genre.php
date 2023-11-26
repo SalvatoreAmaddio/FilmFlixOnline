@@ -1,28 +1,8 @@
 <?php
     class Genre extends AbstractModel 
     {
-        public int $genreID = 0;
+        public int $pkgenreID = 0;
         public string $genreName = "";
-
-        public function __construct() 
-        {
-            $this->tableName = "genre";
-        }
-
-        public function isNewRecord(): bool
-        {
-            return $this->genreID==0;
-        }
-
-        public function insertSQL(): string
-        {
-            return "";
-        }
-        
-        public function deleteSQL(): string
-        {
-            return "";
-        }
 
         public function updateSQL(): string
         {
@@ -44,15 +24,10 @@
             }
         }
 
-        public static function returnNew() : Genre
-        {
-            return new Genre();
-        }
-
         public static function readRow(array $row) : Genre
         {
             $genre = new Genre();
-            $genre->genreID = $row["genreID"];
+            $genre->pkgenreID = $row["genreID"];
             $genre->genreName = $row["genreName"];
             return $genre;
         }
@@ -71,7 +46,7 @@
         {
             switch(true) 
             {
-                case is_null($this->genreID):
+                case is_null($this->pkgenreID):
                 return false;
                 case is_null($this->genreName):
                 return false;
@@ -83,28 +58,9 @@
 
     class Rating extends AbstractModel 
     {
-        public int $ratingID = 0;
+        public int $pkratingID = 0;
         public string $ratingName = "";
 
-        public function __construct() 
-        {
-            $this->tableName = "rating";
-        }
-
-        public function isNewRecord(): bool
-        {
-            return $this->ratingID==0;
-        }
-
-        public function insertSQL(): string
-        {
-            return "";
-        }
-        
-        public function deleteSQL(): string
-        {
-            return "";
-        }
 
         public function updateSQL(): string
         {
@@ -126,15 +82,10 @@
             }
         }
 
-        public static function returnNew() : Rating
-        {
-            return new Rating();
-        }
-
         public static function readRow(array $row) : Rating
         {
             $rating = new Rating();
-            $rating->ratingID = $row["ratingID"];
+            $rating->pkratingID = $row["ratingID"];
             $rating->ratingName = $row["ratingName"];
             return $rating;
         }
@@ -153,7 +104,7 @@
         {
             switch(true) 
             {
-                case is_null($this->ratingID):
+                case is_null($this->pkratingID):
                 return false;
                 case is_null($this->ratingName):
                 return false;
