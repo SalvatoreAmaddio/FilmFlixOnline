@@ -103,6 +103,20 @@
             return $id;
         }
 
+        public function selectPrep(...$vars) : int
+        {
+            $this->connect();
+            $stmt = $this->conn->prepare($this->model->select());
+            $stmt->bind_param($this->model->bindParam(1), ...$vars);    
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $this->table = $result->fetch_assoc();
+            $id = $stmt->affected_rows;
+            $stmt->close();
+            $this->close();
+            return $id;
+        }
+
         public function select() 
         {
             $this->table = $this->conn->query($this->model->select());

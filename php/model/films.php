@@ -7,6 +7,7 @@
         public Rating $rating;
         public int $duration = 0;
         public Genre $genre;
+        private string $selectStr='';
 
         public function __construct() 
         {
@@ -14,6 +15,20 @@
             $this->yearReleased = date("Y");
             $this->genre = new Genre();
             $this->rating = new Rating();
+            $this->selectStr = "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID ORDER BY tblFilms.filmID;";
+        }
+
+        public function filter(string $filter)
+        {
+            switch($filter) 
+            {
+                case $filter == 'genre':
+                    $this->selectStr = "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID WHERE tblfilms.genreID = ? ORDER BY tblFilms.filmID;";
+                break;
+                case $filter == 'rating':
+                    $this->selectStr = "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID WHERE tblfilms.ratingID = ? ORDER BY tblFilms.filmID;";
+                break;
+            }
         }
 
         public static function readRow(array $row) : Film
@@ -40,7 +55,7 @@
 
         public function select() : string 
         {
-            return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID ORDER BY tblFilms.filmID;";
+            return $this->selectStr;
         }
 
         public function insertSQL(): string
@@ -63,7 +78,7 @@
             switch($crud) 
             {
                 case 1://select
-                return "";
+                return "i";
                 case 2://update
                 return "siiiii";
                 case 3://insert

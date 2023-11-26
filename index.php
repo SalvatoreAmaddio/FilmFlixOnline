@@ -33,11 +33,11 @@
                             <label>Filter By</label>
                             <div id='filterOptions'>
                                 <label for="genre">Gener:</label>
-                                <input id='genre' type="checkbox">
+                                <input id='genre' name="option" type="radio">
                                 <label for='year'>Year:</label>
-                                <input id='year' type="checkbox">
+                                <input id='year' name="option" type="radio">
                                 <label for="rating">Rating:</label>
-                                <input id='rating' type="checkbox">
+                                <input id='rating' name="option" type="radio">
                             </div>
                             <select>
                                 <option>Select an option from the above</option>
@@ -66,6 +66,7 @@
             const filterContainer = document.getElementById('filterContainer');
             const searchSection = document.getElementById("searchSection");
             const infoButton = document.getElementById("infoButton");
+            const filterValues = document.getElementById("filterOptions");
 
             dropDown.addEventListener("click",(e)=>
             {

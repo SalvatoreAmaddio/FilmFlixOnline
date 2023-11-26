@@ -155,6 +155,17 @@ class AbstractForm
     {
         location.reload();
     }
+
+    delete(e) 
+    {
+        if (confirm("Are you sure you want to delete this record?") == true) 
+        {
+            this.send("delete=true", (e)=>
+            {
+                if (e) location.reload();
+            });        
+        }
+    }
 }
 
 class Form extends AbstractForm 
@@ -169,17 +180,6 @@ class Form extends AbstractForm
     get recordFields() 
     {
         return this.data.getElementsByClassName("recordField");
-    }
-
-    delete(e) 
-    {
-        if (confirm("Are you sure you want to delete this record?") == true) 
-        {
-            this.send("delete=true", (e)=>
-            {
-                if (e) location.reload();
-            });        
-        }
     }
 
     save(e) 
@@ -236,7 +236,8 @@ class Form extends AbstractForm
 class ListForm extends AbstractForm
 {
     #searchBar;
-    
+    #filterOptions = document.getElementById('filterOptions');
+
     constructor(server) 
     {
         super(server);
@@ -252,6 +253,24 @@ class ListForm extends AbstractForm
         let storedSearchVal = sessionStorage.getItem("searchValue");
         if (storedSearchVal) this.#searchBar.value = storedSearchVal;
         this.newButton.addEventListener("click",(e)=>this.goNew());
+        for(let i=0; i < this.filterValues.length; i++)
+            this.filterValues[i].addEventListener("click",(e)=>{this.filter(e)});
+    }
+
+    filter(e) 
+    {
+        if (e.target.checked) 
+        {
+            this.send("filter=" + e.target.id,(e)=>
+            {
+                alert(e);
+            });
+        }
+    }
+
+    get filterValues() 
+    {
+        return this.#filterOptions.getElementsByTagName('input');
     }
 
     get newButton() 
@@ -325,11 +344,8 @@ class ListForm extends AbstractForm
 
             if (elementClicked.className.includes("deleteButton")) 
             {
-                this.send(param,
-                    (output)=>
-                    {
-                        this.displayData(output);
-                    });     
+
+                this.delete(elementClicked);
             }
         }
     }

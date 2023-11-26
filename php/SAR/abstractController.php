@@ -81,10 +81,14 @@
             return count($this->records);
         }
 
-        public function fetchData() 
+        public function fetchData(int $prep=0) 
         {
-            $this->records = array_diff($this->records, $this->records); ;
-            $this->db->select();
+            $this->records = array_diff($this->records, $this->records);
+            if ($prep==0)
+                $this->db->select();
+            else 
+                $this->db->selectPrep();
+
             while($row = $this->db->table->fetch_assoc()) 
                 array_push($this->records, $this->model->readRow($row));
 
@@ -214,8 +218,13 @@
 
         public abstract function displayData();
 
-        public function fetchData()
+        public function fetchData(int $prep=0)
         {
+            if ($this->sessions->issetFilter()) 
+            {
+                $this->model->filter($this->sessions->filter());
+            }
+
             parent::fetchData();
             if ($this->sessions->issetSearchValue()) 
             {
@@ -276,6 +285,12 @@
                     $this->fetchData();
                     echo $this->displayData();
                 break;
+                case $this->requests->is_filter():
+                    $this->sessions->setFilter($this->requests->filter());
+//                    $this->db->connect();
+//                    $this->fetchData();
+                    echo $this->displayData();
+                break;
                 case $this->requests->is_delete():
                     $this->delete();
                     $this->resetIndex(-1);
@@ -329,6 +344,21 @@
         public function searchValue() : string
         {
             return $_SESSION[$this->origin.'searchValue'];
+        }
+
+        public function setFilter(string $str)
+        {
+            $_SESSION[$this->origin.'filterValue'] = $str;
+        }
+
+        public function issetFilter() : bool
+        {
+            return isset($_SESSION[$this->origin.'filterValue']);
+        }
+
+        public function filter() : string
+        {
+           return $_SESSION[$this->origin.'filterValue'];
         }
 
         public function setSearchValue(string $str)
@@ -390,6 +420,16 @@
         public function is_selectedID() : bool 
         {
             return isset($_REQUEST["selectedID"]);
+        }
+
+        public function is_filter() : bool 
+        {
+            return isset($_REQUEST["filter"]);
+        }
+
+        public function filter() : string
+        {
+            return $_REQUEST["filter"];
         }
 
         public function is_searchValue() : bool 
