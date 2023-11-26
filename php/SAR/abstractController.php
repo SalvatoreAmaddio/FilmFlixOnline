@@ -3,7 +3,7 @@
     abstract class AbstractController 
     {
         public $records = array();
-        protected AbstractModel $model;
+        protected mixed $model;
         public Database $db;
         protected int $recordIndex = 0;
         public RecordTracker $recordTracker;
@@ -12,18 +12,22 @@
 
         public function __construct(AbstractModel $model) 
         {
-            $this->db = new Database();
             $this->model = $model;
-            $this->db->setModel($this->model);
-            $this->db->connect();
-            $this->recordTracker =  new RecordTracker($this->model,$this->recordIndex,$this->records);
+            $this->db = new Database();
             $this->requests = new RequestManager();
             $this->sessions = new SessionManager($this->me());
+            $this->recordTracker =  new RecordTracker($this->model,$this->recordIndex,$this->records);
+            $this->db->setModel($this->model);
+            $this->db->connect();
         }
 
-        public abstract function model() : AbstractModel;
         public abstract function findIDCriteria($record,$id) : bool;
         public abstract function findRecordCriteria($record,$id) : bool;
+        
+        public function model() : mixed 
+        {
+            return $this->model;
+        }
 
         public function delete()
         {
@@ -195,9 +199,9 @@
                 case $this->requests->is_save():
                      $data = $this->requests->data();
                      $this->fillRecord($data);
-                     if ($this->model()->checkIntegrity() && $this->model()->checkMandatory())
+                     if ($this->model->checkIntegrity() && $this->model->checkMandatory())
                          $this->save($data);
-                     echo $this->model()->isNewRecord();
+                     echo $this->model->isNewRecord();
                 break;
             }
         }

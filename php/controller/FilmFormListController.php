@@ -72,13 +72,6 @@
               $obj = $record;
               return strpos(strtolower(trim($obj->_title)), strtolower(trim($value)));
         }
-
-        public function model() : Film
-        {
-            /** @var Film $film */
-            $film = $this->model;
-            return $film;
-        }
     }
 
 ?>

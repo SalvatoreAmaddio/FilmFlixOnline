@@ -7,9 +7,9 @@ include_once 'php/model/films.php';
 include_once 'php/controller/FilmFormListController.php';
 
 $controller = new FilmFormListController();
-echo $controller->model()->selectSQL();
 $controller->fetchData();
 echo "<table>";
 $controller->displayData();
 echo "</table>";
+echo $controller->model()->_title;
 ?>

@@ -164,6 +164,11 @@ abstract class AbstractModel
         return $this->ref->newInstanceArgs(...$args);
     }
 
+    public function copy() : AbstractModel 
+    {
+        return $this->ref->copy();
+    }
+
     public function selectSQL() : string 
     {
         return $this->selectStmt;

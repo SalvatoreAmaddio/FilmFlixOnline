@@ -67,13 +67,6 @@
               $obj = $record;
               return str_contains(strtolower(trim($obj->title)), strtolower(trim($value)));
         }
-
-        public function model() : Film
-        {
-            /** @var Film $film */
-            $film = $this->model;
-            return $film;
-        }
     }
 
     class GenreController extends AbstractController 
@@ -116,15 +109,6 @@
               $genre = $record;
               return $genre->genreID == $id;
         }
-
-        public function model() : Genre
-        {
-            /** @var Genre $genre */
-            $genre = $this->model;
-            return $genre;
-        }
-
-
     }
 
     class RatingController extends AbstractController 
@@ -166,13 +150,6 @@
               /** @var Rating $obj */
               $obj = $record;
               return $obj->ratingID == $id;
-        }
-
-        public function model() : Rating
-        {
-            /** @var Rating $obj */
-            $obj = $this->model;
-            return $obj;
         }
     }
 

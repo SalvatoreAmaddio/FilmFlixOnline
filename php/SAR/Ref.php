@@ -11,6 +11,21 @@ class Ref extends ReflectionClass
         $this->obj = $obj;
     }
 
+    public function copy() 
+    {
+        $obj = $this->newInstanceArgs();
+        $ref = new Ref($obj);
+
+        foreach ($ref->getProperties() as $prop) 
+        {
+            $ref->access($prop->getName());            
+            $this->access($prop->getName());
+            $ref->setValue($this->getValue());
+        }
+
+        return $obj;
+    }
+
     public function access(string $property) 
     {
         $this->property = $this->getProperty($property);
