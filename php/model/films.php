@@ -15,18 +15,6 @@
             $this->fkgenre = new Genre();
             $this->fkrating = new Rating();
         }
-
-        public static function readRow(array $row) : Film
-        {
-            $film = new Film();
-            $film->pkfilmID = $row["filmID"];
-            $film->_title = $row["title"];
-            $film->_yearReleased = $row["yearReleased"];
-            $film->fkrating = $film->fkrating->readRow($row);
-            $film->_duration = $row["duration"];
-            $film->fkgenre = $film->fkgenre->readRow($row);
-            return $film;
-        }
         
         public function selectSQL() : string 
         {

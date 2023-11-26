@@ -4,14 +4,6 @@
         public int $pkgenreID = 0;
         public string $_genreName = "";
 
-        public static function readRow(array $row) : Genre
-        {
-            $genre = new Genre();
-            $genre->pkgenreID = $row["genreID"];
-            $genre->_genreName = $row["genreName"];
-            return $genre;
-        }
-
         public function __toString() : string
         {
             return $this->_genreName;
@@ -40,14 +32,6 @@
     {
         public int $pkratingID = 0;
         public string $_ratingName = "";
-
-        public static function readRow(array $row) : Rating
-        {
-            $rating = new Rating();
-            $rating->pkratingID = $row["ratingID"];
-            $rating->_ratingName = $row["ratingName"];
-            return $rating;
-        }
 
         public function __toString() : string
         {
