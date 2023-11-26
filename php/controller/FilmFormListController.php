@@ -50,7 +50,7 @@
                         <td class='responsiveTitle'><p>Duration</p></td>
                         <td><p>{$film->_duration}</p></td>
                         <td class='responsiveTitle'><p>Genre</p></td>
-                        <td><p>{$film->fkgenre->genreName}</p></td>
+                        <td><p>{$film->fkgenre->_genreName}</p></td>
                         <td class='responsiveTitle'><p style='padding: 0rem'></p></td>
                         <td class='commands'><button class=editButton value={$film->pkfilmID}>✎</button></td>
                         <td class='commands'><button class=deleteButton value={$film->pkfilmID}>X</button></td>
@@ -81,8 +81,4 @@
         }
     }
 
-    $controller = new FilmFormListController();
-    $controller->fetchData();
-    $controller->readRequests();
-    $controller->readSessions();
 ?>

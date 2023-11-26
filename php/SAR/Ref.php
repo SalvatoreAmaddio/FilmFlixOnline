@@ -30,7 +30,12 @@ class Ref extends ReflectionClass
     public function invoke(string $name, ...$vars) 
     {
         $this->method = $this->getMethod($name);
-        $this->method->invoke($this->obj, ...$vars);
+
+        if (is_string($this->obj)==1) 
+        {
+            $this->obj = $this->newInstanceArgs();
+        }
+        return $this->method->invoke($this->obj, ...$vars);
     }
 
     public function findProperty(string $propName) : string

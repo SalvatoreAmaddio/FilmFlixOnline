@@ -30,7 +30,7 @@
         
         public function selectSQL() : string 
         {
-            return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID ORDER BY tblfilms.filmID;";
+            return "SELECT film.*, rating.ratingName, genre.genreName FROM film INNER JOIN genre ON film.genreID = genre.genreID INNER JOIN rating ON film.ratingID = rating.ratingID ORDER BY film.filmID;";
         }
 
         public function checkIntegrity(): bool

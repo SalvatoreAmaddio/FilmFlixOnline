@@ -2,39 +2,19 @@
     class Genre extends AbstractModel 
     {
         public int $pkgenreID = 0;
-        public string $genreName = "";
-
-        public function updateSQL(): string
-        {
-            return "";    
-        }
-
-        public function bindParam(int $crud): string
-        {
-            switch($crud) 
-            {
-                case 1:
-                return "";
-                case 2:
-                return "";
-                case 3:
-                return "";
-                case 4:
-                return "i";
-            }
-        }
+        public string $_genreName = "";
 
         public static function readRow(array $row) : Genre
         {
             $genre = new Genre();
             $genre->pkgenreID = $row["genreID"];
-            $genre->genreName = $row["genreName"];
+            $genre->_genreName = $row["genreName"];
             return $genre;
         }
 
         public function __toString() : string
         {
-            return $this->genreName;
+            return $this->_genreName;
         }
 
         public function checkIntegrity(): bool
@@ -48,7 +28,7 @@
             {
                 case is_null($this->pkgenreID):
                 return false;
-                case is_null($this->genreName):
+                case is_null($this->_genreName):
                 return false;
             }
             return true;
@@ -59,40 +39,19 @@
     class Rating extends AbstractModel 
     {
         public int $pkratingID = 0;
-        public string $ratingName = "";
-
-
-        public function updateSQL(): string
-        {
-            return "";    
-        }
-
-        public function bindParam(int $crud): string
-        {
-            switch($crud) 
-            {
-                case 1:
-                return "";
-                case 2:
-                return "";
-                case 3:
-                return "";
-                case 4:
-                return "i";
-            }
-        }
+        public string $_ratingName = "";
 
         public static function readRow(array $row) : Rating
         {
             $rating = new Rating();
             $rating->pkratingID = $row["ratingID"];
-            $rating->ratingName = $row["ratingName"];
+            $rating->_ratingName = $row["ratingName"];
             return $rating;
         }
 
         public function __toString() : string
         {
-            return $this->ratingName;
+            return $this->_ratingName;
         }
 
         public function checkIntegrity(): bool
@@ -106,7 +65,7 @@
             {
                 case is_null($this->pkratingID):
                 return false;
-                case is_null($this->ratingName):
+                case is_null($this->_ratingName):
                 return false;
             }
             return true;
