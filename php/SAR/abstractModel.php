@@ -189,6 +189,18 @@ abstract class AbstractModel
         return $this->deleteStmt;
     }
 
+    public function isEqual(AbstractModel|int $obj) 
+    {
+        if ($obj instanceof AbstractModel) 
+            return $this == $obj;
+
+        if (is_int($obj)) 
+        {
+            $this->ref->access("pk");
+            return $this->ref->getValue()==$obj;
+        }
+    }
+
     abstract public function checkIntegrity() : bool;
     abstract public function checkMandatory() : bool;
 

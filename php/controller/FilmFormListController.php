@@ -58,20 +58,6 @@
             }
             echo "</table>";
         }
-
-        public function findIDCriteria($record,$id) : bool
-        {
-              /** @var Film $film */
-              $film = $record;
-              return $film->pkfilmID == $id;
-        }
-
-        public function findRecordCriteria($record,$value) : bool
-        {
-              /** @var Film $obj */
-              $obj = $record;
-              return strpos(strtolower(trim($obj->_title)), strtolower(trim($value)));
-        }
     }
 
 ?>

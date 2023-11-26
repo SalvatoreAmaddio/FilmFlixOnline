@@ -21,9 +21,26 @@
             $this->db->connect();
         }
 
-        public abstract function findIDCriteria($record,$id) : bool;
-        public abstract function findRecordCriteria($record,$id) : bool;
-        
+        public function refresh() 
+        {
+            header('Location: '.$_SERVER['REQUEST_URI']);
+        }
+
+        public function me() : string 
+        {
+            return get_class($this);
+        }
+
+        public function len() : int 
+        {
+            return $this->recordCount()-1;
+        }
+
+        public function recordCount() : int 
+        {
+            return count($this->records);
+        }
+
         public function model() : mixed 
         {
             return $this->model;
@@ -32,6 +49,36 @@
         public function delete()
         {
             $this->db->delete($this->sessions->selectedID());        
+        }
+
+        public function findIDCriteria($record,$id) : bool 
+        {
+            return $record->isEqual($id);            
+        }
+
+        public function findID($id) : ?mixed
+        {
+            $result = array_values(array_filter($this->records, 
+            function($record) use ($id)
+            {
+                return $this->findIDCriteria($record, $id);
+            }));
+
+            return (count($result)>0) ? $result[0] : null;
+        }
+
+        public function findRecordCriteria($record,$value) 
+        {
+            return strpos(strtolower(trim($record)), strtolower(trim($value)));
+        }
+        
+        public function filterRecords($value)
+        {
+            $this->records = array_values(array_filter($this->records, 
+            function($record) use ($value)
+            {
+                return $this->findRecordCriteria($record, $value);
+            }));
         }
 
         protected function resetIndex(int $direction) 
@@ -65,26 +112,6 @@
             $this->sessions->selectedIndex($this->recordIndex);
         }
 
-        public function refresh() 
-        {
-            header('Location: '.$_SERVER['REQUEST_URI']);
-        }
-
-        public function me() : string 
-        {
-            return get_class($this);
-        }
-
-        public function len() : int 
-        {
-            return $this->recordCount()-1;
-        }
-
-        public function recordCount() : int 
-        {
-            return count($this->records);
-        }
-
         public function fetchData() 
         {
             $this->records = array_diff($this->records, $this->records); ;
@@ -93,10 +120,8 @@
                 array_push($this->records, $this->model->readRow($row));
 
             if ($this->recordCount() > 0) 
-            {
                 $this->model = $this->records[$this->recordIndex];
-            }
-
+            
             $this->db->close();
         }
 
@@ -108,26 +133,7 @@
         {
 
         }
-
-        public function findID($id) : ?AbstractModel
-        {
-            $result = array_values(array_filter($this->records, 
-            function($record) use ($id)
-            {
-                return $this->findIDCriteria($record, $id);
-            }));
-
-            return (count($result)>0) ? $result[0] : null;
-        }
         
-        public function filterRecords($value)
-        {
-            $this->records = array_values(array_filter($this->records, 
-            function($record) use ($value)
-            {
-                return $this->findRecordCriteria($record, $value);
-            }));
-        }
     }
 
     abstract class AbstractFormController extends AbstractController
@@ -139,12 +145,6 @@
         }
 
         abstract public function save(Array $data);
-
-        protected function resetIndex($direction) 
-        {
-            parent::resetIndex($direction);
-            $this->sessions->selectedIndex($this->recordIndex);
-        }
 
         abstract function fillRecord(Array $data); 
 
