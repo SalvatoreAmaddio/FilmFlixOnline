@@ -1,12 +1,14 @@
 <?php
-    require_once 'abstractModel.php"';
-    require_once 'abstractController.php';
+
+    $x = explode("php", __DIR__);
+    require_once $x[0].'php/SAR/abstractModel.php';
+    require_once $x[0].'php/SAR/abstractController.php';
     class Database 
     {
         public string $serverName = "localhost";
         public string $user = "admin";
-        public string $pwd = "password1";
-        public string $db = "FilmFlixDB";
+        public string $pwd = "soloio59";
+        public string $db = "filmflixdb";
         private $conn;
         protected AbstractModel $model;
         protected $schema;
@@ -97,20 +99,6 @@
             $stmt = $this->conn->prepare($this->model->deleteSQL());
             $stmt->bind_param($this->model->bindParam(4), ...$vars);    
             $stmt->execute();
-            $id = $stmt->affected_rows;
-            $stmt->close();
-            $this->close();
-            return $id;
-        }
-
-        public function selectPrep(...$vars) : int
-        {
-            $this->connect();
-            $stmt = $this->conn->prepare($this->model->select());
-            $stmt->bind_param($this->model->bindParam(1), ...$vars);    
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $this->table = $result->fetch_assoc();
             $id = $stmt->affected_rows;
             $stmt->close();
             $this->close();

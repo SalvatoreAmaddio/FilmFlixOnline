@@ -7,7 +7,6 @@ abstract class AbstractModel
 
     public abstract static function returnNew() : AbstractModel;
 
-    abstract public function filter(string $filter);
     abstract public function insertSQL() : string;
     abstract public function updateSQL() : string;
     abstract public function deleteSQL() : string;

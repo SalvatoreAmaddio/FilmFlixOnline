@@ -1,8 +1,8 @@
 <?php
     $x = explode("php", __DIR__);
     require_once $x[0].'/php/SAR/database.php';
-    require_once $x[0].'php/model/genre.php';
-    require_once $x[0].'php/model/films.php';
+    require_once $x[0].'/php/model/genre.php';
+    require_once $x[0].'/php/model/films.php';
 
     class FilmFormListController extends AbstractFormListController
     {        
@@ -70,7 +70,7 @@
         {
               /** @var Film $obj */
               $obj = $record;
-              return str_contains(strtolower(trim($obj->title)), strtolower(trim($value)));
+              return strpos(strtolower(trim($obj->title)), strtolower(trim($value)));
         }
 
         public function model() : Film

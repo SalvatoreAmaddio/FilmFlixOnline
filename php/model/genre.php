@@ -9,11 +9,6 @@
             $this->tableName = "genre";
         }
 
-        public function filter(string $filter)
-        {
-
-        }
-
         public function isNewRecord(): bool
         {
             return $this->genreID==0;
@@ -94,11 +89,6 @@
         public function __construct() 
         {
             $this->tableName = "rating";
-        }
-
-        public function filter(string $filter)
-        {
-
         }
 
         public function isNewRecord(): bool
