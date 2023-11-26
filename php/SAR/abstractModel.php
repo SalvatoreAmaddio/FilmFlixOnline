@@ -136,9 +136,7 @@ abstract class AbstractModel
         return $this->ref->getValue()==0;
     }
 
-    public abstract static function readRow(array $row) : AbstractModel;
-
-    public function readRow2(array $row) : AbstractModel
+    public function readRow(array $row) : AbstractModel
     {
         $record = $this->returnNew();
         $fields = $record->ref->getFields();
@@ -156,9 +154,8 @@ abstract class AbstractModel
         {
             $ref = new Ref($fk->getType()->getName());
             $record->ref->access($fk->getName());
-            $record->ref->setValue($ref->invoke("readRow2",$row));
+            $record->ref->setValue($ref->invoke("readRow",$row));
         }
-
         return $record;
     }
 
