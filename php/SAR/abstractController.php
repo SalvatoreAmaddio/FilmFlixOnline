@@ -86,7 +86,7 @@
             $this->records = array_diff($this->records, $this->records); ;
             $this->db->select();
             while($row = $this->db->table->fetch_assoc()) 
-                array_push($this->records, $this->model->readRow($row));
+                array_push($this->records, $this->model->readRow2($row));
 
             if ($this->recordCount() > 0) 
             {

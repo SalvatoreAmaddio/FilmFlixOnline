@@ -39,21 +39,21 @@
             {
                 /** @var Film $film */
                 $film = $record;
-                echo "<tr {$this->selectedRow($record)} value='{$film->filmID}'>
+                echo "<tr {$this->selectedRow($record)} value='{$film->pkfilmID}'>
                         <td class=recordIndicator>➤</td>
                         <td class='responsiveTitle'><p>Title</p></td>
-                        <td><p>{$film->title}</p></td>
+                        <td><p>{$film->_title}</p></td>
                         <td class='responsiveTitle'><p>Year</p></td>
-                        <td><p>{$film->yearReleased}</p></td>
+                        <td><p>{$film->_yearReleased}</p></td>
                         <td class='responsiveTitle'><p>Rating</p></td>
-                        <td><p>{$film->rating}</p></td>
+                        <td><p>{$film->fkrating}</p></td>
                         <td class='responsiveTitle'><p>Duration</p></td>
-                        <td><p>{$film->duration}</p></td>
+                        <td><p>{$film->_duration}</p></td>
                         <td class='responsiveTitle'><p>Genre</p></td>
-                        <td><p>{$film->genre->genreName}</p></td>
+                        <td><p>{$film->fkgenre->genreName}</p></td>
                         <td class='responsiveTitle'><p style='padding: 0rem'></p></td>
-                        <td class='commands'><button class=editButton value={$film->filmID}>✎</button></td>
-                        <td class='commands'><button class=deleteButton value={$film->filmID}>X</button></td>
+                        <td class='commands'><button class=editButton value={$film->pkfilmID}>✎</button></td>
+                        <td class='commands'><button class=deleteButton value={$film->pkfilmID}>X</button></td>
                     </tr>";
             }
             echo "</table>";
@@ -63,14 +63,14 @@
         {
               /** @var Film $film */
               $film = $record;
-              return $film->filmID == $id;
+              return $film->pkfilmID == $id;
         }
 
         public function findRecordCriteria($record,$value) : bool
         {
               /** @var Film $obj */
               $obj = $record;
-              return strpos(strtolower(trim($obj->title)), strtolower(trim($value)));
+              return strpos(strtolower(trim($obj->_title)), strtolower(trim($value)));
         }
 
         public function model() : Film

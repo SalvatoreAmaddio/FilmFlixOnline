@@ -59,12 +59,30 @@ class Ref extends ReflectionClass
         return $this->property->getName();
     }
 
+    public function getPK() : string 
+    {
+        return str_replace('pk', '', $this->findProperty('pk'));
+    }
+
     public function getFields() : Array
     {
         $fields = array();
         foreach($this->getProperties() as $prop) 
         {
             $pattern = "/_/";
+            $found = preg_match($pattern, $prop->getName());
+            if ($found==1) 
+                array_push($fields,$prop);
+        }
+        return $fields;
+    }
+
+    public function getFKs() : Array
+    {
+        $fields = array();
+        foreach($this->getProperties() as $prop) 
+        {
+            $pattern = "/fk/";
             $found = preg_match($pattern, $prop->getName());
             if ($found==1) 
                 array_push($fields,$prop);

@@ -15,7 +15,7 @@ class QueryGenerator
         $this->ref = &$ref;
         $this->insertStmt = $this->generateInsertStmt();
         $this->updateStmt = $this->generateUpdateStmt();
-        $this->deleteStmt = "DELETE FROM {$this->tableName} WHERE ". $this->getPK() . "=?;";
+        $this->deleteStmt = "DELETE FROM {$this->tableName} WHERE ". $this->ref->getPK() . "=?;";
     }
 
     private function generateInsertStmt() : string 
@@ -35,7 +35,7 @@ class QueryGenerator
     private function generateUpdateStmt() : string 
     {
         $str = "UPDATE {$this->tableName} SET ";
-        $where = " WHERE " . $this->getPK() . "=?;";
+        $where = " WHERE " . $this->ref->getPK() . "=?;";
         $fields="";
         foreach($this->getFields() as $field)
             $fields = $fields . $field . "=?, ";
@@ -102,10 +102,6 @@ class QueryGenerator
         return str_replace('pk', '', $ref->findProperty('pk'));
     }
 
-    private function getPK() : string 
-    {
-        return str_replace('pk', '', $this->ref->findProperty('pk'));
-    }
 }
 
 abstract class AbstractModel 
@@ -153,10 +149,16 @@ abstract class AbstractModel
         }
 
         $record->ref->findProperty("pk");
-        $record->ref->setValue($row[$record->ref->getPropertyName()]);
+        $record->ref->setValue($row[$record->ref->getPK()]);
 
-        $film->fkrating = $film->fkrating->readRow($row);
-        $film->fkgenre = $film->fkgenre->readRow($row);
+        $fks = $record->ref->getFKs();
+        foreach($fks as $fk) 
+        {
+            $ref = new Ref($fk->getType()->getName());
+            $record->ref->access($fk->getName());
+            $record->ref->setValue($ref->invoke("readRow2",$row));
+        }
+
         return $record;
     }
 

@@ -107,7 +107,7 @@
 
         public function select() 
         {
-            $this->table = $this->conn->query($this->model->select());
+            $this->table = $this->conn->query($this->model->selectSQL());
         }
     }
 ?>
