@@ -236,7 +236,6 @@ class Form extends AbstractForm
 class ListForm extends AbstractForm
 {
     #searchBar;
-    #filterOptions = document.getElementById('filterOptions');
 
     constructor(server) 
     {
@@ -253,25 +252,9 @@ class ListForm extends AbstractForm
         let storedSearchVal = sessionStorage.getItem("searchValue");
         if (storedSearchVal) this.#searchBar.value = storedSearchVal;
         this.newButton.addEventListener("click",(e)=>this.goNew());
-        for(let i=0; i < this.filterValues.length; i++)
-            this.filterValues[i].addEventListener("click",(e)=>{this.filter(e)});
+        this.#scroll();
     }
 
-    filter(e) 
-    {
-        if (e.target.checked) 
-        {
-            this.send("filter=" + e.target.id,(e)=>
-            {
-                alert(e);
-            });
-        }
-    }
-
-    get filterValues() 
-    {
-        return this.#filterOptions.getElementsByTagName('input');
-    }
 
     get newButton() 
     {
@@ -304,8 +287,28 @@ class ListForm extends AbstractForm
         this.data.innerHTML = data;
         this.#onRowClickedEvent();
         this.updateRecordTracker();
+        this.#scroll();
     }
 
+    #scroll() 
+    {
+        var rows = this.table.querySelectorAll('tr');
+        let selectedRow = 0;
+        for (let i = 0; i < rows.length; i ++) 
+        {
+            rows[i].classList.remove('active');
+            if (rows[i].className.includes('selectedRow')) 
+            {
+                selectedRow = i;
+            }            
+        }
+
+        rows[selectedRow].classList.add('active');
+        rows[selectedRow].scrollIntoView({
+            behavior: 'smooth',
+          block: 'center'
+        });
+    }
     #rowClicked(e) 
     {
         let elementClicked = e.target;
