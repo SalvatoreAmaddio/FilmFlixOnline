@@ -1,5 +1,6 @@
 <?php
-    include("php/controller/FilmFormController.php");
+    $x = explode("php", __DIR__);
+    include($x[0]."/php/controller/FilmFormController.php");
     $controller = new FilmFormController();
     $controller->fetchData();
     $controller->readSessions();

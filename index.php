@@ -1,5 +1,6 @@
 <?php
-    include("php/controller/FilmFormListController.php");
+ $x = explode("php", __DIR__);
+    include($x[0]."/php/controller/FilmFormListController.php");
     $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readSessions();
@@ -25,25 +26,6 @@
                         <input id="searchBar" type="text" placeholder="Search movie...">
                         <button>+</button>
                     </div>
-                    <div id='dropDownContainer'>
-                        <img src="img/drop-down-arrow.png">
-                    </div>
-                    <div id='filterContainer'>
-                        <div id='filters'>
-                            <label>Filter By</label>
-                            <div id='filterOptions'>
-                                <label for="genre">Gener:</label>
-                                <input id='genre' name="option" type="radio">
-                                <label for='year'>Year:</label>
-                                <input id='year' name="option" type="radio">
-                                <label for="rating">Rating:</label>
-                                <input id='rating' name="option" type="radio">
-                            </div>
-                            <select>
-                                <option>Select an option from the above</option>
-                            </select>
-                        </div>
-                    </div>
                 </section>
 
                 <section id="dataSection" style="background-image: url('img/projector.jpg')">
@@ -62,40 +44,20 @@
         <script>
             new ListForm("php/controller/FilmFormListController.php");
 
-            const dropDown = document.getElementById('dropDownContainer').children[0];
-            const filterContainer = document.getElementById('filterContainer');
-            const searchSection = document.getElementById("searchSection");
-            const infoButton = document.getElementById("infoButton");
-            const filterValues = document.getElementById("filterOptions");
-
-            dropDown.addEventListener("click",(e)=>
-            {
-                if (!filterContainer.style.display || filterContainer.style.display=='none') 
-                {
-                    filterContainer.style.display='block';
-                    dropDown.setAttribute('src','img/drop-up-arrow.png');
-                    searchSection.style.paddingBottom = '1rem';
-                }
-                else 
-                {
-                    filterContainer.style.display='none';
-                    searchSection.style.paddingBottom = '2.3rem';
-                    dropDown.setAttribute('src','img/drop-down-arrow.png');
-                }
-            });
-
+            const s = document.getElementById("searchSection");
+            const k = document.getElementById("infoButton");
             window.addEventListener("scroll",(e)=>
             {
-                let topVal = searchSection.getBoundingClientRect().top;
-                if (topVal==0) 
+                let x=s.getBoundingClientRect().top;
+                if (x==0) 
                 {
-                    infoButton.style.top="6rem";
-                    infoButton.style.left="90.3%";
+                    k.style.top="4.5rem";
+                    k.style.left="88%";
                 }
                 else 
                 {
-                    infoButton.style.top="1rem";
-                    infoButton.style.left="1rem";
+                    k.style.top="1rem";
+                    k.style.left="1rem";
                 }
             });
         </script>
