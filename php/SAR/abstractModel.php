@@ -3,9 +3,11 @@ class QueryGenerator
 {
     private Ref $ref;
     private string $tableName;
-    public $insertStmt;
-    public $updateStmt;
-    public $deleteStmt;
+    public string $insertStmt="";
+    public string $updateStmt="";
+    public string $deleteStmt="";
+    public string $fieldsType="";
+    public string $fkType="";
 
     public function __construct(Ref &$ref, $tableName) 
     {
@@ -49,14 +51,14 @@ class QueryGenerator
     {
         $array = array();
         $this->ref->getProperties();
-
+        $this->fieldsType = "";
         foreach($this->ref->getProperties() as $prop) 
         {
             $pattern = "/_/";
             $found = preg_match($pattern, $prop->getName());
             if ($found==1) 
-            {
-                array_push($array,$this->correctFieldName($prop->getName()));
+            {   $this->fieldsType = $this->fieldsType . $prop->getType()->getName()[0];
+                array_push($array,Ref::correctFieldName($prop->getName()));
             }
         }
 
@@ -68,12 +70,16 @@ class QueryGenerator
         $array = array();
         $this->ref->getProperties();
 
+        $this->fkType = "";
         foreach($this->ref->getProperties() as $prop) 
         {
             $pattern = "/fk/";
             $found = preg_match($pattern, $prop->getName());
             if ($found==1) 
+            {
+                $this->fkType = "i";
                 array_push($array, $this->correctFKFieldName($prop));
+            }
         }
 
         return $array;
@@ -88,11 +94,6 @@ class QueryGenerator
         $values = substr($values, 0, strlen($values)-2);
         $values = $values . ");";
         return $values;
-    }
-
-    private function correctFieldName($str) : string
-    {
-        return str_replace("_", "", $str);
     }
 
     private function correctFKFieldName(ReflectionProperty $prop) : string
@@ -111,7 +112,7 @@ abstract class AbstractModel
 {
     public string $tableName;
     private Ref $ref;
-    private QueryGenerator $queryGenerator;
+    public QueryGenerator $queryGenerator;
     private $insertStmt;
     private $updateStmt;
     private $deleteStmt;
@@ -140,6 +141,24 @@ abstract class AbstractModel
     }
 
     public abstract static function readRow(array $row) : AbstractModel;
+
+    public function readRow2(array $row) : AbstractModel
+    {
+        $record = $this->returnNew();
+        $fields = $record->ref->getFields();
+        foreach($fields as $field) 
+        {
+            $record->ref->access($field->getName());
+            $record->ref->setValue($row[Ref::correctFieldName($field->getName())]);
+        }
+
+        $record->ref->findProperty("pk");
+        $record->ref->setValue($row[$record->ref->getPropertyName()]);
+
+        $film->fkrating = $film->fkrating->readRow($row);
+        $film->fkgenre = $film->fkgenre->readRow($row);
+        return $record;
+    }
 
     public function returnNew(...$args) : AbstractModel 
     {
@@ -174,6 +193,19 @@ abstract class AbstractModel
 //2update
 //3insert
 //4delete
-    abstract public function bindParam(int $crud) : string;
+        public function bindParam(int $crud): string
+        {
+            switch($crud) 
+            {
+                case 1://select
+                return "";
+                case 2://update
+                return $this->queryGenerator->fieldsType . $this->queryGenerator->fkType;
+                case 3://insert
+                    return $this->queryGenerator->fieldsType;
+                case 4://delete
+                return "i";
+            }
+        }
 }
 ?>

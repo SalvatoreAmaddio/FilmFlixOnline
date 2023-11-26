@@ -28,24 +28,9 @@
             return $film;
         }
         
-        public function select() : string 
+        public function selectSQL() : string 
         {
             return "SELECT tblfilms.*, rating.ratingName, genre.genreName FROM tblfilms INNER JOIN genre ON tblfilms.genreID = genre.genreID INNER JOIN rating ON tblfilms.ratingID = rating.ratingID ORDER BY tblfilms.filmID;";
-        }
-
-        public function bindParam(int $crud): string
-        {
-            switch($crud) 
-            {
-                case 1://select
-                return "";
-                case 2://update
-                return "siiiii";
-                case 3://insert
-                    return "siiii";
-                case 4://delete
-                return "i";
-            }
         }
 
         public function checkIntegrity(): bool

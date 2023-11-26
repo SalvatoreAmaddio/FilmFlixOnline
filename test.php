@@ -18,12 +18,13 @@ class Ciao
 
 $film = new Film();
 $ref = new Ref($film);
-echo $film->select();
+echo $film->selectSQL();
 echo "<br>";
 echo $film->deleteSQL();
 echo "<br>";
 echo $film->insertSQL();
 echo "<br>";
 echo $film->updateSQL();
+echo "<br>";
 
 ?>

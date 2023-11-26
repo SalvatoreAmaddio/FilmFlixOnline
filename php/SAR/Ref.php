@@ -48,5 +48,28 @@ class Ref extends ReflectionClass
         }
         return "NOT FOUND";
     }
+
+    public static function correctFieldName($str) : string
+    {
+        return str_replace("_", "", $str);
+    }
+
+    public function getPropertyName() : string 
+    {
+        return $this->property->getName();
+    }
+
+    public function getFields() : Array
+    {
+        $fields = array();
+        foreach($this->getProperties() as $prop) 
+        {
+            $pattern = "/_/";
+            $found = preg_match($pattern, $prop->getName());
+            if ($found==1) 
+                array_push($fields,$prop);
+        }
+        return $fields;
+    }
 }
 ?>
