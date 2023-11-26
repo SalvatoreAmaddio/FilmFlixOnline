@@ -38,7 +38,7 @@
                                     <label>Year</label>
                                 </td>
                                 <td>
-                                    <input class="recordField" type="number" value='<?php echo $controller->model()->yearReleased?>'>
+                                    <input id='yearReleased' class="recordField" type="number" value='<?php echo $controller->model()->yearReleased?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -85,7 +85,7 @@
         </div>
 
         <script>
-            new Form("php/controller/FilmFormController.php");
+            new FilmForm("php/controller/FilmFormController.php");
         </script>
     </body>
 </html>

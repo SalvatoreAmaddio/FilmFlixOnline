@@ -76,7 +76,8 @@
         public function checkIntegrity(): bool
         {
             $this->title = ucwords($this->title);
-            if ($this->yearReleased < 1800) return false;
+            if ($this->yearReleased < 1888) return false;
+            if ($this->yearReleased > date("Y")) return false;
             if ($this->duration <= 0) return false;
             return true;
         }
@@ -86,6 +87,8 @@
             switch(true) 
             {
                 case is_null($this->title):
+                return false;
+                case empty($this->title):
                 return false;
                 case is_null($this->yearReleased):
                 return false;

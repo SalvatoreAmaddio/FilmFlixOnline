@@ -123,6 +123,11 @@ class AbstractForm
     displayData(data) {}
 
     goNew() {}
+
+    refresh() 
+    {
+        location.reload();
+    }
 }
 
 class Form extends AbstractForm 
@@ -157,6 +162,12 @@ class Form extends AbstractForm
         {
             values.push(this.recordFields[i].value);
         }
+        if (!this.checkIntegrity(values) || !this.checkMandatory(values)) 
+        {
+            this.refresh();
+            return;
+        }
+
         let json = JSON.stringify(values);
         this.send("save=" + json,(e)=>
         {
@@ -182,6 +193,16 @@ class Form extends AbstractForm
     displayData(data) 
     {
         location.reload();
+    }
+
+    checkMandatory(values) 
+    {
+        return true;
+    }
+
+    checkIntegrity(values) 
+    {
+        return true;
     }
 }
 
@@ -274,6 +295,7 @@ class ListForm extends AbstractForm
                     (output)=>{},'/php/controller/FilmFormController.php');     
                 location.href = "amend.php";
             }
+
             if (elementClicked.className.includes("deleteButton")) 
             {
                 this.send(param,
@@ -290,5 +312,57 @@ class ListForm extends AbstractForm
         this.send("newRecord=true",
             (output)=>{},'/php/controller/FilmFormController.php');     
         location.href = "amend.php";
+    }
+}
+
+class FilmForm extends Form 
+{
+
+    checkMandatory(values) 
+    {
+        for(let i = 0; i < values.length; i++) 
+        {
+            if (values[i]==null || values[i]==false) 
+            {
+                alert("All fields are mandatory");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    checkIntegrity(values) 
+    {
+        if (values[1] < 1888) 
+        {
+            alert("Did you know the first ever made movie was recorded in Leeds in England in 1888?");
+            return false;
+        }
+
+        let currentYear = new Date().getFullYear();
+        if (values[1] > currentYear) 
+        {
+            alert("Are you from the future?");
+            return false;
+        }
+
+        if (values[2] < 1) 
+        {
+            alert("Please select a rating option");
+            return false;
+        }
+
+        if (values[3] <= 0) 
+        {
+            alert("Duration cannot be less than 1");
+            return false;
+        }
+
+        if (values[4] < 1) 
+        {
+            alert("Please select a genre option");
+            return false;
+        }
+        return true;
     }
 }
