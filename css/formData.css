@@ -79,3 +79,27 @@ table select
     border-width: 1px;
     font-weight: bolder;
 }
+
+@media screen and (max-width: 700.5px)
+{
+    footer p {display: none;}
+
+    .recordTracker {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 358.5px)
+{
+    .recordTracker 
+    {
+        text-align: center;
+    }
+
+    .recordTracker .newButton 
+    {
+        display: block;
+        margin: 0 auto;
+        margin-top: .3rem;
+    }
+}
