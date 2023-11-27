@@ -248,7 +248,7 @@
                 if (!$this->noRecords()) 
                 {
                         $temp = ($this->sessions->issetSelectedID()) 
-                        ? $this->findID($this->sessions->selectedID())
+                        ? $this->findByID($this->sessions->selectedID())
                         : $this->records[0];
     
                     switch(true) 
