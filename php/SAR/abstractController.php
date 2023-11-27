@@ -41,6 +41,11 @@
             return count($this->records);
         }
 
+        public function noRecords() : bool 
+        {
+            return $this->recordCount() == 0;
+        }
+
         public function model() : mixed 
         {
             return $this->model;
@@ -125,15 +130,69 @@
             $this->db->close();
         }
 
+        public function onSelectedIDRequest()
+        {
+            $this->sessions->selectedID($this->requests->selectedID());
+            $this->model = $this->findID( $this->sessions->selectedID());
+            $this->sessions->selectedIndex($this->recordTracker->currentIndex());
+            $this->recordTracker->moveTo($this->sessions->selectedIndex());
+        }
+        public function onUpdateRecordTrackerRequest() 
+        {
+            $this->recordTracker->moveTo($this->sessions->selectedIndex());
+            echo $this->recordTracker->reportRecordPosition();                    
+        }
+
+        abstract public function onSearchValueRequest();
+
+        public function onNewRecordRequest() 
+        {
+            $this->recordTracker->moveNew();
+            $this->sessions->selectedIndex($this->recordIndex);
+            $this->sessions->selectedID(0); 
+        }
+
+        abstract public function onDeleteRecordRequest();
+        abstract public function onSaveRecordRequest();
+
         public function readRequests()
         {
+            if ($this->requests->isEmpty()) return;
+            switch(true) 
+            {
+                case $this->requests->is_selectedID(): $this->onSelectedIDRequest();
+                break;
+                case $this->requests->is_newRecord(): $this->onNewRecordRequest();
+                break;
+                case $this->requests->is_goNext(): $this->resetIndex(0);
+                break;
+                case $this->requests->is_goPrevious(): $this->resetIndex(1);
+                break;
+                case $this->requests->is_goFirst(): $this->resetIndex(2);
+                break;
+                case $this->requests->is_goLast(): $this->resetIndex(3);
+                break;
+                case $this->requests->is_updateRecordTracker(): $this->onUpdateRecordTrackerRequest();
+                break;
+                case $this->requests->is_searchValue(): $this->onSearchValueRequest();
+                break;
+                case $this->requests->is_delete(): $this->onDeleteRecordRequest();
+                break;
+                case $this->requests->is_save(): $this->onSaveRecordRequest();
+                break;
+            }
         }
 
-        public function readSessions() 
+        public function readSessions()
         {
-
-        }
-        
+            if ($this->sessions->isEmpty()) return;
+            switch(true) 
+            {
+                case $this->sessions->issetSelectedID():
+                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
+                break;
+            }
+        }        
     }
 
     abstract class AbstractFormController extends AbstractController
@@ -148,75 +207,34 @@
 
         abstract function fillRecord(Array $data); 
 
-        public function readSessions()
+        public function onDeleteRecordRequest() 
         {
-            if ($this->sessions->isEmpty()) return;
-            switch(true) 
-            {
-                case $this->sessions->issetSelectedID():
-                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                break;
-            }
+            $this->delete();
+            $this->resetIndex(-1);
+            echo true;
         }
 
-        public function readRequests()
+        public function onSaveRecordRequest() 
         {
-            if ($this->requests->isEmpty()) return;
-            switch(true) 
-            {
-                case $this->requests->is_selectedID():
-                    $this->sessions->selectedID($this->requests->selectedID());
-                    $this->model = $this->findID( $this->sessions->selectedID());
-                    $this->sessions->selectedIndex($this->recordTracker->currentIndex());
-                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                break;
-                case $this->requests->is_newRecord():
-                    $this->recordTracker->moveNew();
-                    $this->sessions->selectedIndex($this->recordIndex);
-                    $this->sessions->selectedID(0); 
-                break;
-                case $this->requests->is_goNext():
-                    $this->resetIndex(0);
-                break;
-                case $this->requests->is_goPrevious():
-                    $this->resetIndex(1);
-                break;
-                case $this->requests->is_goFirst():
-                    $this->resetIndex(2);
-                break;
-                case $this->requests->is_goLast():
-                    $this->resetIndex(3);
-                break;
-                case $this->requests->is_updateRecordTracker():
-                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                     echo $this->recordTracker->reportRecordPosition();                    
-                break;
-                case $this->requests->is_delete():
-                     $this->delete();
-                     $this->resetIndex(-1);
-                     echo true;
-                break;
-                case $this->requests->is_save():
-                     $data = $this->requests->data();
-                     $this->fillRecord($data);
-                     if ($this->model->checkIntegrity() && $this->model->checkMandatory())
-                         $this->save($data);
-                     echo $this->model->isNewRecord();
-                break;
-            }
+            $data = $this->requests->data();
+            $this->fillRecord($data);
+            if ($this->model->checkIntegrity() && $this->model->checkMandatory())
+                $this->save($data);
+            echo $this->model->isNewRecord();
         }
     }
 
     abstract class AbstractFormListController extends AbstractController
     {
-
-        protected function resetIndex($direction) 
-        {
-            parent::resetIndex($direction);
-            echo $this->displayData();
-        }
-
         public abstract function displayData();
+        protected function selectedRow($record) : string
+        {
+            if ($this->model == $record) 
+            {
+                return "class='selectedRow'";
+            }
+            return "";
+        }
 
         public function fetchData()
         {
@@ -226,7 +244,7 @@
                 if (empty($this->sessions->searchValue())) return;
                 $this->filterRecords($this->sessions->searchValue());
                 
-                if ($this->recordCount() > 0) 
+                if (!$this->noRecords()) 
                 {
                         $temp = ($this->sessions->issetSelectedID()) 
                         ? $this->findID($this->sessions->selectedID())
@@ -246,66 +264,25 @@
             }
         }
 
-        public function readRequests()
+        protected function resetIndex($direction) 
         {
-            if ($this->requests->isEmpty()) return;
-            switch(true) 
-            {
-                case $this->requests->is_selectedID():
-                    $this->sessions->selectedID($this->requests->selectedID());
-                    $this->model = $this->findID( $this->sessions->selectedID());
-                    $this->sessions->selectedIndex($this->recordTracker->currentIndex());
-                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                    echo $this->displayData();   
-                break;
-                case $this->requests->is_goNext():
-                    $this->resetIndex(0);
-                break;
-                case $this->requests->is_goPrevious():
-                    $this->resetIndex(1);
-                break;
-                case $this->requests->is_goFirst():
-                    $this->resetIndex(2);
-                break;
-                case $this->requests->is_goLast():
-                    $this->resetIndex(3);
-                break;
-                case $this->requests->is_updateRecordTracker():
-                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
-                     echo $this->recordTracker->reportRecordPosition();                    
-                break;
-                case $this->requests->is_searchValue():
-                    $this->sessions->setSearchValue($this->requests->searchValue());
-                    $this->db->connect();
-                    $this->fetchData();
-                    echo $this->displayData();
-                break;
-                case $this->requests->is_delete():
-                    $this->delete();
-                    $this->resetIndex(-1);
-                    echo $this->displayData();
-               break;
-            }
+            parent::resetIndex($direction);
+            echo $this->displayData();
         }
 
-        public function readSessions()
+        public function onSearchValueRequest()
         {
-            if ($this->sessions->isEmpty()) return;
-
-            switch(true) 
-            {
-                case $this->sessions->issetSelectedID():
-                    $this->recordTracker->moveTo($this->sessions->selectedIndex());
-            }
+            $this->sessions->setSearchValue($this->requests->searchValue());
+            $this->db->connect();
+            $this->fetchData();
+            echo $this->displayData();
         }
 
-        protected function selectedRow($record) : string
+        public function onDeleteRecordRequest()
         {
-            if ($this->model == $record) 
-            {
-                return "class='selectedRow'";
-            }
-            return "";
+            $this->delete();
+            $this->resetIndex(-1);
+            echo $this->displayData();
         }
     }
 

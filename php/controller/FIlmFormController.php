@@ -54,19 +54,8 @@
             $this->model()->genre->genreID = $data[4];    
         }
 
-        public function findIDCriteria($record,$id) : bool
-        {
-              /** @var Film $film */
-              $film = $record;
-              return $film->filmID == $id;
-        }
+        public function onSearchValueRequest(){}
 
-        public function findRecordCriteria($record,$value) : bool
-        {
-              /** @var Film $obj */
-              $obj = $record;
-              return str_contains(strtolower(trim($obj->title)), strtolower(trim($value)));
-        }
     }
 
     class GenreController extends AbstractController 
@@ -96,19 +85,9 @@
             }
         }
 
-        public function findRecordCriteria($record, $value) : bool
-        {
-              /** @var Genre $obj */
-              $obj = $record;
-              return $obj->genreID == $value;
-        }
-
-        public function findIDCriteria($record,$id) : bool
-        {
-              /** @var Genre $genre */
-              $genre = $record;
-              return $genre->genreID == $id;
-        }
+        public function onSearchValueRequest(){}
+        public function onDeleteRecordRequest(){}
+        public function onSaveRecordRequest(){}
     }
 
     class RatingController extends AbstractController 
@@ -123,7 +102,7 @@
             $selected=-1;
             if ($rating!=null) 
             {
-                $selected = $rating->ratingID;
+                $selected = $rating->pkratingID;
             }
 
             echo '<option value="-1" selected disabled hidden>Select Rating</option>';
@@ -131,26 +110,16 @@
             {
                 /** @var Rating $rating */
                 $rating = $record;
-                if ($rating->ratingID==$selected) 
-                    echo "<option value=". $rating->ratingID ." selected>". $rating . "</option>";                
+                if ($rating->pkratingID==$selected) 
+                    echo "<option value=". $rating->pkratingID ." selected>". $rating . "</option>";                
                 else 
-                    echo "<option value=". $rating->ratingID .">". $rating . "</option>";
+                    echo "<option value=". $rating->pkratingID .">". $rating . "</option>";
             }
         }
 
-        public function findRecordCriteria($record, $value) : bool
-        {
-              /** @var Rating $obj */
-              $obj = $record;
-              return $obj->ratingID == $value;
-        }
-
-        public function findIDCriteria($record,$id) : bool
-        {
-              /** @var Rating $obj */
-              $obj = $record;
-              return $obj->ratingID == $id;
-        }
+        public function onSearchValueRequest(){}
+        public function onDeleteRecordRequest(){}
+        public function onSaveRecordRequest(){}
     }
 
     $controller = new FilmFormController();
