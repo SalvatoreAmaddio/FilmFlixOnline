@@ -70,7 +70,7 @@
             $selected=-1;
             if ($genre!=null) 
             {
-                $selected = $genre->genreID;
+                $selected = $genre->pkgenreID;
             }
 
             echo '<option value="-1" selected disabled hidden>Select Genre</option>';
@@ -78,10 +78,10 @@
             {
                 /** @var Genre $genre */
                 $genre = $record;
-                if ($genre->genreID==$selected) 
-                    echo "<option value=". $genre->genreID ." selected>". $genre . "</option>";                
+                if ($genre->pkgenreID==$selected) 
+                    echo "<option value=". $genre->pkgenreID ." selected>". $genre . "</option>";                
                 else 
-                    echo "<option value=". $genre->genreID .">". $genre . "</option>";
+                    echo "<option value=". $genre->pkgenreID .">". $genre . "</option>";
             }
         }
 
