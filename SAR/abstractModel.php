@@ -1,4 +1,5 @@
 <?php
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
 require_once SAR."\\ref.php";
 
 class QueryGenerator

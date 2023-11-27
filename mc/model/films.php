@@ -1,5 +1,5 @@
 <?php
-require_once SAR."\\abstractModel.php";
+require_once SAR."\abstractModel.php";
 require_once model."\genre.php";
 
 class Film extends AbstractModel
@@ -55,7 +55,7 @@ class Film extends AbstractModel
 
     public function __toString() : string
     {
-        return .$this->_title;
+        return $this->_title;
     }
 }
 

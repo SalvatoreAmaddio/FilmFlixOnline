@@ -1,8 +1,8 @@
 <?php
-define("home",getcwd());
-define('mc', home."\mc");
-define('js', home."\js");
-define('SAR', home."\SAR");
+define("home", $_SERVER['DOCUMENT_ROOT']);
+define('mc', $_SERVER['DOCUMENT_ROOT']."\mc");
+define('js', $_SERVER['DOCUMENT_ROOT']."\js");
+define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
 define('model', mc."\model");
 define('controller', mc."\controller");
 
