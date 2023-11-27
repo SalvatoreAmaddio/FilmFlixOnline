@@ -98,9 +98,12 @@
             return $id;
         }
 
-        public function select() 
+        public function select(string $sql="") 
         {
-            $this->table = $this->conn->query($this->model->selectSQL());
+            if (strlen($sql)==0)
+                $this->table = $this->conn->query($this->model->selectSQL());
+            else
+                $this->table = $this->conn->query($sql);
         }
     }
 ?>
