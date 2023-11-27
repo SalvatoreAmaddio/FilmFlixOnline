@@ -61,7 +61,7 @@
             return $record->isEqual($id);            
         }
 
-        public function findByID($id) : ?mixed
+        public function findByID($id) : mixed
         {
             $result = array_values(array_filter($this->records, 
             function($record) use ($id)
