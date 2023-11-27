@@ -80,14 +80,7 @@
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param($params, ...$vars);    
             $stmt->execute();
-            if ($this->model->isNewRecord()) 
-            {
-                $id = $stmt->insert_id;
-            }
-            else 
-            {
-                $id = $stmt->affected_rows;
-            }
+            $id = ($this->model->isNewRecord()) ? $stmt->insert_id :  $stmt->affected_rows;
             $stmt->close();
             $this->close();
             return $id;

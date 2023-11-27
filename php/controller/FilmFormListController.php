@@ -58,6 +58,8 @@
             }
             echo "</table>";
         }
+
+        public function onSaveRecordRequest(){}
     }
 
 ?>
