@@ -1,4 +1,6 @@
 <?php
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
+if (!defined('model')) define('model', getcwd());
 require_once SAR."\abstractModel.php";
 require_once model."\genre.php";
 

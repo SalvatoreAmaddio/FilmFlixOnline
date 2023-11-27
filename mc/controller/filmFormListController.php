@@ -1,4 +1,7 @@
 <?php
+    if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
+    if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."\mc\model");
+
     require_once model."\\films.php";
     require_once SAR."\\abstractController.php";
 
