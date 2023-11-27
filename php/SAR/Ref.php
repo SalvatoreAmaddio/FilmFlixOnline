@@ -1,4 +1,5 @@
 <?php
+
 class Ref extends ReflectionClass
 {
     private $obj;

@@ -1,4 +1,6 @@
 <?php
+require_once SAR."\\ref.php";
+
 class QueryGenerator
 {
     private Ref $ref;
@@ -224,4 +226,5 @@ abstract class AbstractModel
             }
         }
 }
+
 ?>

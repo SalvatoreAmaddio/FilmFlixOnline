@@ -1,5 +1,7 @@
 <?php    
-    session_start();
+
+    require_once SAR."\\database.php";
+    
     abstract class AbstractController 
     {
         public $records = array();

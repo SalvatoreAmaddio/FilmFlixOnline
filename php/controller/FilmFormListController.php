@@ -1,8 +1,7 @@
 <?php
-    $x = explode("php", __DIR__);
-    require_once $x[0].'/php/SAR/database.php';
-    require_once $x[0].'/php/model/genre.php';
-    require_once $x[0].'/php/model/films.php';
+
+    require_once model."\\films.php";
+    require_once SAR."\\abstractController.php";
 
     class FilmFormListController extends AbstractFormListController
     {        

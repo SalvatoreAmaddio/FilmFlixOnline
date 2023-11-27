@@ -1,8 +1,7 @@
 <?php
 
-    $x = explode("php", __DIR__);
-    require_once $x[0].'php/SAR/abstractModel.php';
-    require_once $x[0].'php/SAR/abstractController.php';
+    require_once SAR."\\abstractModel.php";
+
     class Database 
     {
         public string $serverName = "localhost";
