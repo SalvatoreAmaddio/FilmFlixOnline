@@ -54,7 +54,7 @@
             $this->model()->genre->genreID = $data[4];    
         }
 
-        public function onSearchValueRequest(){}
+        public function onSearchValueRequest() {}
 
     }
 

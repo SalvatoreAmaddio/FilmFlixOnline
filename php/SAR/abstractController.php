@@ -56,12 +56,12 @@
             $this->db->delete($this->sessions->selectedID());        
         }
 
-        public function findIDCriteria($record,$id) : bool 
+        public function findIDCriteria($record, $id) : bool 
         {
             return $record->isEqual($id);            
         }
 
-        public function findID($id) : ?mixed
+        public function findByID($id) : ?mixed
         {
             $result = array_values(array_filter($this->records, 
             function($record) use ($id)
@@ -133,10 +133,11 @@
         public function onSelectedIDRequest()
         {
             $this->sessions->selectedID($this->requests->selectedID());
-            $this->model = $this->findID( $this->sessions->selectedID());
+            $this->model = $this->findByID( $this->sessions->selectedID());
             $this->sessions->selectedIndex($this->recordTracker->currentIndex());
             $this->recordTracker->moveTo($this->sessions->selectedIndex());
         }
+
         public function onUpdateRecordTrackerRequest() 
         {
             $this->recordTracker->moveTo($this->sessions->selectedIndex());
