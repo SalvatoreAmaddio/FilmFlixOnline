@@ -7,8 +7,8 @@ class Film extends AbstractModel
     public int $pkfilmID = 0;
     public string $_title = "";
     public int $_yearReleased = 0;
-    public Rating $fkrating;
     public int $_duration = 0;
+    public Rating $fkrating;
     public Genre $fkgenre;
 
     public function __construct() 
@@ -55,7 +55,7 @@ class Film extends AbstractModel
 
     public function __toString() : string
     {
-        return "Ciao".$this->_title;
+        return .$this->_title;
     }
 }
 
