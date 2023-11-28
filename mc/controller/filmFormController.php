@@ -54,8 +54,6 @@
             $this->model()->genre->genreID = $data[4];    
         }
 
-        public function onSearchValueRequest() {}
-
     }
 
     class GenreController extends AbstractController 
@@ -85,9 +83,7 @@
             }
         }
 
-        public function onSearchValueRequest(){}
         public function onDeleteRecordRequest(){}
-        public function onSaveRecordRequest(){}
     }
 
     class RatingController extends AbstractController 
@@ -117,9 +113,7 @@
             }
         }
 
-        public function onSearchValueRequest(){}
         public function onDeleteRecordRequest(){}
-        public function onSaveRecordRequest(){}
     }
 
     $controller = new FilmFormController();

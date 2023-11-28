@@ -60,8 +60,6 @@
             }
             echo "</table>";
         }
-
-        public function onSaveRecordRequest(){}
     }
 
     $controller = new FilmFormListController();

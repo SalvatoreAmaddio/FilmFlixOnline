@@ -145,8 +145,6 @@
             echo $this->recordTracker->reportRecordPosition();           
         }
 
-        abstract public function onSearchValueRequest();
-
         public function onNewRecordRequest() 
         {
             $this->recordTracker->moveNew();
@@ -159,8 +157,6 @@
             $this->delete();
             $this->resetIndex(-1);
         }
-
-        abstract public function onSaveRecordRequest();
 
         public function readRequests()
         {
@@ -180,11 +176,7 @@
                 break;
                 case $this->requests->is_updateRecordTracker(): $this->onUpdateRecordTrackerRequest();
                 break;
-                case $this->requests->is_searchValue(): $this->onSearchValueRequest();
-                break;
                 case $this->requests->is_delete(): $this->onDeleteRecordRequest();
-                break;
-                case $this->requests->is_save(): $this->onSaveRecordRequest();
                 break;
             }
         }
@@ -219,6 +211,16 @@
             echo true;
         }
 
+        public function readRequests() 
+        {
+            parent::readRequests();
+            switch(true) 
+            {
+                case $this->requests->is_save(): $this->onSaveRecordRequest();
+                break;
+            }
+        }
+
         public function onSaveRecordRequest() 
         {
             $data = $this->requests->data();
@@ -233,6 +235,16 @@
     {
         public abstract function displayData();
         
+        public function readRequests() 
+        {
+            parent::readRequests();
+            switch(true) 
+            {
+                case $this->requests->is_searchValue(): $this->onSearchValueRequest();
+                break;
+            }
+        }
+
         protected function selectedRow($record) : string
         {
             if ($this->sessions->selectedIndex() > $this->len()) 
