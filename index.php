@@ -1,6 +1,6 @@
 <?php
- $x = explode("php", __DIR__);
-    include($x[0]."/php/controller/FilmFormListController.php");
+    if (!defined('controller')) define('controller', $_SERVER['DOCUMENT_ROOT']."\mc\controller");    
+    require_once controller."\\filmFormListController.php";
     $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readSessions();
@@ -42,7 +42,7 @@
         </div>
 
         <script>
-            new ListForm("php/controller/FilmFormListController.php");
+            new ListForm("mc/controller/filmFormListController.php");
 
             const s = document.getElementById("searchSection");
             const k = document.getElementById("infoButton");

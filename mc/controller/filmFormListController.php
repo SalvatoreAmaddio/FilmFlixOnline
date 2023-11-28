@@ -1,4 +1,5 @@
 <?php
+    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
     if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
     if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."\mc\model");
 
@@ -63,4 +64,8 @@
         public function onSaveRecordRequest(){}
     }
 
+    $controller = new FilmFormListController();
+    $controller->fetchData();
+    $controller->readRequests();
+    $controller->readSessions();
 ?>

@@ -126,5 +126,4 @@
     $controller->fetchData();
     $controller->readRequests();
     $controller->readSessions();
-    echo $controller->model();
 ?>

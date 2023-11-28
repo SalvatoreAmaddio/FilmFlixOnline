@@ -199,15 +199,13 @@ abstract class AbstractModel
 
         if (is_int($obj)) 
         {
-            $this->ref->access("pk");
+            $this->ref->findProperty("pk");
             return $this->ref->getValue()==$obj;
         }
     }
 
     abstract public function checkIntegrity() : bool;
     abstract public function checkMandatory() : bool;
-
-
 //1select
 //2update
 //3insert

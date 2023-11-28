@@ -1,5 +1,5 @@
 <?php    
-
+    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
     if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
     require_once SAR."\\database.php";
     
@@ -19,7 +19,7 @@
             $this->db = new Database();
             $this->requests = new RequestManager();
             $this->sessions = new SessionManager($this->me());
-            $this->recordTracker =  new RecordTracker($this->model,$this->recordIndex,$this->records);
+            $this->recordTracker =  new RecordTracker($this->model, $this->recordIndex,$this->records);
             $this->db->setModel($this->model);
             $this->db->connect();
         }
@@ -144,7 +144,7 @@
         public function onUpdateRecordTrackerRequest() 
         {
             $this->recordTracker->moveTo($this->sessions->selectedIndex());
-            echo $this->recordTracker->reportRecordPosition();                    
+            echo $this->recordTracker->reportRecordPosition();           
         }
 
         abstract public function onSearchValueRequest();
@@ -156,12 +156,16 @@
             $this->sessions->selectedID(0); 
         }
 
-        abstract public function onDeleteRecordRequest();
+        public function onDeleteRecordRequest() 
+        {
+            $this->delete();
+            $this->resetIndex(-1);
+        }
+
         abstract public function onSaveRecordRequest();
 
         public function readRequests()
         {
-            if ($this->requests->isEmpty()) return;
             switch(true) 
             {
                 case $this->requests->is_selectedID(): $this->onSelectedIDRequest();
@@ -213,8 +217,7 @@
 
         public function onDeleteRecordRequest() 
         {
-            $this->delete();
-            $this->resetIndex(-1);
+            parent::onDeleteRecordRequest();
             echo true;
         }
 
@@ -231,6 +234,7 @@
     abstract class AbstractFormListController extends AbstractController
     {
         public abstract function displayData();
+        
         protected function selectedRow($record) : string
         {
             if ($this->model == $record) 
@@ -284,10 +288,15 @@
 
         public function onDeleteRecordRequest()
         {
-            $this->delete();
-            $this->resetIndex(-1);
+            parent::onDeleteRecordRequest();
             echo $this->displayData();
         }
+
+        public function onSelectedIDRequest()
+        {
+            parent::onSelectedIDRequest();
+            $this->displayData();
+        }   
     }
 
     interface IManager 
@@ -551,7 +560,7 @@
         public function moveNew() 
         {
             $this->recordIndex = $this->recordCount();
-            $this->model = $this->model::returnNew();
+            $this->model = $this->model->returnNew();
         }
 
         public function moveTo($index) 

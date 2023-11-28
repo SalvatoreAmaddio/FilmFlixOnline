@@ -60,6 +60,7 @@ class AnimationManager
 
     }
 }
+
 class AbstractForm 
 {
     dataSection;
@@ -309,6 +310,7 @@ class ListForm extends AbstractForm
           block: 'center'
         });
     }
+
     #rowClicked(e) 
     {
         let elementClicked = e.target;
@@ -331,17 +333,14 @@ class ListForm extends AbstractForm
 
         let param = "selectedID=" + id;
         this.send(param,
-        (output)=>
-        {
-            this.displayData(output);
-        });
+        (output)=> {this.displayData(output);});
 
         if (elementClicked.tagName=="BUTTON") 
         {
             if (elementClicked.className.includes("editButton")) 
             {
                 this.send(param,
-                    (output)=>{},'/php/controller/FilmFormController.php');     
+                    (output)=>{},'mc/controller/FilmFormController.php');     
                 location.href = "amend.php";
             }
 
