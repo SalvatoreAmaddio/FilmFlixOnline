@@ -127,7 +127,10 @@
             while($row = $this->db->table->fetch_assoc()) 
                 array_push($this->records, $this->model->readRow($row));
             if ($this->hasRecords()) 
+            {
                 $this->model = $this->records[$this->recordIndex];
+                $this->sessions->selectedIndex(0);
+            }
             $this->db->close();
         }
 
