@@ -44,9 +44,9 @@
             return count($this->records);
         }
 
-        public function noRecords() : bool 
+        public function hasRecords() : bool 
         {
-            return $this->recordCount() == 0;
+            return $this->recordCount() > 0;
         }
 
         public function model() : mixed 
@@ -126,10 +126,8 @@
             $this->db->select();
             while($row = $this->db->table->fetch_assoc()) 
                 array_push($this->records, $this->model->readRow($row));
-
-            if ($this->recordCount() > 0) 
+            if ($this->hasRecords()) 
                 $this->model = $this->records[$this->recordIndex];
-            
             $this->db->close();
         }
 
@@ -252,23 +250,8 @@
                 if (empty($this->sessions->searchValue())) return;
                 $this->filterRecords($this->sessions->searchValue());
                 
-                if (!$this->noRecords()) 
-                {
-                        $temp = ($this->sessions->issetSelectedID()) 
-                        ? $this->findByID($this->sessions->selectedID())
-                        : $this->records[0];
-    
-                    switch(true) 
-                    {
-                        case $this->sessions->selectedIndex() <= $this->len():
-                            $this->model = $this->records[$this->sessions->selectedIndex()];
-                        break;
-                        case ($temp!=null):
-                            $this->model = $temp;
-                        break;
-                        default: $this->model = $this->records[$this->len()];
-                    }
-                }
+                if ($this->hasRecords()) 
+                    $this->records[0];    
             }
         }
 
