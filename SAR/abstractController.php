@@ -129,7 +129,7 @@
             if ($this->hasRecords()) 
             {
                 $this->model = $this->records[$this->recordIndex];
-                $this->sessions->selectedIndex(0);
+                #$this->sessions->selectedIndex(0);
             }
             $this->db->close();
         }
@@ -238,10 +238,12 @@
         
         protected function selectedRow($record) : string
         {
-            if ($this->model == $record) 
-            {
+            if ($this->sessions->selectedIndex() > $this->len()) 
+                $this->sessions->selectedIndex(0);
+            
+            if ($this->records[$this->sessions->selectedIndex()] == $record) 
                 return "class='selectedRow'";
-            }
+            
             return "";
         }
 
@@ -254,7 +256,7 @@
                 $this->filterRecords($this->sessions->searchValue());
                 
                 if ($this->hasRecords()) 
-                    $this->records[0];    
+                    $this->records[$this->recordIndex];    
             }
         }
 
