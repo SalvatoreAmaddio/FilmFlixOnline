@@ -26,6 +26,18 @@
                         <input id="searchBar" type="text" placeholder="Search movie...">
                         <button>+</button>
                     </div>
+
+                    <div id="filtersPanel">
+                        <label>Filter by</label>
+                        <select>
+                            <option id='0'></option>
+                            <option id='1'>Rating</option>
+                            <option id='2'>Genre</option>
+                            <option id='3'>Year</option>
+                        </select>
+                        <div id="filterOptions">
+                        </div>
+                    </div>
                 </section>
 
                 <section id="dataSection" style="background-image: url('img/projector.jpg')">

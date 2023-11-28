@@ -2,16 +2,36 @@
 {
     padding: 1rem;
     padding-top: 0;
-    padding-bottom: 2.3rem;
     background-color: var(--sectionBackground);
     background-position-y: 75%;
     position: relative;
 }
 
-#searchPanel 
+#searchPanel, #filtersPanel 
 {
     padding: 1rem;
     padding-top: 0;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+#filtersPanel 
+{
+    padding-bottom: 0;
+}
+
+#filtersPanel select 
+{
+    padding: .7rem;
+    border-radius: 1rem;
+    border-color: black;
+    border-width: 1px;
+    border-spacing: 0;
+}
+
+#filterOptions 
+{
+    display: inline-block;
 }
 
 #searchPanel input[type=text] 

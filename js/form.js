@@ -236,14 +236,12 @@ class Form extends AbstractForm
 
 class ListForm extends AbstractForm
 {
-    #searchBar;
-
     constructor(server) 
     {
         super(server);
-        this.#searchBar = document.getElementById("searchBar");
+        this.searchBar = document.getElementById("searchBar");
         this.#onRowClickedEvent();
-        this.#searchBar.addEventListener("input",
+        this.searchBar.addEventListener("input",
         (e)=>
         {
             sessionStorage.setItem("searchValue", e.target.value);
@@ -251,11 +249,21 @@ class ListForm extends AbstractForm
         });
 
         let storedSearchVal = sessionStorage.getItem("searchValue");
-        if (storedSearchVal) this.#searchBar.value = storedSearchVal;
+        if (storedSearchVal) this.searchBar.value = storedSearchVal;
         this.newButton.addEventListener("click",(e)=>this.goNew());
         this.#scroll();
     }
 
+
+    get searchBar() 
+    {
+        return document.getElementById("searchBar");
+    }
+
+    get filterOptions() 
+    {
+        return document.getElementById('filterOptions');
+    }
 
     get newButton() 
     {
