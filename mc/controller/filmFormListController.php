@@ -70,6 +70,12 @@
             echo "</table>";
         }
 
+        public function onSearchValueRequest()
+        {
+            $this->model()->selectStmt = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE '%the mu%';";
+            parent::onSearchValueRequest();
+        }
+
         private function readFilterOption($request) 
         {
             switch($request) 

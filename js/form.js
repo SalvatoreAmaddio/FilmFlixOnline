@@ -251,11 +251,41 @@ class ListForm extends AbstractForm
         if (storedSearchVal) this.searchBar.value = storedSearchVal;
         this.newButton.addEventListener("click",(e)=>this.goNew());
         this.#scroll();
+        this.dropdownOptions.addEventListener("change",(e)=>
+        {
+            let optionID = e.target.options[e.target.selectedIndex].id;
+            sessionStorage.setItem("filterOption",optionID);
+            this.#sendFilterOptions();
+        });
+
+        if (sessionStorage.getItem("filterOption"))
+        {
+            this.dropdownOptions.selectedIndex = sessionStorage.getItem("filterOption"); 
+            this.#sendFilterOptions();
+        }
+    }
+
+    #sendFilterOptions() 
+    {
+        this.send("filterOption="+sessionStorage.getItem("filterOption"), (e)=>
+        {
+            this.filterOptions.innerHTML = e;
+        });
+    }
+
+    get dropdownOptions() 
+    {
+        return document.getElementById('dropdownOptions');
     }
 
     get searchBar() 
     {
         return document.getElementById("searchBar");
+    }
+
+    get filterOptions() 
+    {
+        return document.getElementById('filterOptions');
     }
 
     get newButton() 

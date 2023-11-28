@@ -19,7 +19,7 @@ class Film extends AbstractModel
         $this->_yearReleased = date("Y");
         $this->fkgenre = new Genre();
         $this->fkrating = new Rating();
-        $this->selectStmt= "SELECT film.*, rating.ratingName, genre.genreName FROM film INNER JOIN genre ON film.genreID = genre.genreID INNER JOIN rating ON film.ratingID = rating.ratingID ORDER BY film.filmID;";
+        $this->selectStmt= "SELECT * FROM qryfilms";
     }
 
     public function checkIntegrity(): bool

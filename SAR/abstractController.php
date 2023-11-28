@@ -174,8 +174,7 @@
                 break;
                 case $this->requests->is_goLast(): $this->resetIndex(3);
                 break;
-                case $this->requests->is_updateRecordTracker(): 
-                    $this->onUpdateRecordTrackerRequest();
+                case $this->requests->is_updateRecordTracker(): $this->onUpdateRecordTrackerRequest();
                 break;
                 case $this->requests->is_delete(): $this->onDeleteRecordRequest();
                 break;
@@ -257,19 +256,6 @@
             return "";
         }
 
-        public function fetchData()
-        {
-            parent::fetchData();
-            if ($this->sessions->issetSearchValue()) 
-            {
-                if (empty($this->sessions->searchValue())) return;
-                $this->filterRecords($this->sessions->searchValue());
-                
-                if ($this->hasRecords()) 
-                    $this->records[$this->recordIndex];    
-            }
-        }
-
         protected function resetIndex($direction) 
         {
             parent::resetIndex($direction);
@@ -278,7 +264,6 @@
 
         public function onSearchValueRequest()
         {
-            $this->sessions->setSearchValue($this->requests->searchValue());
             $this->db->connect();
             $this->fetchData();
             echo $this->displayData();
@@ -316,21 +301,6 @@
         public function isEmpty() : bool 
         {
             return count($_SESSION) == 0;
-        }
-
-        public function searchValue() : string
-        {
-            return $_SESSION[$this->origin.'searchValue'];
-        }
-
-        public function setSearchValue(string $str)
-        {
-            $_SESSION[$this->origin.'searchValue'] = $str;
-        }
-
-        public function issetSearchValue() : bool
-        {
-            return isset($_SESSION[$this->origin.'searchValue']);
         }
 
         public function selectedIndex(int $index = -1)

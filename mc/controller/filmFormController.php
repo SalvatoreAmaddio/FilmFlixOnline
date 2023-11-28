@@ -116,8 +116,8 @@
         public function onDeleteRecordRequest(){}
     }
 
-    $controller = new FilmFormController();
-    $controller->fetchData();
-    $controller->readRequests();
-    $controller->readSessions();
+   # $controller = new FilmFormController();
+   # $controller->fetchData();
+   # $controller->readRequests();
+   # $controller->readSessions();
 ?>
