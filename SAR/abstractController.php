@@ -75,9 +75,9 @@
             return (count($result)>0) ? $result[0] : null;
         }
 
-        public function findRecordCriteria($record,$value) 
+        public function findRecordCriteria($record,$value) : bool
         {
-            return strpos(strtolower(trim($record)), strtolower(trim($value)));
+            return is_numeric(strpos(strtolower(trim($record)), strtolower(trim($value))));
         }
         
         public function filterRecords($value)
