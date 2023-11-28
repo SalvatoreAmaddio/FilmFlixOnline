@@ -98,12 +98,23 @@
             return $id;
         }
 
-        public function select(string $sql="") 
+        public function select(string $sql="", ...$vars) : int
         {
-            if (strlen($sql)==0)
+            if (strlen($sql)==0) 
+            {
                 $this->table = $this->conn->query($this->model->selectSQL());
+                return 0;
+            }
             else
-                $this->table = $this->conn->query($sql);
+            {
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bind_param($this->model->bindParam(1), ...$vars);    
+                $stmt->execute();
+                $id = $stmt->affected_rows;
+                $this->table = $stmt->get_result();
+                $stmt->close();
+                return $id;    
+            }
         }
     }
 ?>

@@ -241,16 +241,17 @@ class ListForm extends AbstractForm
         super(server);
         this.#onRowClickedEvent();
         this.searchBar.addEventListener("input",
-        (e)=>
-        {
-            sessionStorage.setItem("searchValue", e.target.value);
-            this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
-        });
+        (e)=>this.#sendSearchInput(e.target.value));
 
         let storedSearchVal = sessionStorage.getItem("searchValue");
-        if (storedSearchVal) this.searchBar.value = storedSearchVal;
+        if (storedSearchVal) 
+        {
+            this.searchBar.value = storedSearchVal;
+            this.#sendSearchInput(storedSearchVal);
+        }
+
         this.newButton.addEventListener("click",(e)=>this.goNew());
-        this.#scroll();
+        
         this.dropdownOptions.addEventListener("change",(e)=>
         {
             let optionID = e.target.options[e.target.selectedIndex].id;
@@ -263,6 +264,14 @@ class ListForm extends AbstractForm
             this.dropdownOptions.selectedIndex = sessionStorage.getItem("filterOption"); 
             this.#sendFilterOptions();
         }
+
+        this.#scroll();
+    }
+
+    #sendSearchInput(e) 
+    {
+        sessionStorage.setItem("searchValue", e);
+        this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
     }
 
     #sendFilterOptions() 

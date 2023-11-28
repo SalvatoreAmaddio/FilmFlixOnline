@@ -72,8 +72,13 @@
 
         public function onSearchValueRequest()
         {
-            $this->model()->selectStmt = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE '%the mu%';";
-            parent::onSearchValueRequest();
+            $search = strtolower($this->requests->searchValue());
+            $search = "%$search%";
+            echo $search;
+            $this->db->connect();  
+            $this->fetchData("SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;", $search);
+            $this->recordTracker->moveTo(0);
+            echo $this->displayData();
         }
 
         private function readFilterOption($request) 
@@ -115,5 +120,4 @@
     $controller->fetchData();
     $controller->readRequests();
     $controller->readSessions();
-
 ?>

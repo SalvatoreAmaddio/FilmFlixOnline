@@ -215,7 +215,7 @@ abstract class AbstractModel
             switch($crud) 
             {
                 case 1://select
-                return "";
+                return "s";
                 case 2://update
                 return $this->queryGenerator->fieldsType . $this->queryGenerator->fkType;
                 case 3://insert

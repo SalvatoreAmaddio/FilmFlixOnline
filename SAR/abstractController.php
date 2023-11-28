@@ -120,14 +120,20 @@
             $this->sessions->selectedIndex($this->recordIndex);
         }
 
-        public function fetchData() 
+        public function fetchData($sql="", ...$vars) 
         {
-            $this->records = array_diff($this->records, $this->records); ;
-            $this->db->select();
+            $this->records = array_diff($this->records, $this->records);
+            if (strlen($sql)==0) 
+                $this->db->select();
+            else 
+                $this->db->select($sql, ...$vars);
+
             while($row = $this->db->table->fetch_assoc()) 
                 array_push($this->records, $this->model->readRow($row));
+
             if ($this->hasRecords()) 
                 $this->model = $this->records[$this->recordIndex];
+            
             $this->db->close();
         }
 
@@ -266,6 +272,7 @@
         {
             $this->db->connect();
             $this->fetchData();
+            $this->recordTracker->moveTo(0);
             echo $this->displayData();
         }
 
