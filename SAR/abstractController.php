@@ -120,14 +120,23 @@
             $this->sessions->selectedIndex($this->recordIndex);
         }
 
-        public function fetchData($sql="", ...$vars) 
+        public function preparedFetchData(string $sql="", string $paramTypes = "", ...$vars) 
         {
             $this->records = array_diff($this->records, $this->records);
-            if (strlen($sql)==0) 
-                $this->db->select();
-            else 
-                $this->db->select($sql, ...$vars);
+                $this->db->preparedSelect($sql, $paramTypes, ...$vars);
+            while($row = $this->db->table->fetch_assoc()) 
+                array_push($this->records, $this->model->readRow($row));
 
+            if ($this->hasRecords()) 
+                $this->model = $this->records[$this->recordIndex];
+            
+            $this->db->close();
+        }
+
+        public function fetchData() 
+        {
+            $this->records = array_diff($this->records, $this->records);
+                $this->db->select();
             while($row = $this->db->table->fetch_assoc()) 
                 array_push($this->records, $this->model->readRow($row));
 
@@ -239,14 +248,15 @@
 
     abstract class AbstractFormListController extends AbstractController
     {
-        public abstract function displayData();
+        public abstract function displayData();        
         
         public function readRequests() 
         {
             parent::readRequests();
             switch(true) 
             {
-                case $this->requests->is_searchValue(): $this->onSearchValueRequest();
+                case $this->requests->is_searchValue(): 
+                    $this->onSearchValueRequest();
                 break;
             }
         }
@@ -316,6 +326,21 @@
             $_SESSION[$this->origin.'selectedIndex'] = $index;
         }
 
+        public function setSearchValue($value) 
+        {
+            $_SESSION[$this->origin.'searchValue'] = $value;
+        }
+
+        public function getSearchValue() 
+        {
+            return $_SESSION[$this->origin.'searchValue'];
+        }
+
+        public function issetSearchValue() : bool
+        {
+            return isset($_SESSION[$this->origin.'searchValue']);
+        }
+
         public function issetSelectedIndex() : bool
         {
             return isset($_SESSION[$this->origin.'selectedIndex']);
@@ -369,6 +394,11 @@
         public function searchValue() : string
         {
             return $_REQUEST["searchValue"];
+        }
+
+        public function setSearchValue(string $value)
+        {
+            $_REQUEST["searchValue"] = $value;
         }
 
         public function is_delete() : bool 

@@ -240,16 +240,8 @@ class ListForm extends AbstractForm
     {
         super(server);
         this.#onRowClickedEvent();
-        this.searchBar.addEventListener("input",
-        (e)=>this.#sendSearchInput(e.target.value));
-
-        let storedSearchVal = sessionStorage.getItem("searchValue");
-        if (storedSearchVal) 
-        {
-            this.searchBar.value = storedSearchVal;
-            this.#sendSearchInput(storedSearchVal);
-        }
-
+        this.searchBar.addEventListener("input",(e)=>this.#sendSearchInput(e.target.value));
+        this.#checkStoredSearchValue();
         this.newButton.addEventListener("click",(e)=>this.goNew());
         
         this.dropdownOptions.addEventListener("change",(e)=>
@@ -264,14 +256,33 @@ class ListForm extends AbstractForm
             this.dropdownOptions.selectedIndex = sessionStorage.getItem("filterOption"); 
             this.#sendFilterOptions();
         }
-
         this.#scroll();
+    }
+
+    get inputEl() 
+    {
+        try 
+        {
+            return document.getElementById("filter");
+        }
+        catch 
+        {
+            return null;
+        }
     }
 
     #sendSearchInput(e) 
     {
         sessionStorage.setItem("searchValue", e);
-        this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
+        this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>{this.displayData(e)});
+    }
+
+    #sendFilterValue() 
+    {
+        this.send("filterValue="+sessionStorage.getItem("filterValue"), (e)=>
+        {
+            this.displayData(e);
+        });
     }
 
     #sendFilterOptions() 
@@ -279,7 +290,55 @@ class ListForm extends AbstractForm
         this.send("filterOption="+sessionStorage.getItem("filterOption"), (e)=>
         {
             this.filterOptions.innerHTML = e;
+
+            if (!e) 
+            {
+                sessionStorage.removeItem("filterValue");
+                sessionStorage.removeItem("filterOption");
+                this.#checkStoredSearchValue();
+                return;
+            }
+            
+            if (this.inputEl) {
+                switch(true) {
+                    case this.inputEl.tagName == "SELECT":
+                    this.inputEl.addEventListener("change",(e)=>
+                    {
+                        let filterValue = e.target.options[e.target.selectedIndex].value;
+                        sessionStorage.setItem("filterValue", filterValue);
+                       // this.#sendFilterValue();
+                    });            
+                    break;
+                    case this.inputEl.tagName == "INPUT":
+                    this.inputEl.addEventListener("input",(e)=>
+                    {
+                        let filterValue = e.target.value;
+                        sessionStorage.setItem("filterValue",filterValue);
+                        //this.#sendFilterValue();
+                    });
+                    break;
+                    }
+            }    
+
+            if (sessionStorage.getItem("filterValue")) 
+            {
+                if (this.inputEl.tagName=="SELECT")
+                    this.inputEl.selectedIndex = sessionStorage.getItem("filterValue");         
+                else 
+                    this.inputEl.value = sessionStorage.getItem("filterValue");         
+                //this.#sendFilterValue();
+            }
         });
+    }
+
+    #checkStoredSearchValue() 
+    {
+        let storedSearchVal = sessionStorage.getItem("searchValue");
+        if (storedSearchVal) 
+        {
+            this.searchBar.value = storedSearchVal;
+            this.#sendSearchInput(storedSearchVal);
+        }
     }
 
     get dropdownOptions() 

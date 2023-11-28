@@ -11,6 +11,10 @@
     class FilmFormListController extends AbstractFormListController
     {        
 
+        public string $filterQry = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;";
+        public string $filterGenre = "SELECT * FROM qryfilms WHERE genreID = ?;";
+        public string $filterRating = "SELECT * FROM qryfilms WHERE ratingID = ?;";
+        public string $filterYear = "SELECT * FROM qryfilms WHERE yearReleased = ?;";
         public GenreController $genreController;
         public RatingController $ratingController;
 
@@ -72,34 +76,90 @@
 
         public function onSearchValueRequest()
         {
-            $search = strtolower($this->requests->searchValue());
-            $search = "%$search%";
-            echo $search;
-            $this->db->connect();  
-            $this->fetchData("SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;", $search);
+            $this->sessions->setSearchValue("%".strtolower($this->requests->searchValue())."%");
+            $this->db->connect();
+            $this->fetchData($this->filterQry, $this->sessions->getSearchValue());
+            $this->recordTracker->moveTo(0);
+            echo $this->displayData();
+        }
+
+        private function searchByValue() : bool 
+        {
+            return $this->sessions->issetSearchValue();
+        }
+
+        private function searchByGenre() : bool 
+        {
+            return isset($_SESSION["formListFilterType"]) 
+            && $_SESSION["formListFilterType"]==2 
+            && isset($_SESSION["formListFilterValue"]);
+        }
+
+        private function searchByRating() : bool 
+        {
+            return isset($_SESSION["formListFilterType"]) 
+            && $_SESSION["formListFilterType"]==1 
+            && isset($_SESSION["formListFilterValue"]);
+        }
+
+        private function searchByYear() : bool 
+        {
+            return isset($_SESSION["formListFilterType"]) 
+            && $_SESSION["formListFilterType"]==3 
+            && isset($_SESSION["formListFilterValue"]);
+        }
+
+        public function onFilter() 
+        {
+            switch(true)
+            {
+                case $this->searchByYear():
+                    $this->preparedFetchData($this->filterYear, "i", intval($_SESSION["formListFilterValue"]));
+                break;
+                case $this->searchByRating():
+                    $this->preparedFetchData($this->filterRating, "i", intval($_SESSION["formListFilterValue"]));
+                break;
+                case $this->searchByGenre():
+                    $this->preparedFetchData($this->filterGenre, "i", intval($_SESSION["formListFilterValue"]));
+                break;
+                case $this->searchByValue():
+                    $this->preparedFetchData($this->filterQry,"s",$this->sessions->getSearchValue());
+                break;
+                default:
+                    $this->fetchData();
+            }        
+        }
+
+        private function readFilterValue($request) 
+        {
+            $_SESSION["formListFilterValue"] = $request;
+            $this->db->connect();            
+            $this->onFilter();
             $this->recordTracker->moveTo(0);
             echo $this->displayData();
         }
 
         private function readFilterOption($request) 
         {
-            switch($request) 
+            $_SESSION["formListFilterType"] = $request;
+            switch($_SESSION["formListFilterType"]) 
             {
-                case 0:
+                case 0: 
+                    unset($_SESSION["formListFilterType"]);
+                    unset($_SESSION["formListFilterValue"]);
                     echo "";
                 break;
                 case 1:
-                    echo "<select>";
+                    echo "<select id='filter'>";
                     $this->ratingController->ratingList(null);
                     echo "</select>";
                 break;
                 case 2:
-                    echo "<select>";
+                    echo "<select id='filter'>";
                     $this->genreController->genreList(null);
                     echo "</select>";
                 break;
-                case 3:
-                    echo "<input placeholder='Select year...' type='number'>";
+                case 3: echo "<input id='filter' placeholder='Select year...' type='number'>";
                 break;
             }
         }
@@ -107,17 +167,20 @@
         public function readRequests()
         {
             parent::readRequests();
-            switch(true) 
+            switch(true)
             {
                 case isset($_REQUEST["filterOption"]) && $_REQUEST["filterOption"]:
                 $this->readFilterOption($_REQUEST["filterOption"]);
+                break;
+                case isset($_REQUEST["filterValue"]) && $_REQUEST["filterValue"]:
+                $this->readFilterValue($_REQUEST["filterValue"]);
                 break;
             }
         }
     }
 
     $controller = new FilmFormListController();
-    $controller->fetchData();
+    $controller->onFilter();
     $controller->readRequests();
     $controller->readSessions();
 ?>
