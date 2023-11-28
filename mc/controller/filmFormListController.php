@@ -2,16 +2,25 @@
     if(session_status() !== PHP_SESSION_ACTIVE) session_start();
     if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
     if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."\mc\model");
+    if (!defined('controller')) define('controller', $_SERVER['DOCUMENT_ROOT']."\mc\controller");
 
     require_once model."\\films.php";
     require_once SAR."\\abstractController.php";
+    require_once controller."\\filmFormController.php";
 
     class FilmFormListController extends AbstractFormListController
     {        
 
+        public GenreController $genreController;
+        public RatingController $ratingController;
+
         public function __construct() 
         {
             parent::__construct(new Film());
+            $this->genreController = new GenreController();
+            $this->ratingController = new RatingController();
+            $this->genreController->fetchData();
+            $this->ratingController->fetchData();
         }
 
         public function displayData() 
@@ -59,6 +68,40 @@
                     </tr>";
             }
             echo "</table>";
+        }
+
+        private function readFilterOption($request) 
+        {
+            switch($request) 
+            {
+                case 0:
+                    echo "";
+                break;
+                case 1:
+                    echo "<select>";
+                    $this->ratingController->ratingList(null);
+                    echo "</select>";
+                break;
+                case 2:
+                    echo "<select>";
+                    $this->genreController->genreList(null);
+                    echo "</select>";
+                break;
+                case 3:
+                    echo "<input placeholder='Select year...' type='number'>";
+                break;
+            }
+        }
+
+        public function readRequests()
+        {
+            parent::readRequests();
+            switch(true) 
+            {
+                case isset($_REQUEST["filterOption"]) && $_REQUEST["filterOption"]:
+                $this->readFilterOption($_REQUEST["filterOption"]);
+                break;
+            }
         }
     }
 

@@ -254,10 +254,22 @@ class ListForm extends AbstractForm
         this.dropdownOptions.addEventListener("change",(e)=>
         {
             let optionID = e.target.options[e.target.selectedIndex].id;
-            this.send("filterOption="+optionID, (e)=>
-            {
-                this.filterOptions.innerHTML = e;
-            });
+            sessionStorage.setItem("filterOption",optionID);
+            this.#sendFilterOptions();
+        });
+
+        if (sessionStorage.getItem("filterOption"))
+        {
+            this.dropdownOptions.selectedIndex = sessionStorage.getItem("filterOption"); 
+            this.#sendFilterOptions();
+        }
+    }
+
+    #sendFilterOptions() 
+    {
+        this.send("filterOption="+sessionStorage.getItem("filterOption"), (e)=>
+        {
+            this.filterOptions.innerHTML = e;
         });
     }
 

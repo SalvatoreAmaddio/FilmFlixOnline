@@ -115,7 +115,7 @@ abstract class AbstractModel
     private $insertStmt;
     private $updateStmt;
     private $deleteStmt;
-    private $selectStmt;
+    public $selectStmt;
 
     public function __construct() 
     {

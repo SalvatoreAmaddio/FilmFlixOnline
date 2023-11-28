@@ -20,7 +20,7 @@
     padding-bottom: 0;
 }
 
-#filtersPanel select 
+#filtersPanel select, #filtersPanel input 
 {
     padding: .7rem;
     border-radius: 1rem;

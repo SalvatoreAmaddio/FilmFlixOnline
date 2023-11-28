@@ -140,7 +140,7 @@
         }
 
         public function onUpdateRecordTrackerRequest() 
-        {
+        {            
             $this->recordTracker->moveTo($this->sessions->selectedIndex());
             echo $this->recordTracker->reportRecordPosition();           
         }
@@ -174,7 +174,8 @@
                 break;
                 case $this->requests->is_goLast(): $this->resetIndex(3);
                 break;
-                case $this->requests->is_updateRecordTracker(): $this->onUpdateRecordTrackerRequest();
+                case $this->requests->is_updateRecordTracker(): 
+                    $this->onUpdateRecordTrackerRequest();
                 break;
                 case $this->requests->is_delete(): $this->onDeleteRecordRequest();
                 break;
@@ -186,7 +187,7 @@
             if ($this->sessions->isEmpty()) return;
             switch(true) 
             {
-                case $this->sessions->issetSelectedID():
+                case $this->sessions->issetSelectedIndex():
                     $this->recordTracker->moveTo($this->sessions->selectedIndex());
                 break;
             }
