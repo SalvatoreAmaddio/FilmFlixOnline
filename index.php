@@ -29,7 +29,7 @@
 
                     <div id="filtersPanel">
                         <label>Filter by</label>
-                        <select>
+                        <select id="dropdownOptions">
                             <option id='0'></option>
                             <option id='1'>Rating</option>
                             <option id='2'>Genre</option>
