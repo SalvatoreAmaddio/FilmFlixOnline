@@ -21,37 +21,38 @@
 
         public function save(array $data)
         {
+            echo $this->model()->updateSQL();
             if ($this->model()->isNewRecord()) 
             {
                 $this->db->save(
-                    $this->model()->title,
-                    $this->model()->yearReleased,
-                    $this->model()->rating->ratingID,
-                    $this->model()->duration,
-                    $this->model()->genre->genreID,
+                    $this->model()->_title,
+                    $this->model()->_yearReleased,
+                    $this->model()->fkrating->pkratingID,
+                    $this->model()->_duration,
+                    $this->model()->fkgenre->pkgenreID,
                 );
             }
             else 
             {
                 $this->db->save(
-                    $this->model()->title,
-                    $this->model()->yearReleased,
-                    $this->model()->rating->ratingID,
-                    $this->model()->duration,
-                    $this->model()->genre->genreID,
-                    $this->model()->filmID
+                    $this->model()->_title,
+                    $this->model()->_yearReleased,
+                    $this->model()->_duration,
+                    $this->model()->fkrating->pkratingID,
+                    $this->model()->fkgenre->pkgenreID,
+                    $this->model()->pkfilmID
                 );
             }
         }
 
         public function fillRecord(?array $data)
         {
-            $this->model()->filmID = $this->sessions->selectedID();
-            $this->model()->title = $data[0];
-            $this->model()->yearReleased = $data[1];
-            $this->model()->rating->ratingID = $data[2];
-            $this->model()->duration = $data[3];
-            $this->model()->genre->genreID = $data[4];    
+            $this->model()->pkfilmID = $this->sessions->selectedID();
+            $this->model()->_title = $data[0];
+            $this->model()->_yearReleased = $data[1];
+            $this->model()->fkrating->pkratingID = $data[2];
+            $this->model()->_duration = $data[3];
+            $this->model()->fkgenre->pkgenreID = $data[4];    
         }
 
     }

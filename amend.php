@@ -46,8 +46,8 @@
                                     <label>Rating</label>
                                 </td>
                                 <td>
-                                    <select class="recordField" value='<?php echo $controller->model()->pkrating->ratingID?>'>
-                                            <?php $controller->ratingController->ratingList($controller->model()->pkrating)?>
+                                    <select class="recordField" value='<?php echo $controller->model()->fkrating->pkratingID?>'>
+                                            <?php $controller->ratingController->ratingList($controller->model()->fkrating)?>
                                     </select>
                                 </td>
                             </tr>
@@ -64,8 +64,8 @@
                                     <label>Genre</label>
                                 </td>
                                 <td>
-                                    <select class="recordField" value='<?php echo $controller->model()->pkgenre->genreID?>'>
-                                        <?php $controller->genreController->genreList($controller->model()->pkgenre)?>
+                                    <select class="recordField" value='<?php echo $controller->model()->fkgenre->pkgenreID?>'>
+                                        <?php $controller->genreController->genreList($controller->model()->fkgenre)?>
                                     </select>
                                 </td>
                             </tr>

@@ -199,7 +199,7 @@ class Form extends AbstractForm
         let json = JSON.stringify(values);
         this.send("save=" + json,(e)=>
         {
-            if (e) location.reload();
+            if (e) alert(e);
         });
     }
 
