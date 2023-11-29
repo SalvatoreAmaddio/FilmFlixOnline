@@ -198,10 +198,12 @@ class Form extends AbstractForm
         let json = JSON.stringify(values);
         this.send("save=" + json,(e)=>
         {
-            if (e) 
+            if (!this.notification.classList.contains("animateNotification")) 
+                this.notification.classList.add("animateNotification");
+            else 
             {
-                this.refresh();
-//                this.notification.style.display="block";
+                this.notification.classList.remove("animateNotification");
+                this.notification.classList.add("animateNotification");
             }
         });
     }

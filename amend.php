@@ -76,6 +76,9 @@
                             <button class="deleteButton" value='<?php echo $controller->model()->pkfilmID?>'>X</button>
                         </div>
 
+                        <div id="notification">
+                            <p>Record updated!</p>
+                        </div>
                     </div>
                 </section>
             </main>
