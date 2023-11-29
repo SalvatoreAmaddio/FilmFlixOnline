@@ -464,15 +464,12 @@ class ListForm extends AbstractForm
             if (elementClicked.className.includes("editButton")) 
             {
                 this.send(param,
-                    (output)=>{},'mc/controller/FilmFormController.php');     
+                    (output)=>{},'readAmend.php');     
                 location.href = "amend.php";
             }
 
             if (elementClicked.className.includes("deleteButton")) 
-            {
-
                 this.delete(elementClicked);
-            }
         }
     }
 

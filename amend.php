@@ -1,10 +1,10 @@
 <?php
-    $x = explode("php", __DIR__);
-    include($x[0]."/php/controller/FilmFormController.php");
+    if (!defined('controller')) define('controller', $_SERVER['DOCUMENT_ROOT']."\mc\controller");    
+    require_once controller."\\filmFormListController.php";
     $controller = new FilmFormController();
     $controller->fetchData();
     $controller->readSessions();
-    $controller->sessions->selectedID($controller->model()->filmID);
+    $controller->sessions->selectedID($controller->model()->pkfilmID);
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +20,6 @@
     <body>
         <div id="wrapper">
         <?php include 'header.html'?>
-
             <main>
                 <section id="dataSection" style="background-image: url('img/projector.jpg')">
                     <div id="data">
@@ -31,7 +30,7 @@
                                     <label>Title</label>
                                 </td>
                                 <td>
-                                    <input class="recordField" type="text" value='<?php echo $controller->model()->title?>'>
+                                    <input class="recordField" type="text" value='<?php echo $controller->model()->_title?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -39,7 +38,7 @@
                                     <label>Year</label>
                                 </td>
                                 <td>
-                                    <input id='yearReleased' class="recordField" type="number" value='<?php echo $controller->model()->yearReleased?>'>
+                                    <input id='yearReleased' class="recordField" type="number" value='<?php echo $controller->model()->_yearReleased?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -47,8 +46,8 @@
                                     <label>Rating</label>
                                 </td>
                                 <td>
-                                    <select class="recordField" value='<?php echo $controller->model()->rating->ratingID?>'>
-                                            <?php $controller->ratingController->ratingList($controller->model()->rating)?>
+                                    <select class="recordField" value='<?php echo $controller->model()->pkrating->ratingID?>'>
+                                            <?php $controller->ratingController->ratingList($controller->model()->pkrating)?>
                                     </select>
                                 </td>
                             </tr>
@@ -57,7 +56,7 @@
                                     <label>Duration</label>
                                 </td>
                                 <td>
-                                    <input class="recordField" type="number" value='<?php echo $controller->model()->duration?>'>
+                                    <input class="recordField" type="number" value='<?php echo $controller->model()->_duration?>'>
                                 </td>
                             </tr>
                             <tr>
@@ -65,16 +64,16 @@
                                     <label>Genre</label>
                                 </td>
                                 <td>
-                                    <select class="recordField" value='<?php echo $controller->model()->genre->genreID?>'>
-                                        <?php $controller->genreController->genreList($controller->model()->genre)?>
+                                    <select class="recordField" value='<?php echo $controller->model()->pkgenre->genreID?>'>
+                                        <?php $controller->genreController->genreList($controller->model()->pkgenre)?>
                                     </select>
                                 </td>
                             </tr>
                         </table>
 
                         <div class="commands">
-                            <button class="saveButton" value='<?php echo $controller->model()->filmID?>'>💾</button>
-                            <button class="deleteButton" value='<?php echo $controller->model()->filmID?>'>X</button>
+                            <button class="saveButton" value='<?php echo $controller->model()->pkfilmID?>'>💾</button>
+                            <button class="deleteButton" value='<?php echo $controller->model()->pkfilmID?>'>X</button>
                         </div>
                     </div>
                 </section>
@@ -86,7 +85,7 @@
         </div>
 
         <script>
-            new FilmForm("php/controller/FilmFormController.php");
+            new FilmForm("readAmend.php");
         </script>
     </body>
 </html>
