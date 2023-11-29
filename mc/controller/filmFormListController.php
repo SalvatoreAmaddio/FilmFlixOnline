@@ -11,10 +11,13 @@
     class FilmFormListController extends AbstractFormListController
     {        
 
-        public string $filterQry = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;";
-        public string $filterGenre = "SELECT * FROM qryfilms WHERE genreID = ?;";
-        public string $filterRating = "SELECT * FROM qryfilms WHERE ratingID = ?;";
-        public string $filterYear = "SELECT * FROM qryfilms WHERE yearReleased = ?;";
+        public string $filterByTitle = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;";
+        public string $filterByGenre = "SELECT * FROM qryfilms WHERE genreID = ?";
+        public string $filterByRating = "SELECT * FROM qryfilms WHERE ratingID = ?;";
+        public string $filterByYear = "SELECT * FROM qryfilms WHERE yearReleased = ?;";
+        public string $filterByGenreAndTitle = "SELECT * FROM qryfilms WHERE genreID = ? AND LOWER(title) LIKE ?;";
+        public string $filterByRatingAndTitle = "SELECT * FROM qryfilms WHERE ratingID = ? AND LOWER(title) LIKE ?;";
+        public string $filterByYearAndTitle = "SELECT * FROM qryfilms WHERE yearReleased = ? AND LOWER(title) LIKE ?;";
         public GenreController $genreController;
         public RatingController $ratingController;
 
@@ -78,7 +81,7 @@
         {
             $this->sessions->setSearchValue("%".strtolower($this->requests->searchValue())."%");
             $this->db->connect();
-            $this->preparedFetchData($this->filterQry, "s", $this->sessions->getSearchValue());
+            $this->onFilter();
             $this->recordTracker->moveTo(0);
             echo $this->displayData();
         }
@@ -113,17 +116,26 @@
         {
             switch(true)
             {
+                case $this->searchByValue() && $this->searchByGenre():
+                    $this->preparedFetchData($this->filterByGenreAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
+                break;
+                case $this->searchByValue() && $this->searchByRating():
+                    $this->preparedFetchData($this->filterByRatingAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
+                break;
+                case $this->searchByValue() && $this->searchByYear():
+                    $this->preparedFetchData($this->filterByYearAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
+                break;
                 case $this->searchByYear():
-                    $this->preparedFetchData($this->filterYear, "i", intval($_SESSION["formListFilterValue"]));
+                    $this->preparedFetchData($this->filterByYear, "i", $_SESSION["formListFilterValue"]);
                 break;
                 case $this->searchByRating():
-                    $this->preparedFetchData($this->filterRating, "i", intval($_SESSION["formListFilterValue"]));
+                    $this->preparedFetchData($this->filterByRating, "i", $_SESSION["formListFilterValue"]);
                 break;
                 case $this->searchByGenre():
-                    $this->preparedFetchData($this->filterGenre, "i", intval($_SESSION["formListFilterValue"]));
+                    $this->preparedFetchData($this->filterByGenre, "i", $_SESSION["formListFilterValue"]);
                 break;
                 case $this->searchByValue():
-                    $this->preparedFetchData($this->filterQry,"s",$this->sessions->getSearchValue());
+                    $this->preparedFetchData($this->filterByTitle, "s", $this->sessions->getSearchValue());
                 break;
                 default:
                     $this->fetchData();
@@ -141,12 +153,12 @@
 
         private function readFilterOption($request) 
         {
+            unset($_SESSION["formListFilterValue"]);
             $_SESSION["formListFilterType"] = $request;
             switch($_SESSION["formListFilterType"]) 
             {
                 case 0: 
                     unset($_SESSION["formListFilterType"]);
-                    unset($_SESSION["formListFilterValue"]);
                     echo "";
                 break;
                 case 1:
