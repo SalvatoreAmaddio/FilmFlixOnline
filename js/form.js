@@ -263,7 +263,7 @@ class ListForm extends AbstractForm
             {
                 sessionStorage.removeItem("filterValue");
                 this.refresh();
-            }            
+            }      
             this.filterOption = optionID;
             this.#sendFilterOptions();
         });
@@ -291,7 +291,6 @@ class ListForm extends AbstractForm
             {
                 sessionStorage.removeItem("filterValue");
                 sessionStorage.removeItem("filterOption");
-                this.refresh();
                 return;
             }
             

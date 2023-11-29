@@ -91,48 +91,34 @@
             return $this->sessions->issetSearchValue();
         }
 
-        private function searchByGenre() : bool 
+        private function searchBy(int $value) : bool 
         {
             return isset($_SESSION["formListFilterType"]) 
-            && $_SESSION["formListFilterType"]==2 
-            && isset($_SESSION["formListFilterValue"]);
-        }
-
-        private function searchByRating() : bool 
-        {
-            return isset($_SESSION["formListFilterType"]) 
-            && $_SESSION["formListFilterType"]==1 
-            && isset($_SESSION["formListFilterValue"]);
-        }
-
-        private function searchByYear() : bool 
-        {
-            return isset($_SESSION["formListFilterType"]) 
-            && $_SESSION["formListFilterType"]==3 
-            && isset($_SESSION["formListFilterValue"]);
+            && isset($_SESSION["formListFilterValue"])
+            && $_SESSION["formListFilterType"]==$value;
         }
 
         public function onFilter() 
         {
             switch(true)
             {
-                case $this->searchByValue() && $this->searchByGenre():
-                    $this->preparedFetchData($this->filterByGenreAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
-                break;
-                case $this->searchByValue() && $this->searchByRating():
+                case $this->searchByValue() && $this->searchBy(1):
                     $this->preparedFetchData($this->filterByRatingAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
                 break;
-                case $this->searchByValue() && $this->searchByYear():
+                case $this->searchByValue() && $this->searchBy(2):
+                    $this->preparedFetchData($this->filterByGenreAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
+                break;
+                case $this->searchByValue() && $this->searchBy(3):
                     $this->preparedFetchData($this->filterByYearAndTitle, "is", $_SESSION["formListFilterValue"], $this->sessions->getSearchValue());
                 break;
-                case $this->searchByYear():
-                    $this->preparedFetchData($this->filterByYear, "i", $_SESSION["formListFilterValue"]);
-                break;
-                case $this->searchByRating():
+                case $this->searchBy(1):
                     $this->preparedFetchData($this->filterByRating, "i", $_SESSION["formListFilterValue"]);
                 break;
-                case $this->searchByGenre():
+                case $this->searchBy(2):
                     $this->preparedFetchData($this->filterByGenre, "i", $_SESSION["formListFilterValue"]);
+                break;
+                case $this->searchBy(3):
+                    $this->preparedFetchData($this->filterByYear, "i", $_SESSION["formListFilterValue"]);
                 break;
                 case $this->searchByValue():
                     $this->preparedFetchData($this->filterByTitle, "s", $this->sessions->getSearchValue());
@@ -159,6 +145,7 @@
             {
                 case 0: 
                     unset($_SESSION["formListFilterType"]);
+                    unset($_SESSION["formListFilterValue"]);
                     echo "";
                 break;
                 case 1:
@@ -181,10 +168,10 @@
             parent::readRequests();
             switch(true)
             {
-                case isset($_REQUEST["filterOption"]) && $_REQUEST["filterOption"]:
+                case isset($_REQUEST["filterOption"]):
                 $this->readFilterOption($_REQUEST["filterOption"]);
                 break;
-                case isset($_REQUEST["filterValue"]) && $_REQUEST["filterValue"]:
+                case isset($_REQUEST["filterValue"]):
                 $this->readFilterValue($_REQUEST["filterValue"]);
                 break;
             }
