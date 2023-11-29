@@ -54,7 +54,7 @@
         </div>
 
         <script>
-            new ListForm("mc/controller/filmFormListController.php");
+            new ListForm("readIndex.php");
 
             const s = document.getElementById("searchSection");
             const k = document.getElementById("infoButton");

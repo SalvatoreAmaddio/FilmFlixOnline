@@ -177,9 +177,4 @@
             }
         }
     }
-
-    $controller = new FilmFormListController();
-    $controller->onFilter();
-    $controller->readRequests();
-    $controller->readSessions();
 ?>
