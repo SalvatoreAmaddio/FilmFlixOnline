@@ -274,7 +274,7 @@ class ListForm extends AbstractForm
     #sendSearchInput(e) 
     {
         sessionStorage.setItem("searchValue", e);
-        this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>{this.displayData(e)});
+        this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
     }
 
     #sendFilterValue() 

@@ -78,7 +78,7 @@
         {
             $this->sessions->setSearchValue("%".strtolower($this->requests->searchValue())."%");
             $this->db->connect();
-            $this->fetchData($this->filterQry, $this->sessions->getSearchValue());
+            $this->preparedFetchData($this->filterQry, "s", $this->sessions->getSearchValue());
             $this->recordTracker->moveTo(0);
             echo $this->displayData();
         }

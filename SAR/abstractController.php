@@ -249,7 +249,8 @@
     abstract class AbstractFormListController extends AbstractController
     {
         public abstract function displayData();        
-        
+        public abstract function onSearchValueRequest();
+                
         public function readRequests() 
         {
             parent::readRequests();
@@ -275,14 +276,6 @@
         protected function resetIndex($direction) 
         {
             parent::resetIndex($direction);
-            echo $this->displayData();
-        }
-
-        public function onSearchValueRequest()
-        {
-            $this->db->connect();
-            $this->fetchData();
-            $this->recordTracker->moveTo(0);
             echo $this->displayData();
         }
 
