@@ -80,7 +80,7 @@ class QueryGenerator
             $found = preg_match($pattern, $prop->getName());
             if ($found==1) 
             {
-                $this->fkType = "i";
+                $this->fkType = $this->fkType . "i";
                 array_push($array, $this->correctFKFieldName($prop));
             }
         }
@@ -217,7 +217,7 @@ abstract class AbstractModel
                 case 1://select
                 return "s";
                 case 2://update
-                return $this->queryGenerator->fieldsType . $this->queryGenerator->fkType;
+                return $this->queryGenerator->fieldsType . $this->queryGenerator->fkType . "i";
                 case 3://insert
                     return $this->queryGenerator->fieldsType;
                 case 4://delete

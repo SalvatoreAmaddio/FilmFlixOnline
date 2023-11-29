@@ -21,7 +21,6 @@
 
         public function save(array $data)
         {
-            echo $this->model()->updateSQL();
             if ($this->model()->isNewRecord()) 
             {
                 $this->db->save(
