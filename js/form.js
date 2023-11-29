@@ -187,9 +187,8 @@ class Form extends AbstractForm
     {
         let values=[];
         for(let i=0; i < this.recordFields.length; i++) 
-        {
             values.push(this.recordFields[i].value);
-        }
+        
         if (!this.checkIntegrity(values) || !this.checkMandatory(values)) 
         {
             this.refresh();
@@ -199,8 +198,17 @@ class Form extends AbstractForm
         let json = JSON.stringify(values);
         this.send("save=" + json,(e)=>
         {
-            if (e) alert(e);
+            if (e) 
+            {
+                this.refresh();
+//                this.notification.style.display="block";
+            }
         });
+    }
+
+    get notification()
+    {
+        return document.getElementById("notification");
     }
 
     get saveButton() 

@@ -40,6 +40,7 @@ h1
     width: fit-content;
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
+    position: relative;
 }
 
 @keyframes showInfo

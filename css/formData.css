@@ -3,6 +3,37 @@
     background-position-y: 92%;
 }
 
+#notification 
+{
+    position: absolute;
+    display: none;
+    border: 1px solid black;
+    border-radius: 1rem;
+    background-color: #28a745;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    bottom: 0;
+    width: 100%;
+    letter-spacing: 1px;
+    animation-name: showNotification;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
+}
+
+@keyframes showNotification
+{
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+#notification p 
+{
+    font-weight: bold;
+}
+
 caption 
 {
     background-color: white;
