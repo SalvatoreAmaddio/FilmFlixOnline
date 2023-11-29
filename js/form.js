@@ -242,24 +242,100 @@ class ListForm extends AbstractForm
         this.#onRowClickedEvent();
         this.searchBar.addEventListener("input",(e)=>this.#sendSearchInput(e.target.value));
         this.#checkStoredSearchValue();
-        this.newButton.addEventListener("click",(e)=>this.goNew());
-        
-        this.dropdownOptions.addEventListener("change",(e)=>
-        {
-            let optionID = e.target.options[e.target.selectedIndex].id;
-            sessionStorage.setItem("filterOption",optionID);
-            this.#sendFilterOptions();
-        });
+        this.newButton.addEventListener("click",(e)=>this.goNew());        
+        this.#addDropDownOptionsListener();
 
-        if (sessionStorage.getItem("filterOption"))
+        if (this.filterOption)
         {
-            this.dropdownOptions.selectedIndex = sessionStorage.getItem("filterOption"); 
+            this.dropdownOptions.selectedIndex = this.filterOption; 
             this.#sendFilterOptions();
         }
+
         this.#scroll();
     }
 
-    get inputEl() 
+    #addDropDownOptionsListener() 
+    {
+        this.dropdownOptions.addEventListener("change",(e)=>
+        {
+            let optionID = e.target.options[e.target.selectedIndex].id;
+            if (this.filterOption != optionID) 
+            {
+                sessionStorage.removeItem("filterValue");
+                this.refresh();
+            }            
+            this.filterOption = optionID;
+            this.#sendFilterOptions();
+        });
+    }
+
+    #sendSearchInput(e) 
+    {
+        this.searchValue = e;
+        this.send("searchValue=" + this.searchValue, (e)=>this.displayData(e));
+    }
+
+    #sendFilterValue() 
+    {
+        this.send("filterValue="+this.filterValue, (e)=>this.displayData(e));
+    }
+
+    #sendFilterOptions() 
+    {
+        this.send("filterOption="+this.filterOption, 
+        (output)=>
+        {
+            this.filterOptionsContainer.innerHTML = output;
+
+            if (!output) 
+            {
+                sessionStorage.removeItem("filterValue");
+                sessionStorage.removeItem("filterOption");
+                this.refresh();
+                return;
+            }
+            
+            if (this.filterInput) 
+            {
+                    this.filterInput.addEventListener("change",(e)=>
+                    {
+                        let filterValue = (e.target.tagName=="SELECT") ? e.target.options[e.target.selectedIndex].value : e.target.value;
+                        this.filterValue = filterValue;
+                        this.#sendFilterValue();
+                    });            
+            }
+
+            if (this.filterValue) 
+            {
+                if (this.filterInput.tagName=="SELECT")
+                    this.filterInput.selectedIndex = sessionStorage.getItem("filterValue");         
+                else 
+                    this.filterInput.value = sessionStorage.getItem("filterValue");         
+                this.#sendFilterValue();
+            }
+        });
+    }
+
+    #checkStoredSearchValue() 
+    {
+        if (this.searchValue) 
+        {
+            this.searchBar.value = this.searchValue;
+            this.#sendSearchInput(this.searchValue);
+        }
+    }
+
+    set searchValue(value) 
+    {
+        sessionStorage.setItem("searchValue", value);
+    }
+
+    get searchValue() 
+    {
+        return sessionStorage.getItem("searchValue");
+    }
+
+    get filterInput() 
     {
         try 
         {
@@ -271,74 +347,24 @@ class ListForm extends AbstractForm
         }
     }
 
-    #sendSearchInput(e) 
+    get filterOption() 
     {
-        sessionStorage.setItem("searchValue", e);
-        this.send("searchValue=" + sessionStorage.getItem("searchValue"), (e)=>this.displayData(e));
+        return sessionStorage.getItem("filterOption");
     }
 
-    #sendFilterValue() 
+    set filterOption(value) 
     {
-        this.send("filterValue="+sessionStorage.getItem("filterValue"), (e)=>
-        {
-            this.displayData(e);
-        });
+        sessionStorage.setItem("filterOption",value);
     }
 
-    #sendFilterOptions() 
+    get filterValue() 
     {
-        this.send("filterOption="+sessionStorage.getItem("filterOption"), (e)=>
-        {
-            this.filterOptions.innerHTML = e;
-
-            if (!e) 
-            {
-                sessionStorage.removeItem("filterValue");
-                sessionStorage.removeItem("filterOption");
-                this.#checkStoredSearchValue();
-                return;
-            }
-            
-            if (this.inputEl) {
-                switch(true) {
-                    case this.inputEl.tagName == "SELECT":
-                    this.inputEl.addEventListener("change",(e)=>
-                    {
-                        let filterValue = e.target.options[e.target.selectedIndex].value;
-                        sessionStorage.setItem("filterValue", filterValue);
-                       // this.#sendFilterValue();
-                    });            
-                    break;
-                    case this.inputEl.tagName == "INPUT":
-                    this.inputEl.addEventListener("input",(e)=>
-                    {
-                        let filterValue = e.target.value;
-                        sessionStorage.setItem("filterValue",filterValue);
-                        //this.#sendFilterValue();
-                    });
-                    break;
-                    }
-            }    
-
-            if (sessionStorage.getItem("filterValue")) 
-            {
-                if (this.inputEl.tagName=="SELECT")
-                    this.inputEl.selectedIndex = sessionStorage.getItem("filterValue");         
-                else 
-                    this.inputEl.value = sessionStorage.getItem("filterValue");         
-                //this.#sendFilterValue();
-            }
-        });
+        return sessionStorage.getItem("filterValue");
     }
 
-    #checkStoredSearchValue() 
+    set filterValue(value) 
     {
-        let storedSearchVal = sessionStorage.getItem("searchValue");
-        if (storedSearchVal) 
-        {
-            this.searchBar.value = storedSearchVal;
-            this.#sendSearchInput(storedSearchVal);
-        }
+        sessionStorage.setItem("filterValue", value);
     }
 
     get dropdownOptions() 
@@ -348,10 +374,10 @@ class ListForm extends AbstractForm
 
     get searchBar() 
     {
-        return document.getElementById("searchBar");
+        return document.getElementById('searchBar');
     }
 
-    get filterOptions() 
+    get filterOptionsContainer() 
     {
         return document.getElementById('filterOptions');
     }
