@@ -4,7 +4,6 @@
     $controller = new FilmFormListController();
     $controller->fetchData();
     $controller->readSessions();
-    
 ?>
 
 <!DOCTYPE html>

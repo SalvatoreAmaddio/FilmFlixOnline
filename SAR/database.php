@@ -1,5 +1,5 @@
 <?php
-if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
+if (!defined('SAR')) define('SAR', getcwd());
 require_once SAR."/abstractModel.php";
 
     class Database 

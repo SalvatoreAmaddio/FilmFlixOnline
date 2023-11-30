@@ -1,5 +1,5 @@
 <?php
-    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+if(session_status() !== PHP_SESSION_ACTIVE) session_start();
 if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
 if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."/filmflix/mc/model");
 if (!defined('controller')) define('controller', $_SERVER['DOCUMENT_ROOT']."/filmflix/mc/controller");
