@@ -1,7 +1,7 @@
 <?php    
 if(session_status() !== PHP_SESSION_ACTIVE) session_start();
     
-if (!defined('SAR')) define('SAR',getcwd());
+if (!defined('SAR')) define('SAR',__DIR__);
     require_once SAR."/database.php";
     
     abstract class AbstractController 

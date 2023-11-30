@@ -1,6 +1,6 @@
 <?php
-if (!defined('SAR')) define('SAR', dirname(getcwd(),2)."/SAR");
-if (!defined('model')) define('model', getcwd());
+if (!defined('SAR')) define('SAR', dirname(__DIR__,2)."/SAR");
+if (!defined('model')) define('model',__DIR__);
 require_once SAR."/abstractModel.php";
 require_once model."/genre.php";
 

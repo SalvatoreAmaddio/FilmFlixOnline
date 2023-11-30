@@ -1,5 +1,5 @@
 <?php
-if (!defined('SAR')) define('SAR', dirname(getcwd(),2)."/SAR");
+if (!defined('SAR')) define('SAR', dirname(__DIR__,2)."/SAR");
 require_once SAR."/abstractModel.php";
 
     class Genre extends AbstractModel 

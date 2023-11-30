@@ -1,5 +1,5 @@
 <?php
-if (!defined('SAR')) define('SAR', getcwd());
+if (!defined('SAR')) define('SAR', __DIR__);
 require_once SAR."/abstractModel.php";
 
     class Database 
