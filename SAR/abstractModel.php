@@ -219,7 +219,7 @@ abstract class AbstractModel
                 case 2://update
                 return $this->queryGenerator->fieldsType . $this->queryGenerator->fkType . "i";
                 case 3://insert
-                    return $this->queryGenerator->fieldsType;
+                    return $this->queryGenerator->fieldsType . $this->queryGenerator->fkType;
                 case 4://delete
                 return "i";
             }

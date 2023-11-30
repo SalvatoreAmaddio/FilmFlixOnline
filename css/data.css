@@ -218,6 +218,11 @@ td button:hover
     font-size: 1rem;
 }
 
+.recordIndicator span:nth-child(2)
+{
+    display: none;
+}
+
 #noData 
 {
     position: relative;
@@ -250,12 +255,13 @@ td button:hover
     font-family: 'Paytone One', sans-serif;
 }
 
-@media screen and (max-width:700.5px)
+@media screen and (max-width:750.5px)
 {
     #searchSection 
     {
         position: sticky;
         top: 0;
+        z-index: 99;
     }
 
     #searchPanel 
@@ -338,7 +344,17 @@ td button:hover
 
     .recordIndicator 
     {
-        color: #D3D3D3;
+        padding: 1rem;
+    }
+
+    .recordIndicator span:first-child 
+    {
+        display: none;
+    }
+
+    .recordIndicator span:nth-child(2)
+    {
+        display: block;
     }
 
     .commands 
@@ -416,8 +432,13 @@ td button:hover
     }
 }
 
-@media screen and (max-width: 361.5px)
+@media screen and (max-width: 362.5px)
 {
+    #filtersPanel 
+    {
+        padding: 0;
+    }
+
     #searchPanel input[type=text] 
     {
         max-width: 82%;
@@ -432,8 +453,20 @@ td button:hover
     }
 }
 
-@media screen and (max-width: 326.5px)
+@media screen and (max-width: 330.5px)
 {
+    #filtersPanel label 
+    {
+        text-align: center;
+        display: block;
+        padding-bottom: 0.5rem;
+    }
+
+    #filter, #filtersPanel select, #filterOptions
+    {
+        width: 100%;
+    }
+
     #searchPanel input[type=text] 
     {
         max-width: 80%;

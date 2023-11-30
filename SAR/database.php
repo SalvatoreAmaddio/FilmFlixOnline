@@ -76,7 +76,6 @@
                 $sql = $this->model->updateSQL();
                 $params = $this->model->bindParam(2);    
             }
-
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param($params, ...$vars);    
             $stmt->execute();

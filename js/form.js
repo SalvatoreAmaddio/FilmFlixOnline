@@ -196,15 +196,16 @@ class Form extends AbstractForm
         }
 
         let json = JSON.stringify(values);
-        this.send("save=" + json,(e)=>
+        this.send("save=" + json,(output)=>
         {
-            if (!this.notification.classList.contains("animateNotification")) 
+                this.notification.children[0].innerHTML = (output=="updated") ? "Record Updated!" : "Record Created!";        
                 this.notification.classList.add("animateNotification");
-            else 
-            {
-                this.notification.classList.remove("animateNotification");
-                this.notification.classList.add("animateNotification");
-            }
+                let id=setInterval((e)=>
+                {
+                    this.notification.classList.remove("animateNotification");
+                    clearInterval(id);
+                    if (output="inserted") this.refresh();
+                }, 2000);
         });
     }
 
@@ -486,7 +487,7 @@ class ListForm extends AbstractForm
     goNew() 
     {
         this.send("newRecord=true",
-            (output)=>{},'/php/controller/FilmFormController.php');     
+            (output)=>{},'readAmend.php');     
         location.href = "amend.php";
     }
 }
@@ -494,6 +495,11 @@ class ListForm extends AbstractForm
 class FilmForm extends Form 
 {
 
+    constructor() 
+    {   
+        super();
+        window.scrollTo(0, 10000);
+    }
     checkMandatory(values) 
     {
         for(let i = 0; i < values.length; i++) 

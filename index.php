@@ -58,6 +58,7 @@
 
             const s = document.getElementById("searchSection");
             const k = document.getElementById("infoButton");
+            const recordIndicators = document.getElementsByClassName("recordIndicator");
             window.addEventListener("scroll",(e)=>
             {
                 let x=s.getBoundingClientRect().top;

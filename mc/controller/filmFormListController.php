@@ -52,13 +52,16 @@
             <th>Genre</th>
             <th colspan='2'>COMMANDS</th>
             </tr>";
-
+            $count = 1;
             foreach($this->records as $record) 
             {
                 /** @var Film $film */
                 $film = $record;
                 echo "<tr {$this->selectedRow($record)} value='{$film->pkfilmID}'>
-                        <td class=recordIndicator>➤</td>
+                        <td class=recordIndicator>
+                        <span>➤</span>
+                        <span>Record {$count} of {$this->recordCount()}</span>
+                        </td>
                         <td class='responsiveTitle'><p>Title</p></td>
                         <td><p>{$film->_title}</p></td>
                         <td class='responsiveTitle'><p>Year</p></td>
@@ -73,6 +76,7 @@
                         <td class='commands'><button class=editButton value={$film->pkfilmID}>✎</button></td>
                         <td class='commands'><button class=deleteButton value={$film->pkfilmID}>X</button></td>
                     </tr>";
+                $count++;
             }
             echo "</table>";
         }

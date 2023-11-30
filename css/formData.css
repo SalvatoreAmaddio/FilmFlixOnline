@@ -6,7 +6,7 @@
 #notification 
 {
     position: absolute;
-    display: none;
+    visibility: hidden;
     border: 1px solid black;
     border-radius: 1rem;
     background-color: #28a745;
@@ -32,11 +32,13 @@
     from 
     {
         opacity: 0;
+        visibility: hidden;
     }
 
     to 
     {
         opacity: 1;
+        visibility: visible;
     }
 }
 

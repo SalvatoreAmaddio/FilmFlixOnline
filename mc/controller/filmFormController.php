@@ -26,10 +26,12 @@
                 $this->db->save(
                     $this->model()->_title,
                     $this->model()->_yearReleased,
-                    $this->model()->fkrating->pkratingID,
                     $this->model()->_duration,
+                    $this->model()->fkrating->pkratingID,
                     $this->model()->fkgenre->pkgenreID,
                 );
+
+                echo "inserted";
             }
             else 
             {
@@ -41,6 +43,8 @@
                     $this->model()->fkgenre->pkgenreID,
                     $this->model()->pkfilmID
                 );
+
+                echo "updated";
             }
         }
 
