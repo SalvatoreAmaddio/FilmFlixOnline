@@ -261,7 +261,7 @@ class ListForm extends AbstractForm
             this.dropdownOptions.selectedIndex = this.filterOption; 
             this.#sendFilterOptions();
         }
-
+    
         this.#scroll();
     }
 
@@ -418,12 +418,25 @@ class ListForm extends AbstractForm
             this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
     }
 
+    get backTop() 
+    {
+        return document.getElementById('backTop');
+    } 
+
     displayData(data) 
     {
         this.data.innerHTML = data;
         this.#onRowClickedEvent();
         this.updateRecordTracker();
         this.#scroll();
+        this.backTop.children[0].addEventListener("click",(e)=>
+        {
+            var rows = this.table.querySelectorAll('tr');
+            rows[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+            });
+        });
     }
 
     #scroll() 
@@ -434,9 +447,7 @@ class ListForm extends AbstractForm
         {
             rows[i].classList.remove('active');
             if (rows[i].className.includes('selectedRow')) 
-            {
                 selectedRow = i;
-            }            
         }
 
         rows[selectedRow].classList.add('active');
@@ -495,11 +506,6 @@ class ListForm extends AbstractForm
 class FilmForm extends Form 
 {
 
-    constructor() 
-    {   
-        super();
-        window.scrollTo(0, 10000);
-    }
     checkMandatory(values) 
     {
         for(let i = 0; i < values.length; i++) 

@@ -64,13 +64,15 @@
                 let x=s.getBoundingClientRect().top;
                 if (x==0) 
                 {
-                    k.style.top="4.5rem";
-                    k.style.left="88%";
+                    k.style.top="6.5rem";
+                    k.style.left="89%";
+                    backTop.style.display="block";
                 }
                 else 
                 {
                     k.style.top="1rem";
                     k.style.left="1rem";
+                    backTop.style.display="none";
                 }
             });
         </script>

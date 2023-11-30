@@ -120,10 +120,35 @@
     margin-right: 1rem;
 }
 
+#backTop 
+{
+    position: fixed;
+    display: none;
+    width: 3rem;
+    bottom: 0;
+    right: 2rem;
+    padding: 1rem;
+}
+
+#backTop button 
+{
+    display: block;
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+}
+
+#backTop button img 
+{
+    text-align: center;
+    width: 50%;
+}
+
 #data 
 {
     max-height: 17rem;
     overflow: auto;
+    position: relative;
 }
 
 .responsiveTitle 
@@ -374,6 +399,10 @@ td button:hover
         display: block;
     }
 
+    #backTop 
+    {
+        display: block;
+    }
 }
 
 @media screen and (max-width: 591.5px)

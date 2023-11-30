@@ -78,7 +78,7 @@
                     </tr>";
                 $count++;
             }
-            echo "</table>";
+            echo "</table> <div id='backTop'><button><img src='img/arrow-up.png'></button></div>";
         }
 
         public function onSearchValueRequest()

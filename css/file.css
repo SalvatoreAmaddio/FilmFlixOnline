@@ -33,6 +33,7 @@ h1
     background-color: var(--sectionBackground);
     padding-block: 1rem;
     background-position-y: 76%;
+    position: relative;
 }
 
 #data 
