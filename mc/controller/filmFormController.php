@@ -1,8 +1,11 @@
 <?php
-if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
-if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."/filmflix/mc/model");
-    require_once model."/films.php";
-    require_once SAR."/abstractController.php";
+if (!defined('SAR')) define('SAR', dirname(__DIR__,2)."/SAR");
+if (!defined('model')) define('model', dirname(__DIR__)."/model");
+if (!defined('controller')) define('controller', __DIR__);
+
+require_once model."/films.php";
+require_once SAR."/abstractController.php";
+require_once controller."/filmFormController.php";
 
     class FilmFormController extends AbstractFormController
     {
