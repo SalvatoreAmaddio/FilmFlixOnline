@@ -5,7 +5,6 @@
     $controller->fetchData();
     $controller->readSessions();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
