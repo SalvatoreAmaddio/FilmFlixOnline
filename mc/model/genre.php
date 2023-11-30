@@ -1,6 +1,6 @@
 <?php
-if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
-require_once SAR."\abstractModel.php";
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
+require_once SAR."/abstractModel.php";
 
     class Genre extends AbstractModel 
     {

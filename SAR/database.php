@@ -1,7 +1,6 @@
 <?php
-
-    if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
-    require_once SAR."\\abstractModel.php";
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
+require_once SAR."/abstractModel.php";
 
     class Database 
     {
@@ -111,6 +110,9 @@
         public function select()
         {
             $this->table = $this->conn->query($this->model->selectSQL());
+            if (!$this->table) {
+       throw new Exception("Database Error [{$this->conn->errno}] {$this->conn->error}");
+}
         }
     }
 ?>

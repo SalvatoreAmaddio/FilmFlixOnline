@@ -1,8 +1,8 @@
 <?php
-if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
 if (!defined('model')) define('model', getcwd());
-require_once SAR."\abstractModel.php";
-require_once model."\genre.php";
+require_once SAR."/abstractModel.php";
+require_once model."/genre.php";
 
 class Film extends AbstractModel
 {

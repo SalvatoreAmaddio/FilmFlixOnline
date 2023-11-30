@@ -1,12 +1,13 @@
 <?php    
-    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-    if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
-    require_once SAR."\\database.php";
+if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+    
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
+    require_once SAR."/database.php";
     
     abstract class AbstractController 
     {
         public $records = array();
-        protected mixed $model;
+        protected AbstractModel $model;
         public Database $db;
         protected int $recordIndex = 0;
         public RecordTracker $recordTracker;
@@ -49,7 +50,7 @@
             return $this->recordCount() > 0;
         }
 
-        public function model() : mixed 
+        public function model()
         {
             return $this->model;
         }
@@ -64,7 +65,7 @@
             return $record->isEqual($id);            
         }
 
-        public function findByID($id) : mixed
+        public function findByID($id)
         {
             $result = array_values(array_filter($this->records, 
             function($record) use ($id)

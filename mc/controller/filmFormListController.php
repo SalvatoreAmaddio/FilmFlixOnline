@@ -1,12 +1,12 @@
 <?php
     if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-    if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
-    if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."\mc\model");
-    if (!defined('controller')) define('controller', $_SERVER['DOCUMENT_ROOT']."\mc\controller");
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
+if (!defined('model')) define('model', $_SERVER['DOCUMENT_ROOT']."/filmflix/mc/model");
+if (!defined('controller')) define('controller', $_SERVER['DOCUMENT_ROOT']."/filmflix/mc/controller");
 
-    require_once model."\\films.php";
-    require_once SAR."\\abstractController.php";
-    require_once controller."\\filmFormController.php";
+    require_once model."/films.php";
+    require_once SAR."/abstractController.php";
+    require_once controller."/filmFormController.php";
 
     class FilmFormListController extends AbstractFormListController
     {        

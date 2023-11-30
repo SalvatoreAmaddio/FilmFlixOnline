@@ -1,6 +1,6 @@
 <?php
-if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."\SAR");
-require_once SAR."\\ref.php";
+if (!defined('SAR')) define('SAR', $_SERVER['DOCUMENT_ROOT']."/filmflix/SAR");
+require_once SAR."/ref.php";
 
 class QueryGenerator
 {
@@ -119,7 +119,7 @@ abstract class AbstractModel
 
     public function __construct() 
     {
-        $this->tableName = $this->me();
+        $this->tableName = strtolower($this->me());
         $this->ref = new Ref($this);
         $this->queryGenerator = new QueryGenerator($this->ref,$this->tableName);
         $this->insertStmt = $this->queryGenerator->insertStmt;
@@ -192,7 +192,7 @@ abstract class AbstractModel
         return $this->deleteStmt;
     }
 
-    public function isEqual(AbstractModel|int $obj) 
+    public function isEqual($obj) 
     {
         if ($obj instanceof AbstractModel) 
             return $this == $obj;
