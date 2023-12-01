@@ -437,19 +437,21 @@ class ListForm extends AbstractForm
         }
 
         let param = "selectedID=" + id;
-        this.send(param, (output) => this.displayData(output));
-
-        if (elementClicked.tagName=="BUTTON") 
+        this.send(param, (output) =>
         {
-            if (elementClicked.className.includes("editButton")) 
+            this.displayData(output);
+            if (elementClicked.tagName=="BUTTON") 
             {
-                this.send(param, (output)=>{},this.#talkToServer);     
-                location.href = this.#goToPage;
+                if (elementClicked.className.includes("editButton")) 
+                {
+                    this.send(param, (output)=>{},this.#talkToServer);     
+                    location.href = this.#goToPage;
+                }
+    
+                if (elementClicked.className.includes("deleteButton")) 
+                this.delete(elementClicked);
             }
-
-            if (elementClicked.className.includes("deleteButton")) 
-            this.delete(elementClicked);
-        }
+        });
     }
 
     set searchValue(value) 
