@@ -1,8 +1,8 @@
 <?php
-if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-if (!defined('SAR')) define('SAR', dirname(__DIR__,2)."/SAR");
-if (!defined('model')) define('model', dirname(__DIR__)."/model");
-if (!defined('controller')) define('controller', __DIR__);
+    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+    if (!defined('SAR')) define('SAR', dirname(__DIR__,2)."/SAR");
+    if (!defined('model')) define('model', dirname(__DIR__)."/model");
+    if (!defined('controller')) define('controller', __DIR__);
 
     require_once model."/films.php";
     require_once SAR."/abstractController.php";
@@ -10,8 +10,6 @@ if (!defined('controller')) define('controller', __DIR__);
 
     class FilmFormListController extends AbstractFormListController
     {        
-
-        public string $filterByTitle = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;";
         public string $filterByGenre = "SELECT * FROM qryfilms WHERE genreID = ?";
         public string $filterByRating = "SELECT * FROM qryfilms WHERE ratingID = ?;";
         public string $filterByYear = "SELECT * FROM qryfilms WHERE yearReleased = ?;";
@@ -28,6 +26,7 @@ if (!defined('controller')) define('controller', __DIR__);
             $this->ratingController = new RatingController();
             $this->genreController->fetchData();
             $this->ratingController->fetchData();
+            $this->filterByTitle = "SELECT * FROM qryfilms WHERE LOWER(title) LIKE ?;";
         }
 
         public function displayData() 
@@ -81,20 +80,6 @@ if (!defined('controller')) define('controller', __DIR__);
             echo "</table> <div id='backTop'><button><img src='img/arrow-up.png'></button></div>";
         }
 
-        public function onSearchValueRequest()
-        {
-            $this->sessions->setSearchValue("%".strtolower($this->requests->searchValue())."%");
-            $this->db->connect();
-            $this->onFilter();
-            $this->recordTracker->moveTo(0);
-            echo $this->displayData();
-        }
-
-        private function searchByValue() : bool 
-        {
-            return $this->sessions->issetSearchValue();
-        }
-
         private function searchBy(int $value) : bool 
         {
             return isset($_SESSION["formListFilterType"]) 
@@ -125,8 +110,7 @@ if (!defined('controller')) define('controller', __DIR__);
                     $this->preparedFetchData($this->filterByYear, "i", $_SESSION["formListFilterValue"]);
                 break;
                 case $this->searchByValue():
-                    $this->preparedFetchData($this->filterByTitle, "s", $this->sessions->getSearchValue());
-                break;
+                    $this->preparedFetchData($this->filterByTitle, "s", $this->sessions->getSearchValue());                break;
                 default:
                     $this->fetchData();
             }        
@@ -162,7 +146,8 @@ if (!defined('controller')) define('controller', __DIR__);
                     $this->genreController->genreList(null);
                     echo "</select>";
                 break;
-                case 3: echo "<input id='filter' placeholder='Select year...' type='number'>";
+                case 3: 
+                    echo "<input id='filter' placeholder='Select year...' type='number'>";
                 break;
             }
         }
@@ -173,10 +158,10 @@ if (!defined('controller')) define('controller', __DIR__);
             switch(true)
             {
                 case isset($_REQUEST["filterOption"]):
-                $this->readFilterOption($_REQUEST["filterOption"]);
+                    $this->readFilterOption($_REQUEST["filterOption"]);
                 break;
                 case isset($_REQUEST["filterValue"]):
-                $this->readFilterValue($_REQUEST["filterValue"]);
+                    $this->readFilterValue($_REQUEST["filterValue"]);
                 break;
             }
         }

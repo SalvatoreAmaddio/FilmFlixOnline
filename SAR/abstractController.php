@@ -1,7 +1,6 @@
 <?php    
-if(session_status() !== PHP_SESSION_ACTIVE) session_start();
-    
-if (!defined('SAR')) define('SAR',__DIR__);
+    if(session_status() !== PHP_SESSION_ACTIVE) session_start();
+    if (!defined('SAR')) define('SAR',__DIR__);
     require_once SAR."/database.php";
     
     abstract class AbstractController 
@@ -217,6 +216,13 @@ if (!defined('SAR')) define('SAR',__DIR__);
             $this->recordTracker->allowNewRecord = true;
         }
 
+        public function init() 
+        {
+            $this->fetchData();
+            $this->readRequests();
+            $this->readSessions();
+        }
+
         abstract public function save(Array $data);
 
         abstract function fillRecord(Array $data); 
@@ -249,9 +255,43 @@ if (!defined('SAR')) define('SAR',__DIR__);
 
     abstract class AbstractFormListController extends AbstractController
     {
-        public abstract function displayData();        
-        public abstract function onSearchValueRequest();
+        public string $filterByTitle = "";
+
+        public abstract function displayData();     
+        
+        public function init() 
+        {
+            $this->onFilter();
+            $this->readRequests();
+            $this->readSessions();
+        }
+
+        public function onFilter() 
+        {
+            switch(true)
+            {
+                case $this->searchByValue():
+                    $this->preparedFetchData($this->filterByTitle, "s", $this->sessions->getSearchValue());
+                break;
+                default:
+                    $this->fetchData();
+            }
+        }
+
+        public function onSearchValueRequest() 
+        {
+            $this->sessions->setSearchValue("%".strtolower($this->requests->searchValue())."%");
+            $this->db->connect();
+            $this->onFilter();
+            $this->recordTracker->moveTo(0);
+            echo $this->displayData();
+        }
                 
+        protected function searchByValue() : bool 
+        {
+            return $this->sessions->issetSearchValue();
+        }
+
         public function readRequests() 
         {
             parent::readRequests();

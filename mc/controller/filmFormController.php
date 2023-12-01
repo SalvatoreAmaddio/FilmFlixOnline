@@ -89,8 +89,6 @@ require_once controller."/filmFormController.php";
                     echo "<option value=". $genre->pkgenreID .">". $genre . "</option>";
             }
         }
-
-        public function onDeleteRecordRequest(){}
     }
 
     class RatingController extends AbstractController 
@@ -119,7 +117,5 @@ require_once controller."/filmFormController.php";
                     echo "<option value=". $rating->pkratingID .">". $rating . "</option>";
             }
         }
-
-        public function onDeleteRecordRequest(){}
     }
 ?>
