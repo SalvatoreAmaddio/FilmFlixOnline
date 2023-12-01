@@ -24,7 +24,7 @@
                 <section id="dataSection" style="background-image: url('img/projector.jpg')">
                     <div id="data">
                         <table class="tableView">
-                            <caption>Record</caption>
+                            <caption><?php echo $controller->model()->pkfilmID?></caption>
                             <tr>
                                 <td>
                                     <label>Title</label>

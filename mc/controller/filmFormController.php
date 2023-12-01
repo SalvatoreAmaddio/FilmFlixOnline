@@ -63,7 +63,7 @@ require_once controller."/filmFormController.php";
 
         public function displayData()
         {
-            echo "<caption>Record</caption>
+            echo "<caption>" . $this->model()->pkfilmID . "</caption>
             <tr>
                 <td>
                     <label>Title</label>

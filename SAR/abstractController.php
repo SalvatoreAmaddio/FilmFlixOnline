@@ -120,6 +120,8 @@
                 break;
             }
             $this->sessions->selectedIndex($this->recordIndex);
+            $this->model = $this->records[$this->recordIndex];
+            $this->sessions->selectedID($this->model()->primaryKey());
             echo $this->displayData();
         }
 
@@ -221,9 +223,7 @@
 
         public function onNewRecordRequest() 
         {
-            $this->recordTracker->moveNew();
-            $this->sessions->selectedIndex($this->recordIndex);
-            $this->sessions->selectedID(0);
+            parent::onNewRecordRequest();
             echo $this->displayData();
         }
 

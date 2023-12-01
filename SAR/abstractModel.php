@@ -204,6 +204,12 @@ abstract class AbstractModel
         }
     }
 
+    public function primaryKey() : int 
+    {
+        $this->ref->findProperty("pk");
+        return $this->ref->getValue();
+    }
+
     abstract public function checkIntegrity() : bool;
     abstract public function checkMandatory() : bool;
 //1select
