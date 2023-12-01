@@ -33,7 +33,6 @@ require_once controller."/filmFormController.php";
                     $this->model()->fkrating->pkratingID,
                     $this->model()->fkgenre->pkgenreID,
                 );
-
                 echo "inserted";
             }
             else 
@@ -46,7 +45,6 @@ require_once controller."/filmFormController.php";
                     $this->model()->fkgenre->pkgenreID,
                     $this->model()->pkfilmID
                 );
-
                 echo "updated";
             }
         }
@@ -63,7 +61,7 @@ require_once controller."/filmFormController.php";
 
         public function displayData()
         {
-            echo "<caption>" . $this->model()->pkfilmID . "</caption>
+            echo "<caption>Record</caption>
             <tr>
                 <td>
                     <label>Title</label>
@@ -109,7 +107,6 @@ require_once controller."/filmFormController.php";
                 </td>
             </tr>";
         }
-
     }
 
     class GenreController extends AbstractController 

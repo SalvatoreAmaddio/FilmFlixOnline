@@ -96,15 +96,14 @@
             $this->recordIndex = $this->sessions->selectedIndex();
             switch($direction) 
             {
-                case -1:
-                    if ($this->recordCount()==0) 
-                    {
-                        $this->recordIndex = 0;
-                        return;
-                    }
-
+                case -1: //when delete occurs
                     if ($this->recordIndex > 0) 
+                    {
+                        array_splice($this->records, $this->recordIndex, 1);
                         $this->recordIndex--;
+                    }
+                    else 
+                        array_shift($this->records);
                 break;
                 case 0:
                     $this->recordTracker->moveNext();
@@ -119,6 +118,7 @@
                     $this->recordTracker->moveLast();
                 break;
             }
+
             $this->sessions->selectedIndex($this->recordIndex);
             $this->model = $this->records[$this->recordIndex];
             $this->sessions->selectedID($this->model()->primaryKey());
@@ -238,12 +238,6 @@
 
         abstract function fillRecord(Array $data); 
 
-        public function onDeleteRecordRequest() 
-        {
-            parent::onDeleteRecordRequest();
-            echo true;
-        }
-
         public function readRequests() 
         {
             parent::readRequests();
@@ -321,12 +315,6 @@
                 return "class='selectedRow'";
             
             return "";
-        }
-
-        public function onDeleteRecordRequest()
-        {
-            parent::onDeleteRecordRequest();
-            echo $this->displayData();
         }
 
         public function onSelectedIDRequest()

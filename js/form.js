@@ -200,7 +200,7 @@ class AbstractForm extends AbstractServerCaller
         {
             this.send("delete=true", (e)=>
             {
-                if (e) location.reload();
+                if (e) this.displayData(e);
             });        
         }
     }
@@ -584,17 +584,6 @@ class FilmForm extends Form
     {
         this.table.innerHTML = data;
         this.recordTracker.updateDisplayer();
-    }
-
-    delete(e) 
-    {
-        if (confirm("Are you sure you want to delete this record?") == true) 
-        {
-            this.send("delete=true", (e)=>
-            {
-                if (e) this.displayData(e);
-            });        
-        }
     }
 
     checkMandatory(values) 
