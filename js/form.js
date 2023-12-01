@@ -213,7 +213,7 @@ class Form extends AbstractForm
         super(server);
         this.saveButton.addEventListener("click",(e)=>this.save(e));
         this.deleteButton.addEventListener("click",(e)=>this.delete(e));
-        this.recordTracker.onGoNewClicked = ()=> {this.send("newRecord=true", (output)=>location.reload())};
+        this.recordTracker.onGoNewClicked = ()=> {this.send("newRecord=true", (output)=>this.displayData(output))};
     }
 
     get recordFields() 
@@ -572,6 +572,17 @@ class FilmFormList extends ListForm
 
 class FilmForm extends Form 
 {
+
+    get table() 
+    {
+        return this.data.getElementsByClassName("tableView")[0];
+    }
+
+    displayData(data) 
+    {
+        this.table.innerHTML = data;
+        this.recordTracker.updateDisplayer();
+    }
 
     checkMandatory(values) 
     {

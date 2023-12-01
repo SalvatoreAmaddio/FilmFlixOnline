@@ -47,12 +47,7 @@
     font-weight: bold;
 }
 
-caption 
-{
-    background-color: white;
-}
-
-table 
+.tableView 
 {
     background-color: white;
     border: 1px solid;
@@ -60,27 +55,28 @@ table
     padding: .5rem;
 }
 
-table input
+.tableView input
 {
     padding: .6rem;
     border-radius: 1rem;
     border-width: 1px;
 }
 
-table caption 
+.tableView caption 
 {
     border: 1px solid;
     padding: .5rem;
     font-weight: bolder;
     border-radius: 1rem 1rem 0 0;
+    background-color: white;
 }
 
-table label 
+.tableView label 
 {
     padding: .6rem;
 }
 
-table select 
+.tableView select 
 {
     padding: 0.6rem;
     border-radius: 1rem;

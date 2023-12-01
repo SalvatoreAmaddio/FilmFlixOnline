@@ -39,6 +39,8 @@
             return $this->recordCount()-1;
         }
 
+        public abstract function displayData();     
+
         public function recordCount() : int 
         {
             return count($this->records);
@@ -89,7 +91,7 @@
             }));
         }
 
-        protected function resetIndex(int $direction) 
+        private function resetIndex(int $direction) 
         {
             $this->recordIndex = $this->sessions->selectedIndex();
             switch($direction) 
@@ -118,6 +120,7 @@
                 break;
             }
             $this->sessions->selectedIndex($this->recordIndex);
+            echo $this->displayData();
         }
 
         public function preparedFetchData(string $sql="", string $paramTypes = "", ...$vars) 
@@ -216,6 +219,14 @@
             $this->recordTracker->allowNewRecord = true;
         }
 
+        public function onNewRecordRequest() 
+        {
+            $this->recordTracker->moveNew();
+            $this->sessions->selectedIndex($this->recordIndex);
+            $this->sessions->selectedID(0);
+            echo $this->displayData();
+        }
+
         public function init() 
         {
             $this->fetchData();
@@ -256,8 +267,6 @@
     abstract class AbstractFormListController extends AbstractController
     {
         public string $filterByTitle = "";
-
-        public abstract function displayData();     
         
         public function init() 
         {
@@ -312,12 +321,6 @@
                 return "class='selectedRow'";
             
             return "";
-        }
-
-        protected function resetIndex($direction) 
-        {
-            parent::resetIndex($direction);
-            echo $this->displayData();
         }
 
         public function onDeleteRecordRequest()

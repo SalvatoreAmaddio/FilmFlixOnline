@@ -23,7 +23,7 @@
             <main>
                 <section id="dataSection" style="background-image: url('img/projector.jpg')">
                     <div id="data">
-                        <table>
+                        <table class="tableView">
                             <caption>Record</caption>
                             <tr>
                                 <td>
