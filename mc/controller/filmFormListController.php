@@ -51,6 +51,7 @@
             <th>Genre</th>
             <th colspan='2'>COMMANDS</th>
             </tr>";
+
             $count = 1;
             foreach($this->records as $record) 
             {

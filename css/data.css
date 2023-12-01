@@ -144,11 +144,33 @@
     width: 50%;
 }
 
-#data 
+table 
 {
-    max-height: 17rem;
-    overflow: auto;
+    border-collapse: collapse;
+    border-radius: 1rem;
+    display: block;
     position: relative;
+}
+
+tbody 
+{
+    overflow: auto;
+    max-height: 14rem;
+    border-radius: 1rem;
+    display: block;
+    position: relative;
+}
+
+table tr:first-child 
+{
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+
+table:empty 
+{
+    display: none;
 }
 
 .responsiveTitle 
@@ -162,17 +184,6 @@
 {
     font-weight: bold;
     padding: .2rem;
-}
-
-table 
-{
-    border-collapse: collapse;
-    border-radius: 1rem;
-}
-
-table:empty 
-{
-    display: none;
 }
 
 .selectedRow 

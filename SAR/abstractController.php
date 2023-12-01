@@ -49,7 +49,7 @@
             return $this->recordCount() > 0;
         }
 
-        public function model()
+        public function model() : object
         {
             return $this->model;
         }
