@@ -65,9 +65,9 @@ class AbstractServerCaller
 {
     #server;
 
-    set server(serverName) 
+    constructor(server) 
     {
-        this.#server = serverName;
+        this.#server = server;
     }
 
     get server() 
@@ -77,7 +77,7 @@ class AbstractServerCaller
 
     send(param, evt, server='') 
     {
-        if (server) this.server = server;        
+        if (server) this.#server = server;        
         let ajax = new Ajax(this.server);
         ajax.on = evt;
         ajax.send(param);
@@ -87,10 +87,12 @@ class AbstractServerCaller
 class RecordTracker extends AbstractServerCaller
 {
     #onGoNewClicked;
+    #form;
 
-    constructor(server) 
+    constructor(server, form) 
     {
-        this.server = server;
+        super(server);
+        this.#form = form;
         this.goNextButton.addEventListener("click",(e)=>this.sendDirection(0));
         this.goPreviousButton.addEventListener("click",(e)=>this.sendDirection(1));
         this.goFirstButton.addEventListener("click",(e)=>this.sendDirection(2));
@@ -100,11 +102,7 @@ class RecordTracker extends AbstractServerCaller
 
     updateDisplayer() 
     {
-        this.send("updateRecordTracker=true",
-        (e)=>
-        {
-            this.recordTrackerLabel.innerHTML = e;
-        });
+        this.send("updateRecordTracker=true", (e)=>this.displayer.innerHTML = e);
     }
 
     sendDirection(direction) 
@@ -126,42 +124,42 @@ class RecordTracker extends AbstractServerCaller
             break;
         }
 
-        this.send(param,(e)=>this.displayData(e));
+        this.send(param,(e)=>this.#form.displayData(e));
     }
 
-    get #me() 
+    get me() 
     {
-        document.getElementsByTagName("footer")[0];
+        return document.getElementsByClassName("recordTracker")[0];
     }
 
     get displayer() 
     {
-        return this.#me.getElementsByClassName("recordTrackerLabel")[0];
+        return this.me.getElementsByClassName("recordTrackerLabel")[0];
     }
 
     get goFirstButton() 
     {
-        return this.#me.getElementsByTagName("button")[0];
+        return this.me.getElementsByTagName("button")[0];
     }
 
     get goPreviousButton() 
     {
-        return this.#me.getElementsByTagName("button")[1];
+        return this.me.getElementsByTagName("button")[1];
     }
 
     get goNextButton() 
     {
-        return this.#me.getElementsByTagName("button")[2];
+        return this.me.getElementsByTagName("button")[2];
     }
 
     get goLastButton() 
     {
-        return this.#me.getElementsByTagName("button")[3];
+        return this.me.getElementsByTagName("button")[3];
     }
 
     get goNewButton() 
     {
-        return this.#me.getElementsByTagName("button")[4];
+        return this.me.getElementsByTagName("button")[4];
     }
 
     set onGoNewClicked(evt) 
@@ -183,11 +181,11 @@ class AbstractForm extends AbstractServerCaller
  
     constructor(server) 
     {
+        super(server);
         new AnimationManager();
-        this.server = server;
         this.dataSection = document.getElementById("dataSection");
         this.data = document.getElementById("data");
-        this.recordTracker = new RecordTracker(server);
+        this.recordTracker = new RecordTracker(server, this);
     }
 
     displayData(data) {}
@@ -468,7 +466,7 @@ class ListForm extends AbstractForm
     {
         this.data.innerHTML = data;
         this.#onRowClickedEvent();
-        this.updateRecordTracker();
+        this.recordTracker.updateDisplayer();
         this.#scroll();
         this.backTop.children[0].addEventListener("click",(e)=>
         {
