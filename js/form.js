@@ -412,16 +412,16 @@ class ListForm extends AbstractForm
         return this.rows.length;
     }
 
+    get backTop() 
+    {
+        return document.getElementById('backTop');
+    } 
+
     #onRowClickedEvent() 
     {
         for(let i = 1 ; i < this.rowCount; i++)
             this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
     }
-
-    get backTop() 
-    {
-        return document.getElementById('backTop');
-    } 
 
     displayData(data) 
     {
@@ -497,8 +497,7 @@ class ListForm extends AbstractForm
 
     goNew() 
     {
-        this.send("newRecord=true",
-            (output)=>{},'readAmend.php');     
+        this.send("newRecord=true", (output)=>{},'readAmend.php');     
         location.href = "amend.php";
     }
 }
