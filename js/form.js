@@ -315,10 +315,7 @@ class ListForm extends AbstractForm
         {
             let optionID = e.target.options[e.target.selectedIndex].id;
             if (this.filterOption != optionID) 
-            {
                 sessionStorage.removeItem("filterValue");
-                this.refresh();
-            }      
             this.filterOption = optionID;
             this.#sendFilterOptions();
         });
@@ -346,6 +343,7 @@ class ListForm extends AbstractForm
             {
                 sessionStorage.removeItem("filterValue");
                 sessionStorage.removeItem("filterOption");
+                this.recordTracker.sendDirection(2);
                 return;
             }
             
@@ -550,13 +548,13 @@ class FilmFormList extends ListForm
             {
                 this.infoButton.style.top="13.5rem";
                 this.infoButton.style.left="89%";
-                backTop.style.display="block";
+                this.backTop.style.display="block";
             }
             else 
             {
                 this.infoButton.style.top="1rem";
                 this.infoButton.style.left="1rem";
-                backTop.style.display="none";
+                this.backTop.style.display="none";
             }
         });
     }
