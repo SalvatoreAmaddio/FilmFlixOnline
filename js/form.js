@@ -447,9 +447,15 @@ class ListForm extends AbstractForm
                     this.send(param, (output)=>{},this.#talkToServer);     
                     location.href = this.#goToPage;
                 }
-    
+                
                 if (elementClicked.className.includes("deleteButton")) 
-                this.delete(elementClicked);
+                {
+                    let id = setTimeout((e)=>
+                    {
+                        this.delete(elementClicked);
+                        clearTimeout(id);
+                    }, 100);
+                }
             }
         });
     }
