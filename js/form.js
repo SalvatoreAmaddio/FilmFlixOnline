@@ -97,7 +97,7 @@ class RecordTracker extends AbstractServerCaller
         this.goPreviousButton.addEventListener("click",(e)=>this.sendDirection(1));
         this.goFirstButton.addEventListener("click",(e)=>this.sendDirection(2));
         this.goLastButton.addEventListener("click",(e)=>this.sendDirection(3));
-        this.goNewButton.addEventListener("click",(e)=>this.onGoNewClicked);
+        this.goNewButton.addEventListener("click",(e)=>this.onGoNewClicked());
     }
 
     updateDisplayer() 
@@ -123,8 +123,7 @@ class RecordTracker extends AbstractServerCaller
                 param='goLast=true';
             break;
         }
-
-        this.send(param,(e)=>this.#form.displayData(e));
+        this.send(param,(output) => this.#form.displayData(output));
     }
 
     get me() 
@@ -285,7 +284,8 @@ class ListForm extends AbstractForm
     {
         super(server);
         this.searchBar.addEventListener("input",(e)=>this.#sendSearchInput(e.target.value));
-        this.recordTracker.onGoNewClicked = ()=> {
+        this.recordTracker.onGoNewClicked = ()=> 
+        {
             this.send("newRecord=true", (output)=>{},'readAmend.php');     
             location.href = "amend.php";    
         }
@@ -466,8 +466,8 @@ class ListForm extends AbstractForm
     {
         this.data.innerHTML = data;
         this.#onRowClickedEvent();
-        this.recordTracker.updateDisplayer();
         this.#scroll();
+        this.recordTracker.updateDisplayer();
         this.backTop.children[0].addEventListener("click",(e)=>
         {
             var rows = this.table.querySelectorAll('tr');
@@ -484,14 +484,13 @@ class ListForm extends AbstractForm
         let selectedRow = 0;
         for (let i = 0; i < rows.length; i ++) 
         {
-            rows[i].classList.remove('active');
             if (rows[i].className.includes('selectedRow')) 
                 selectedRow = i;
         }
 
         rows[selectedRow].classList.add('active');
         rows[selectedRow].scrollIntoView({
-            behavior: 'smooth',
+            behavior: 'instant',
           block: 'center'
         });
     }
