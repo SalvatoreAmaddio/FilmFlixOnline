@@ -61,63 +61,44 @@ class AnimationManager
     }
 }
 
-class AbstractForm 
+class AbstractServerCaller 
 {
-    dataSection;
-    data;
-    rt;
     #server;
-    recordTrackerLabel;
 
-    constructor(server) 
+    set server(serverName) 
     {
-        new AnimationManager();
-        this.#server = server;
-        this.dataSection = document.getElementById("dataSection");
-        this.data = document.getElementById("data");
-        this.rt = document.getElementsByTagName("footer")[0];
-        this.recordTrackerLabel = this.rt.getElementsByClassName("recordTrackerLabel")[0];
-        this.goNextButton.addEventListener("click",(e)=>this.sendDirection(0));
-        this.goPreviousButton.addEventListener("click",(e)=>this.sendDirection(1));
-        this.goFirstButton.addEventListener("click",(e)=>this.sendDirection(2));
-        this.goLastButton.addEventListener("click",(e)=>this.sendDirection(3));
-        this.goNewButton.addEventListener("click",(e)=>this.goNew());
+        this.#server = serverName;
     }
 
-    get goFirstButton() 
+    get server() 
     {
-        return this.rt.getElementsByTagName("button")[0];
-    }
-
-    get goPreviousButton() 
-    {
-        return this.rt.getElementsByTagName("button")[1];
-    }
-
-    get goNextButton() 
-    {
-        return this.rt.getElementsByTagName("button")[2];
-    }
-
-    get goLastButton() 
-    {
-        return this.rt.getElementsByTagName("button")[3];
-    }
-
-    get goNewButton() 
-    {
-        return this.rt.getElementsByTagName("button")[4];
+        return this.#server
     }
 
     send(param, evt, server='') 
     {
-        if (server) this.#server = server;        
-        let ajax = new Ajax(this.#server);
+        if (server) this.server = server;        
+        let ajax = new Ajax(this.server);
         ajax.on = evt;
         ajax.send(param);
     }
+}
 
-    updateRecordTracker() 
+class RecordTracker extends AbstractServerCaller
+{
+    #onGoNewClicked;
+
+    constructor(server) 
+    {
+        this.server = server;
+        this.goNextButton.addEventListener("click",(e)=>this.sendDirection(0));
+        this.goPreviousButton.addEventListener("click",(e)=>this.sendDirection(1));
+        this.goFirstButton.addEventListener("click",(e)=>this.sendDirection(2));
+        this.goLastButton.addEventListener("click",(e)=>this.sendDirection(3));
+        this.goNewButton.addEventListener("click",(e)=>this.onGoNewClicked);
+    }
+
+    updateDisplayer() 
     {
         this.send("updateRecordTracker=true",
         (e)=>
@@ -148,9 +129,68 @@ class AbstractForm
         this.send(param,(e)=>this.displayData(e));
     }
 
-    displayData(data) {}
+    get #me() 
+    {
+        document.getElementsByTagName("footer")[0];
+    }
 
-    goNew() {}
+    get displayer() 
+    {
+        return this.#me.getElementsByClassName("recordTrackerLabel")[0];
+    }
+
+    get goFirstButton() 
+    {
+        return this.#me.getElementsByTagName("button")[0];
+    }
+
+    get goPreviousButton() 
+    {
+        return this.#me.getElementsByTagName("button")[1];
+    }
+
+    get goNextButton() 
+    {
+        return this.#me.getElementsByTagName("button")[2];
+    }
+
+    get goLastButton() 
+    {
+        return this.#me.getElementsByTagName("button")[3];
+    }
+
+    get goNewButton() 
+    {
+        return this.#me.getElementsByTagName("button")[4];
+    }
+
+    set onGoNewClicked(evt) 
+    {
+        this.#onGoNewClicked = evt;
+    }
+
+    get onGoNewClicked() 
+    {
+        return this.#onGoNewClicked;
+    }
+}
+
+class AbstractForm extends AbstractServerCaller
+{
+    dataSection;
+    data;
+    recordTracker;
+ 
+    constructor(server) 
+    {
+        new AnimationManager();
+        this.server = server;
+        this.dataSection = document.getElementById("dataSection");
+        this.data = document.getElementById("data");
+        this.recordTracker = new RecordTracker(server);
+    }
+
+    displayData(data) {}
 
     refresh() 
     {
@@ -176,6 +216,7 @@ class Form extends AbstractForm
         super(server);
         this.saveButton.addEventListener("click",(e)=>this.save(e));
         this.deleteButton.addEventListener("click",(e)=>this.delete(e));
+        this.recordTracker.onGoNewClicked = ()=> {this.send("newRecord=true", (output)=>location.reload())};
     }
 
     get recordFields() 
@@ -224,11 +265,6 @@ class Form extends AbstractForm
         return this.data.getElementsByClassName("deleteButton")[0];
     }
 
-    goNew() 
-    {
-        this.send("newRecord=true", (output)=>{location.reload();});     
-    }
-
     displayData(data) 
     {
         location.reload();
@@ -250,10 +286,15 @@ class ListForm extends AbstractForm
     constructor(server) 
     {
         super(server);
-        this.#onRowClickedEvent();
         this.searchBar.addEventListener("input",(e)=>this.#sendSearchInput(e.target.value));
+        this.recordTracker.onGoNewClicked = ()=> {
+            this.send("newRecord=true", (output)=>{},'readAmend.php');     
+            location.href = "amend.php";    
+        }
+
+        this.newButton.addEventListener("click", (e)=> this.recordTracker.onGoNewClicked);
+        this.#onRowClickedEvent();
         this.#checkStoredSearchValue();
-        this.newButton.addEventListener("click",(e)=>this.goNew());        
         this.#addDropDownOptionsListener();
 
         if (this.filterOption)
@@ -399,7 +440,7 @@ class ListForm extends AbstractForm
 
     get table() 
     {
-        return this.data.getElementsByTagName("table")[0];
+        return this.data.getElementsByClassName("tableView")[0];
     }
 
     get rows() 
@@ -493,12 +534,6 @@ class ListForm extends AbstractForm
             if (elementClicked.className.includes("deleteButton")) 
                 this.delete(elementClicked);
         }
-    }
-
-    goNew() 
-    {
-        this.send("newRecord=true", (output)=>{},'readAmend.php');     
-        location.href = "amend.php";
     }
 }
 

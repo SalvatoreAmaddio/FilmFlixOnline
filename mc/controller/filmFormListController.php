@@ -42,7 +42,7 @@
                 return;
             }
 
-            echo "<table style='background-color: white;'>
+            echo "<table class='tableView' style='background-color: white;'>
             <tr>
             <th colspan='2'>Title</th>
             <th>Year</th>
