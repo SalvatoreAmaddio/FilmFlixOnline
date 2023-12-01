@@ -70,10 +70,12 @@
                                 </td>
                             </tr>
                         </table>
+
                         <div class="commands">
                             <button class="saveButton" value='<?php echo $controller->model()->pkfilmID?>'>💾</button>
                             <button class="deleteButton" value='<?php echo $controller->model()->pkfilmID?>'>X</button>
                         </div>
+                        
                         <div id="notification">
                             <p>Record updated!</p>
                         </div>
