@@ -584,6 +584,17 @@ class FilmForm extends Form
         this.recordTracker.updateDisplayer();
     }
 
+    delete(e) 
+    {
+        if (confirm("Are you sure you want to delete this record?") == true) 
+        {
+            this.send("delete=true", (e)=>
+            {
+                if (e) this.displayData(e);
+            });        
+        }
+    }
+
     checkMandatory(values) 
     {
         for(let i = 0; i < values.length; i++) 
