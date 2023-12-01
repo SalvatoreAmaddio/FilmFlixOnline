@@ -53,27 +53,7 @@
         </div>
 
         <script>
-            new ListForm("readIndex.php");
-
-            const s = document.getElementById("searchSection");
-            const k = document.getElementById("infoButton");
-            const recordIndicators = document.getElementsByClassName("recordIndicator");
-            window.addEventListener("scroll",(e)=>
-            {
-                let x=s.getBoundingClientRect().top;
-                if (x==0) 
-                {
-                    k.style.top="13.5rem";
-                    k.style.left="89%";
-                    backTop.style.display="block";
-                }
-                else 
-                {
-                    k.style.top="1rem";
-                    k.style.left="1rem";
-                    backTop.style.display="none";
-                }
-            });
+            new FilmFormList();
         </script>
     </body>
 </html>

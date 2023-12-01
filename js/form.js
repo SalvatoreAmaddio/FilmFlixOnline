@@ -280,14 +280,19 @@ class Form extends AbstractForm
 
 class ListForm extends AbstractForm
 {
-    constructor(server) 
+    #goToPage;
+    #talkToServer;
+
+    constructor(server, goToPage, talkToServer) 
     {
         super(server);
+        this.#goToPage = goToPage;
+        this.#talkToServer = talkToServer;
         this.searchBar.addEventListener("input",(e)=>this.#sendSearchInput(e.target.value));
         this.recordTracker.onGoNewClicked = ()=> 
         {
-            this.send("newRecord=true", (output)=>{},'readAmend.php');     
-            location.href = "amend.php";    
+            this.send("newRecord=true", (output)=>{},this.#talkToServer);     
+            location.href = this.#goToPage;    
         }
 
         this.newButton.addEventListener("click", (e)=> this.recordTracker.onGoNewClicked);
@@ -374,6 +379,81 @@ class ListForm extends AbstractForm
         }
     }
 
+    #onRowClickedEvent() 
+    {
+        for(let i = 1 ; i < this.rowCount; i++)
+            this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
+    }
+
+    displayData(data) 
+    {
+        this.data.innerHTML = data;
+        this.#onRowClickedEvent();
+        this.#scroll();
+        this.recordTracker.updateDisplayer();
+        this.backTop.children[0].addEventListener("click",(e)=>
+        {
+            var rows = this.table.querySelectorAll('tr');
+            rows[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+            });
+        });
+    }
+
+    #scroll() 
+    {
+        var rows = this.table.querySelectorAll('tr');
+        let selectedRow = 0;
+        for (let i = 0; i < rows.length; i ++) 
+        {
+            if (rows[i].className.includes('selectedRow')) 
+                selectedRow = i;
+        }
+
+        rows[selectedRow].classList.add('active');
+        rows[selectedRow].scrollIntoView({
+            behavior: 'instant',
+          block: 'center'
+        });
+    }
+
+    #rowClicked(e) 
+    {
+        let elementClicked = e.target;
+        let temp = elementClicked;
+        let parentNode = "";
+        let clickedRow;
+        let id;
+
+        while(true) 
+        {
+            parentNode = temp.parentNode;
+            if (parentNode.tagName=="TR") 
+            {
+                clickedRow = parentNode;
+                id = clickedRow.getAttribute("value");
+                break;
+            }
+            temp = temp.parentNode;
+        }
+
+        let param = "selectedID=" + id;
+        this.send(param, (output) => this.displayData(output));
+
+        if (elementClicked.tagName=="BUTTON") 
+        {
+            if (elementClicked.className.includes("editButton")) 
+            {
+                this.send(param, (output)=>{},this.#talkToServer);     
+                location.href = this.#goToPage;
+            }
+
+            if (elementClicked.className.includes("deleteButton")) 
+            this.delete(elementClicked);
+        }
+    }
+
     set searchValue(value) 
     {
         sessionStorage.setItem("searchValue", value);
@@ -455,82 +535,40 @@ class ListForm extends AbstractForm
     {
         return document.getElementById('backTop');
     } 
+}
 
-    #onRowClickedEvent() 
+class FilmFormList extends ListForm
+{
+    constructor() 
     {
-        for(let i = 1 ; i < this.rowCount; i++)
-            this.rows[i].addEventListener("click", (e)=>this.#rowClicked(e));
-    }
+        super("readIndex.php", "amend.php", "readAmend.php");
 
-    displayData(data) 
-    {
-        this.data.innerHTML = data;
-        this.#onRowClickedEvent();
-        this.#scroll();
-        this.recordTracker.updateDisplayer();
-        this.backTop.children[0].addEventListener("click",(e)=>
+        let recordIndicators = document.getElementsByClassName("recordIndicator");
+        window.addEventListener("scroll",(e)=>
         {
-            var rows = this.table.querySelectorAll('tr');
-            rows[0].scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-            });
+            if (this.searchSectionTop==0) 
+            {
+                this.infoButton.style.top="13.5rem";
+                this.infoButton.style.left="89%";
+                backTop.style.display="block";
+            }
+            else 
+            {
+                this.infoButton.style.top="1rem";
+                this.infoButton.style.left="1rem";
+                backTop.style.display="none";
+            }
         });
     }
 
-    #scroll() 
+    get searchSectionTop() 
     {
-        var rows = this.table.querySelectorAll('tr');
-        let selectedRow = 0;
-        for (let i = 0; i < rows.length; i ++) 
-        {
-            if (rows[i].className.includes('selectedRow')) 
-                selectedRow = i;
-        }
-
-        rows[selectedRow].classList.add('active');
-        rows[selectedRow].scrollIntoView({
-            behavior: 'instant',
-          block: 'center'
-        });
+        return document.getElementById("searchSection").getBoundingClientRect().top;
     }
 
-    #rowClicked(e) 
+    get infoButton() 
     {
-        let elementClicked = e.target;
-        let temp = elementClicked;
-        let parentNode = "";
-        let clickedRow;
-        let id;
-
-        while(true) 
-        {
-            parentNode = temp.parentNode;
-            if (parentNode.tagName=="TR") 
-            {
-                clickedRow = parentNode;
-                id = clickedRow.getAttribute("value");
-                break;
-            }
-            temp = temp.parentNode;
-        }
-
-        let param = "selectedID=" + id;
-        this.send(param,
-        (output)=> {this.displayData(output);});
-
-        if (elementClicked.tagName=="BUTTON") 
-        {
-            if (elementClicked.className.includes("editButton")) 
-            {
-                this.send(param,
-                    (output)=>{},'readAmend.php');     
-                location.href = "amend.php";
-            }
-
-            if (elementClicked.className.includes("deleteButton")) 
-                this.delete(elementClicked);
-        }
+        return document.getElementById("infoButton");
     }
 }
 
